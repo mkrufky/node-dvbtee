@@ -1,0 +1,14 @@
+{
+  "name": "dvbtee",
+  "version": "0.0.1",
+  "description": "dvbtee Node.js Addon",
+  "main": "./build/Release/dvbtee",
+  "scripts": {
+    "preinstall": "git clone https://github.com/mkrufky/libdvbtee.git; (cd libdvbtee && touch .staticlib && ./build-auto.sh --prefix=`pwd`/usr/ --enable-static --with-pic; make install); node-gyp rebuild"
+  },
+  "dependencies": {
+    "bindings": "~1.2.1",
+    "nan": "^2.0.0"
+  },
+  "gypfile": true
+}
