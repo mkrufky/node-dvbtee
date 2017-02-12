@@ -44,7 +44,7 @@ class dvbteeParser : public Nan::ObjectWrap {
   static void Init(v8::Local<v8::Object> exports);
 
  private:
-  explicit dvbteeParser(double value = 0);
+  explicit dvbteeParser();
   ~dvbteeParser();
 
   static void New(const Nan::FunctionCallbackInfo<v8::Value>& info);
@@ -55,7 +55,6 @@ class dvbteeParser : public Nan::ObjectWrap {
 
   static Nan::Persistent<v8::Function> constructor;
   TableReceiver m_tableReceiver;
-  double value_;
   parse m_parser;
   Nan::Callback m_cb_tableReceiver;
 
