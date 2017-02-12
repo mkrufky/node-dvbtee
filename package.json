@@ -1,6 +1,6 @@
 {
   "name": "dvbtee",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "dvbtee Node.js Addon",
   "author": "Michael Ira Krufky <mkrufky@gmail.com>",
   "license": "MIT",
