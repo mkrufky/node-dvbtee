@@ -9,8 +9,7 @@
         "<!(node -e \"require('nan')\")"
       ],
       "libraries": [
-        "../libdvbtee/usr/lib/libdvbtee.so",
-        "../libdvbtee/usr/lib/libdvbpsi.so"
+        "../libdvbtee/usr/lib/libdvbtee.so"
       ],
       'cflags': [ '-DDEBUG_CONSOLE=1' ],
       'cflags_cc': [ '-DDEBUG_CONSOLE=1' ],
