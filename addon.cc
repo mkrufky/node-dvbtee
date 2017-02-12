@@ -3,6 +3,17 @@
 #include "dvbtee-parser.h"
 
 
+void libVersion(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+
+  v8::Local<v8::Array> version = Nan::New<v8::Array>();
+
+  version->Set(0, Nan::New<v8::Number>(LIBDVBTEE_VERSION_A) );
+  version->Set(1, Nan::New<v8::Number>(LIBDVBTEE_VERSION_B) );
+  version->Set(2, Nan::New<v8::Number>(LIBDVBTEE_VERSION_C) );
+
+  info.GetReturnValue().Set(version);
+}
+
 void logLevel(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
   libdvbtee_set_debug_level((info[0]->IsNumber()) ? info[0]->Uint32Value() : 255,
@@ -15,6 +26,9 @@ NAN_MODULE_INIT(InitAll) {
 
   Nan::Set(target, Nan::New<v8::String>("logLevel").ToLocalChecked(),
     Nan::GetFunction(Nan::New<v8::FunctionTemplate>(logLevel)).ToLocalChecked());
+
+  Nan::Set(target, Nan::New<v8::String>("libVersion").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(libVersion)).ToLocalChecked());
 
   dvbteeParser::Init(target);
 }
