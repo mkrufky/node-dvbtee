@@ -7,10 +7,7 @@
 
 class TableData {
 public:
-  TableData(const std::string& decoderName, const uint8_t& tableId, const std::string& json)
-  : tableId(tableId)
-  , decoderName(decoderName)
-  , json(json) {}
+  TableData(const std::string&, const uint8_t&, const std::string&);
 
   const uint8_t tableId;
   const std::string decoderName;

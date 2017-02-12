@@ -2,6 +2,12 @@
 #include "addon.h"
 #include "dvbtee-parser.h"
 
+TableData::TableData(const std::string &decoderName, const uint8_t &tableId, const std::string &json)
+: tableId(tableId)
+, decoderName(decoderName)
+, json(json)
+{}
+
 uv_async_t TableReceiver::m_async;
 
 TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
