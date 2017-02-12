@@ -4,7 +4,7 @@
       "target_name": "dvbtee",
       "sources": [ "addon.cc", "dvbtee-parser.cc" ],
       "dependencies": [
-        'libdvbtee.gyp:dvbtee_parser'
+        'deps/libdvbtee.gyp:dvbtee_parser'
       ],
       "include_dirs": [
         "libdvbtee/usr/include",
