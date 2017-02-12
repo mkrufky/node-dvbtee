@@ -10,7 +10,7 @@ These tables contain information about the stream, such as broadcast info, progr
 Compilation requires both autotools and npm
 
 ## Installation
-
+[![](https://nodei.co/npm/dvbtee.png)](https://www.npmjs.com/package/dvbtee)
 ```bash
 $ npm install dvbtee
 ```
