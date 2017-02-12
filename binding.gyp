@@ -3,13 +3,16 @@
     {
       "target_name": "dvbtee",
       "sources": [ "addon.cc", "dvbtee-parser.cc" ],
-      "include_dirs": [
-        "libdvbtee/usr/include/",
-        "libdvbtee/usr/include/dvbtee",
-        "<!(node -e \"require('nan')\")"
+      "dependencies": [
+        'libdvbtee.gyp:dvbtee_parser'
       ],
-      "libraries": [
-        "../libdvbtee/usr/lib/libdvbtee.so"
+      "include_dirs": [
+        "libdvbtee/usr/include",
+        "libdvbtee/libdvbtee",
+        "libdvbtee/libdvbtee/decode",
+        "libdvbtee/libdvbtee/decode/table",
+        "libdvbtee/libdvbtee/decode/descriptor",
+        "<!(node -e \"require('nan')\")"
       ],
       'cflags': [ '-DDEBUG_CONSOLE=1' ],
       'cflags_cc': [ '-DDEBUG_CONSOLE=1' ],
