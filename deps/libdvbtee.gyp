@@ -48,7 +48,7 @@
       'type': 'static_library',
       'sources': [
         '../libdvbtee/libdvbtee/atsctext.cpp',
-        '../libdvbtee/libdvbtee/channels.cpp',
+#       '../libdvbtee/libdvbtee/channels.cpp',
         '../libdvbtee/libdvbtee/curlhttpget.cpp',
         '../libdvbtee/libdvbtee/decode.cpp',
         '../libdvbtee/libdvbtee/demux.cpp',
