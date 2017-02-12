@@ -19,4 +19,4 @@ NAN_MODULE_INIT(InitAll) {
   dvbteeParser::Init(target);
 }
 
-NODE_MODULE(addon, InitAll)
+NODE_MODULE(dvbtee, InitAll)
