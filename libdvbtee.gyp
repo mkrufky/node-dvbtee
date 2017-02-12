@@ -100,8 +100,8 @@
       "dependencies": [
         'libdvbpsi.gyp:dvbpsi'
       ],
-      'cflags_cc!': ['-fno-rtti'],
-      'cflags_cc+': ['-frtti'],
+      'cflags_cc!': ['-fno-rtti','-Wunused-variable','-Wdeprecated-declarations'],
+      'cflags_cc+': ['-frtti','-Wno-unused-variable','-Wno-deprecated-declarations'],
     },
 
     # dvbtee command line application

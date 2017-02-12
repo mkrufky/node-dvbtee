@@ -121,6 +121,8 @@
         'libdvbtee/libdvbpsi/src/descriptors/dr_a0.c',
         'libdvbtee/libdvbpsi/src/descriptors/dr_a1.c',
       ],
+      'cflags!': ['-Wdeprecated-declarations'],
+      'cflags+': ['-Wno-deprecated-declarations'],
     },
   ]
 }
