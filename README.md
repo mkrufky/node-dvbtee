@@ -8,11 +8,10 @@ These tables contain information about the stream, such as broadcast info, progr
 
 Compilation requires both autotools and npm
 
-To compile, run
+## Installation
 
-```
-npm install nan bindings
-npm install
+```bash
+$ npm install dvbtee
 ```
 
 ## Example
