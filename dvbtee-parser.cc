@@ -167,6 +167,9 @@ private:
 
 void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
+  // If a callback function is supplied, this method will run async
+  // otherwise, it will run synchronous
+
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
@@ -240,6 +243,13 @@ private:
 
 
 void dvbteeParser::push(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+
+  // If a callback function is supplied, this method will run async
+  // otherwise, it will run synchronous
+  //
+  // Note: when packets are pushed to the parser, the parser will start
+  // generating async events containing PSIP table data regardless of
+  // whether this function was called synchronously or not
 
   int lastArg = info.Length() - 1;
 
