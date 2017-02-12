@@ -2,7 +2,7 @@
 #include "addon.h"
 #include "dvbtee-parser.h"
 
-TableData::TableData(const std::string &decoderName, const uint8_t &tableId, const std::string &json)
+TableData::TableData(const uint8_t &tableId, const std::string &decoderName, const std::string &json)
 : tableId(tableId)
 , decoderName(decoderName)
 , json(json)
@@ -26,7 +26,7 @@ TableReceiver::~TableReceiver()
 void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 {
   uv_mutex_lock(&m_mutex);
-  v.push_back(new TableData(table->getDecoderName(), table->getTableid(), table->toJson()));
+  v.push_back(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
   uv_mutex_unlock(&m_mutex);
 
   uv_async_send(&m_async);
