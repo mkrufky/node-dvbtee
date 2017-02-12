@@ -2,6 +2,12 @@
   "name": "dvbtee",
   "version": "0.0.1",
   "description": "dvbtee Node.js Addon",
+  "author": "Michael Ira Krufky <mkrufky@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mkrufky/node-dvbtee.git"
+  },
   "main": "./build/Release/dvbtee",
   "scripts": {
     "preinstall": "git clone https://github.com/mkrufky/libdvbtee.git; (cd libdvbtee && ./build-auto.sh --prefix=`pwd`/usr/ --disable-examples; make install); node-gyp rebuild"
