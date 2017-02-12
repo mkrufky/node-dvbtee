@@ -8,6 +8,8 @@ TableData::TableData(const uint8_t &tableId, const std::string &decoderName, con
 , json(json)
 {}
 
+////////////////////////////////////////
+
 uv_async_t TableReceiver::m_async;
 
 TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
@@ -56,13 +58,15 @@ void TableReceiver::notify()
 
 void TableReceiver::completeCb(uv_async_t *handle
 #if NODE_MODULE_VERSION<=11
-                                           , int status /*UNUSED*/
+                              , int status /*UNUSED*/
 #endif
                               )
 {
   TableReceiver* rcvr = static_cast<TableReceiver*>(handle->data);
   rcvr->notify();
 }
+
+////////////////////////////////////////
 
 Nan::Persistent<v8::Function> dvbteeParser::constructor;
 
@@ -121,6 +125,8 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
   info.GetReturnValue().Set(info.Holder());
 }
 
+////////////////////////////////////////
+
 class ResetWorker : public Nan::AsyncWorker {
 public:
   ResetWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
@@ -178,6 +184,8 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   }
 }
 
+////////////////////////////////////////
+
 class PushWorker : public Nan::AsyncWorker {
 public:
   PushWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
@@ -186,9 +194,11 @@ public:
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
+
         v8::Local<v8::Object> bufferObj = info[0]->ToObject();
         m_buf_len = info[1]->Uint32Value();
         m_buf = (char*) malloc(m_buf_len);
+
         memcpy(m_buf, node::Buffer::Data(bufferObj), m_buf_len);
       }
     }
@@ -243,6 +253,7 @@ void dvbteeParser::push(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     int ret = -1;
 
     if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
+
       v8::Local<v8::Object> bufferObj = info[0]->ToObject();
       unsigned int len = info[1]->Uint32Value();
       const char* buf = node::Buffer::Data(bufferObj);
