@@ -11,6 +11,7 @@ Compilation requires both autotools and npm
 To compile, run
 
 ```
+npm install nan bindings
 npm install
 ```
 
