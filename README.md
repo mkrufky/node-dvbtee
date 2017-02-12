@@ -17,7 +17,7 @@ $ npm install dvbtee
 
 ## Example
 
-```
+```javascript
 var dvbtee = require('dvbtee');
 
 var fs = require('fs');
