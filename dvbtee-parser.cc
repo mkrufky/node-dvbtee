@@ -42,8 +42,8 @@ void TableReceiver::notify()
     v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
     
     v8::Local<v8::Value> argv[] = {
-      Nan::New(data->decoderName).ToLocalChecked(),
       Nan::New(data->tableId),
+      Nan::New(data->decoderName).ToLocalChecked(),
       v8::JSON::Parse(jsonStr)
     };
     m_dvbteeParser->m_cb_tableReceiver.Call(3, argv);

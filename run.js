@@ -2,10 +2,10 @@ var dvbtee = require('./build/Release/dvbtee');
 
 var fs = require('fs');
 
-var parser = (new dvbtee.Parser).listenTables(function(tableName, tableId, d) {
-  console.log('table name: ' + tableName,
-              'id: ' + tableId,
-              '\n', d)
+var parser = (new dvbtee.Parser).listenTables(function(tableId, tableName, d) {
+  console.log('table id: ' + tableId,
+              '\ntable name: ' + tableName,
+              '\ntable data:\n', d)
 })
 
 
