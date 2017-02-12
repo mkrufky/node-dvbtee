@@ -2,18 +2,6 @@
 #include "addon.h"
 #include "dvbtee-parser.h"
 
-using v8::Function;
-using v8::Local;
-using v8::Number;
-using v8::Value;
-using Nan::AsyncQueueWorker;
-using Nan::AsyncWorker;
-using Nan::Callback;
-using Nan::HandleScope;
-using Nan::New;
-using Nan::Null;
-using Nan::To;
-
 uv_async_t TableReceiver::m_async;
 
 TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
@@ -127,10 +115,10 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
   info.GetReturnValue().Set(info.Holder());
 }
 
-class ResetWorker : public AsyncWorker {
+class ResetWorker : public Nan::AsyncWorker {
 public:
-  ResetWorker(Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : AsyncWorker(callback)
+  ResetWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
+    : Nan::AsyncWorker(callback)
     {
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
     }
@@ -151,11 +139,11 @@ public:
   // this function will be run inside the main event loop
   // so it is safe to use V8 again
   void HandleOKCallback () {
-    HandleScope scope;
+    Nan::HandleScope scope;
 
-    Local<Value> argv[] = {
-        Null()
-      , New<Number>(0)
+    v8::Local<v8::Value> argv[] = {
+        Nan::Null()
+      , Nan::New<v8::Number>(0)
     };
 
     callback->Call(2, argv);
@@ -171,8 +159,8 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
 
-    Callback *callback = new Callback(info[lastArg].As<Function>());
-    AsyncQueueWorker(new ResetWorker(callback, info));
+    Nan::Callback *callback = new Nan::Callback(info[lastArg].As<v8::Function>());
+    Nan::AsyncQueueWorker(new ResetWorker(callback, info));
 
   } else {
     dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
@@ -184,10 +172,10 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   }
 }
 
-class PushWorker : public AsyncWorker {
+class PushWorker : public Nan::AsyncWorker {
 public:
-  PushWorker(Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : AsyncWorker(callback)
+  PushWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
+    : Nan::AsyncWorker(callback)
     {
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
@@ -217,11 +205,11 @@ public:
   // this function will be run inside the main event loop
   // so it is safe to use V8 again
   void HandleOKCallback () {
-    HandleScope scope;
+    Nan::HandleScope scope;
 
-    Local<Value> argv[] = {
-        Null()
-      , New<Number>(m_ret)
+    v8::Local<v8::Value> argv[] = {
+        Nan::Null()
+      , Nan::New<v8::Number>(m_ret)
     };
 
     callback->Call(2, argv);
@@ -241,8 +229,8 @@ void dvbteeParser::push(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
 
-    Callback *callback = new Callback(info[lastArg].As<Function>());
-    AsyncQueueWorker(new PushWorker(callback, info));
+    Nan::Callback *callback = new Nan::Callback(info[lastArg].As<v8::Function>());
+    Nan::AsyncQueueWorker(new PushWorker(callback, info));
 
   } else {
     dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
