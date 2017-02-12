@@ -1,5 +1,5 @@
 To compile, run
 
 ```
-npm build .
+npm install
 ```
