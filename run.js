@@ -11,8 +11,8 @@ parser.listenTables(function(tableId, tableName, d) {
 })
 
 fs.readFile('sample.ts', function(err, buf) {
-    console.log('pushing ' + buf.byteLength + ' bytes');
-    var ret = parser.push(buf, buf.byteLength, function(err, status) {
+    console.log('pushing ' + buf.length + ' bytes');
+    var ret = parser.push(buf, buf.length, function(err, status) {
       if (err)
           console.log(err)
       else
