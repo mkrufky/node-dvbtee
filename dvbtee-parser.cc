@@ -15,21 +15,47 @@ uv_async_t TableReceiver::m_async;
 TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
 : m_dvbteeParser(dvbteeParser)
 {
-  uv_mutex_init(&m_mutex);
+  uv_mutex_init(&m_ev_mutex);
+  uv_mutex_init(&m_cv_mutex);
   uv_async_init(uv_default_loop(), &m_async, completeCb);
   m_async.data = this;
 }
 
 TableReceiver::~TableReceiver()
 {
-  uv_mutex_destroy(&m_mutex);
+  uv_mutex_lock(&m_ev_mutex);
+  for (std::vector<TableData*>::const_iterator it = ev.begin(); it != ev.end(); ++it)
+  {
+    TableData *data = *it;
+    delete data;
+  }
+  ev.clear();
+  uv_mutex_unlock(&m_ev_mutex);
+  uv_mutex_destroy(&m_ev_mutex);
+
+  uv_mutex_lock(&m_cv_mutex);
+  for (std::vector<Nan::Callback*>::const_iterator it = cv.begin(); it != cv.end(); ++it)
+  {
+    Nan::Callback *cb = *it;
+    delete cb;
+  }
+  cv.clear();
+  uv_mutex_unlock(&m_cv_mutex);
+  uv_mutex_destroy(&m_cv_mutex);
+}
+
+void TableReceiver::subscribe(Nan::Callback *callback)
+{
+  uv_mutex_lock(&m_cv_mutex);
+  cv.push_back(callback);
+  uv_mutex_unlock(&m_cv_mutex);
 }
 
 void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 {
-  uv_mutex_lock(&m_mutex);
-  v.push_back(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
-  uv_mutex_unlock(&m_mutex);
+  uv_mutex_lock(&m_ev_mutex);
+  ev.push_back(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
+  uv_mutex_unlock(&m_ev_mutex);
 
   uv_async_send(&m_async);
 }
@@ -37,8 +63,8 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 void TableReceiver::notify()
 {
   Nan::HandleScope scope;
-  uv_mutex_lock(&m_mutex);
-  for (std::vector<TableData*>::const_iterator it = v.begin(); it != v.end(); ++it)
+  uv_mutex_lock(&m_ev_mutex);
+  for (std::vector<TableData*>::const_iterator it = ev.begin(); it != ev.end(); ++it)
   {
     TableData *data = *it;
     v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
@@ -48,12 +74,18 @@ void TableReceiver::notify()
       Nan::New(data->decoderName).ToLocalChecked(),
       v8::JSON::Parse(jsonStr)
     };
-    m_dvbteeParser->m_cb_tableReceiver.Call(3, argv);
+    uv_mutex_lock(&m_cv_mutex);
+    for (std::vector<Nan::Callback*>::const_iterator it = cv.begin(); it != cv.end(); ++it)
+    {
+      Nan::Callback *cb = *it;
+      cb->Call(3, argv);
+    }
+    uv_mutex_unlock(&m_cv_mutex);
 
     delete data;
   }
-  v.clear();
-  uv_mutex_unlock(&m_mutex);
+  ev.clear();
+  uv_mutex_unlock(&m_ev_mutex);
 }
 
 void TableReceiver::completeCb(uv_async_t *handle
@@ -117,7 +149,7 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
-    obj->m_cb_tableReceiver.SetFunction(info[lastArg].As<v8::Function>());
+    obj->m_tableReceiver.subscribe(new Nan::Callback(info[lastArg].As<v8::Function>()));
     obj->m_parser.subscribeTables(&obj->m_tableReceiver);
   }
 

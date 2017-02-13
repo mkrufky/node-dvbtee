@@ -22,11 +22,15 @@ public:
   TableReceiver(dvbteeParser *dvbteeParser);
   virtual ~TableReceiver();
 
+  void subscribe(Nan::Callback *callback);
+
 private:
   static uv_async_t m_async;
-  uv_mutex_t m_mutex;
+  uv_mutex_t m_ev_mutex;
+  uv_mutex_t m_cv_mutex;
   dvbteeParser *m_dvbteeParser;
-  std::vector<TableData*> v;
+  std::vector<TableData*> ev;
+  std::vector<Nan::Callback*> cv;
 
   void updateTable(uint8_t tId, dvbtee::decode::Table *table);
   void notify();
@@ -56,8 +60,6 @@ class dvbteeParser : public Nan::ObjectWrap {
   static Nan::Persistent<v8::Function> constructor;
   TableReceiver m_tableReceiver;
   privateParse m_parser;
-  Nan::Callback m_cb_tableReceiver;
-
 
   friend class PushWorker;
   friend class ResetWorker;
