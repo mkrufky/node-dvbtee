@@ -36,7 +36,8 @@
     ],
     'defines': [
       'PIC',
-      'HAVE_CONFIG_H'
+      'HAVE_CONFIG_H',
+      'FORCE_DECODER_LINKAGE'
     ],
   },
 
