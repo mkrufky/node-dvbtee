@@ -55,7 +55,7 @@ class dvbteeParser : public Nan::ObjectWrap {
 
   static Nan::Persistent<v8::Function> constructor;
   TableReceiver m_tableReceiver;
-  parse m_parser;
+  privateParse m_parser;
   Nan::Callback m_cb_tableReceiver;
 
 
