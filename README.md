@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/mkrufky/node-dvbtee.svg?branch=master)](https://travis-ci.org/mkrufky/node-dvbtee)
 [![David](https://img.shields.io/david/mkrufky/node-dvbtee.svg)]()
 [![David](https://img.shields.io/david/optional/mkrufky/node-dvbtee.svg)]()
+[![Build status](https://ci.appveyor.com/api/projects/status/efghia0dr9ewng8t/branch/master?svg=true)](https://ci.appveyor.com/project/mkrufky/node-dvbtee/branch/master)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](#license)
 
 node-dvbtee is an MPEG2 transport stream parser addon for Node.js
