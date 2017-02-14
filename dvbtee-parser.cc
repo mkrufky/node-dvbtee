@@ -37,6 +37,7 @@ TableReceiver::~TableReceiver()
   for (std::vector<Nan::Callback*>::const_iterator it = cv.begin(); it != cv.end(); ++it)
   {
     Nan::Callback *cb = *it;
+    cb->Reset();
     delete cb;
   }
   cv.clear();
