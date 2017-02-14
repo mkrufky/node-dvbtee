@@ -1,5 +1,5 @@
 #include <nan.h>
-#include "addon.h"
+#include "node-dvbtee.h"
 #include "dvbtee-parser.h"
 
 

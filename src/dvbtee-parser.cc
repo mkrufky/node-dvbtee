@@ -1,5 +1,5 @@
 #include <nan.h>
-#include "addon.h"
+#include "node-dvbtee.h"
 #include "dvbtee-parser.h"
 
 TableData::TableData(const uint8_t &tableId, const std::string &decoderName, const std::string &json)
@@ -91,7 +91,7 @@ void TableReceiver::notify()
   {
     TableData *data = *it;
     v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
-    
+
     v8::Local<v8::Value> argv[] = {
       Nan::New(data->tableId),
       Nan::New(data->decoderName).ToLocalChecked(),

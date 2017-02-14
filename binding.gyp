@@ -2,7 +2,10 @@
   "targets": [
     {
       "target_name": "dvbtee",
-      "sources": [ "addon.cc", "dvbtee-parser.cc" ],
+      "sources": [
+        "src/node-dvbtee.cc",
+        "src/dvbtee-parser.cc"
+      ],
       "dependencies": [
         'deps/libdvbtee.gyp:dvbtee_parser'
       ],
