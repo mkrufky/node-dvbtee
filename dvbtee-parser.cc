@@ -24,15 +24,6 @@ TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
 TableReceiver::~TableReceiver()
 {
   m_dvbteeParser->m_parser.subscribeTables(NULL);
-  uv_mutex_lock(&m_ev_mutex);
-  for (std::vector<TableData*>::const_iterator it = ev.begin(); it != ev.end(); ++it)
-  {
-    TableData *data = *it;
-    delete data;
-  }
-  ev.clear();
-  uv_mutex_unlock(&m_ev_mutex);
-  uv_mutex_destroy(&m_ev_mutex);
 
   uv_mutex_lock(&m_cv_mutex);
   for (std::vector<Nan::Callback*>::const_iterator it = cv.begin(); it != cv.end(); ++it)
@@ -43,7 +34,18 @@ TableReceiver::~TableReceiver()
   }
   cv.clear();
   uv_mutex_unlock(&m_cv_mutex);
+
+  uv_mutex_lock(&m_ev_mutex);
+  for (std::vector<TableData*>::const_iterator it = ev.begin(); it != ev.end(); ++it)
+  {
+    TableData *data = *it;
+    delete data;
+  }
+  ev.clear();
+  uv_mutex_unlock(&m_ev_mutex);
+
   uv_mutex_destroy(&m_cv_mutex);
+  uv_mutex_destroy(&m_ev_mutex);
 }
 
 void TableReceiver::subscribe(Nan::Callback *callback)
