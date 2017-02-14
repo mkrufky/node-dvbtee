@@ -23,7 +23,7 @@ TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
 
 TableReceiver::~TableReceiver()
 {
-  m_dvbteeParser->m_parser.subscribeTables(NULL);
+  unregisterInterface();
 
   uv_mutex_lock(&m_cv_mutex);
   for (std::vector<Nan::Callback*>::const_iterator it = cv.begin(); it != cv.end(); ++it)
@@ -59,6 +59,11 @@ void TableReceiver::subscribe(Nan::Callback *callback)
 void TableReceiver::registerInterface()
 {
   m_dvbteeParser->m_parser.subscribeTables(this);
+}
+
+void TableReceiver::unregisterInterface()
+{
+  m_dvbteeParser->m_parser.subscribeTables(NULL);
 }
 
 void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
