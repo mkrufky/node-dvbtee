@@ -1,13 +1,49 @@
 {
   "name": "dvbtee",
   "version": "0.0.10",
-  "description": "dvbtee Node.js Addon",
+  "description": "MPEG2 transport stream parser for Node.js",
   "author": "Michael Ira Krufky <mkrufky@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/mkrufky/node-dvbtee.git"
   },
+  "bugs": {
+    "url": "https://github.com/mkrufky/node-dvbtee/issues"
+  },
+  "keywords": [
+    "dvb-psi",
+    "atsc",
+    "dvb",
+    "dvbt",
+    "dvb-t",
+    "psi",
+    "psip",
+    "mpeg2",
+    "mpegts",
+    "ts",
+    "transport-stream",
+    "transport",
+    "stream",
+    "tv",
+    "pat",
+    "pmt",
+    "sdt",
+    "vct",
+    "mgt",
+    "nit",
+    "eit",
+    "ett",
+    "stt",
+    "tdt",
+    "tot",
+    "epg",
+    "table",
+    "tables",
+    "descriptor",
+    "descriptors",
+    "parser"
+  ],
   "main": "./build/Release/dvbtee",
   "scripts": {
     "preinstall": "npm install nan; scripts/prepare-build.sh; scripts/configure-build.sh; node-gyp rebuild"
