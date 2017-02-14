@@ -50,7 +50,7 @@
   ],
   "main": "./lib/dvbtee.js",
   "scripts": {
-    "preinstall": "npm install nan; scripts/prepare-build.sh; scripts/configure-build.sh",
+    "preinstall": "scripts/prepare-build.sh; scripts/configure-build.sh",
     "install": "node-gyp rebuild -j 8",
     "test": "mocha"
   },
