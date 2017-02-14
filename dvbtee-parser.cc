@@ -63,6 +63,14 @@ void TableReceiver::registerInterface()
 
 void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 {
+  // dont bother with this event if there are no callbacks registered
+  uv_mutex_lock(&m_cv_mutex);
+  if (cv.empty()) {
+    uv_mutex_unlock(&m_cv_mutex);
+    return;
+  }
+  uv_mutex_unlock(&m_cv_mutex);
+
   uv_mutex_lock(&m_ev_mutex);
   ev.push_back(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
   uv_mutex_unlock(&m_ev_mutex);
