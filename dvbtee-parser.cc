@@ -23,6 +23,7 @@ TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
 
 TableReceiver::~TableReceiver()
 {
+  m_dvbteeParser->m_parser.subscribeTables(NULL);
   uv_mutex_lock(&m_ev_mutex);
   for (std::vector<TableData*>::const_iterator it = ev.begin(); it != ev.end(); ++it)
   {
@@ -49,7 +50,13 @@ void TableReceiver::subscribe(Nan::Callback *callback)
 {
   uv_mutex_lock(&m_cv_mutex);
   cv.push_back(callback);
+  registerInterface();
   uv_mutex_unlock(&m_cv_mutex);
+}
+
+void TableReceiver::registerInterface()
+{
+  m_dvbteeParser->m_parser.subscribeTables(this);
 }
 
 void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
@@ -151,7 +158,6 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
     obj->m_tableReceiver.subscribe(new Nan::Callback(info[lastArg].As<v8::Function>()));
-    obj->m_parser.subscribeTables(&obj->m_tableReceiver);
   }
 
   info.GetReturnValue().Set(info.Holder());

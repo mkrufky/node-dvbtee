@@ -34,6 +34,7 @@ private:
 
   void updateTable(uint8_t tId, dvbtee::decode::Table *table);
   void notify();
+  void registerInterface();
 
   static void completeCb(uv_async_t *handle
 #if NODE_MODULE_VERSION<=11
