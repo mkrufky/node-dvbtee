@@ -19,14 +19,3 @@ else
     touch .dont_del
     cd ..
 fi
-
-if [ -e usr/include/dvbpsi/dvbpsi.h ]; then
-    echo libdvbpsi headers placed
-else
-    mkdir -p usr/include/dvbpsi
-    cd usr/include/dvbpsi
-    ln -sf ../../../libdvbpsi/src/*.h .
-    ln -sf ../../../libdvbpsi/src/tables/*.h .
-    ln -sf ../../../libdvbpsi/src/descriptors/*.h .
-    cd ../../..
-fi
