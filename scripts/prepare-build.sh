@@ -3,7 +3,7 @@
 cd "$(dirname "$0")"/..
 
 if [ -e libdvbtee ]; then
-    echo libdvbtee already present
+    echo libdvbtee sources present
 else
     git clone git://github.com/mkrufky/libdvbtee.git
 fi
@@ -11,7 +11,7 @@ fi
 cd libdvbtee
 
 if [ -e libdvbpsi/bootstrap ]; then
-    echo libdvbpsi already present
+    echo libdvbpsi sources present
 else
     rm -rf libdvbpsi
     git clone git://github.com/mkrufky/libdvbpsi.git
@@ -21,7 +21,7 @@ else
 fi
 
 if [ -e usr/include/dvbpsi/dvbpsi.h ]; then
-    echo libdvbpsi headers already placed
+    echo libdvbpsi headers placed
 else
     mkdir -p usr/include/dvbpsi
     cd usr/include/dvbpsi
