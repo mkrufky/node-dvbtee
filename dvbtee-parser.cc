@@ -15,8 +15,8 @@ uv_async_t TableReceiver::m_async;
 TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
 : m_dvbteeParser(dvbteeParser)
 {
-  uv_mutex_init(&m_ev_mutex);
   uv_mutex_init(&m_cv_mutex);
+  uv_mutex_init(&m_ev_mutex);
   uv_async_init(uv_default_loop(), &m_async, completeCb);
   m_async.data = this;
 }
