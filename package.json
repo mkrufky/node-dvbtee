@@ -10,7 +10,7 @@
   },
   "main": "./build/Release/dvbtee",
   "scripts": {
-    "preinstall": "npm install nan; git clone https://github.com/mkrufky/libdvbtee.git; (cd libdvbtee && rm -rf libdvbpsi && git clone git://github.com/mkrufky/libdvbpsi.git; (cd libdvbpsi && touch .dont_del && ./bootstrap && ./configure --prefix=`pwd`/../usr/ --enable-static --with-pic); mkdir -p usr/include/dvbpsi; (cd usr/include/dvbpsi && ln -sf ../../../libdvbpsi/src/*.h . && ln -sf ../../../libdvbpsi/src/tables/*.h . && ln -sf ../../../libdvbpsi/src/descriptors/*.h .); mkdir -p m4 && autoreconf --install && ./configure --prefix=`pwd`/usr/ --enable-static --with-pic --disable-examples --enable-dvbpsibuild); node-gyp rebuild"
+    "preinstall": "npm install nan; scripts/prepare-build.sh; node-gyp rebuild"
   },
   "dependencies": {
     "nan": "^2.0.0"
