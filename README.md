@@ -3,9 +3,11 @@
 [![Build Status](https://travis-ci.org/mkrufky/node-dvbtee.svg?branch=master)](https://travis-ci.org/mkrufky/node-dvbtee)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](#license)
 
-node-dvbtee is a node.js addon for parsing mpeg2 TS transport streams containing broadcast PSIP tables
+node-dvbtee is an MPEG2 transport stream parser addon for Node.js
 
-These tables contain information about the stream, such as broadcast info, program info, and electronic program guide (EPG).
+Any standard MPEG2TS stream is supported, with additional specific support for broadcast television transport streams containing PSIP tables and descriptors.
+
+These tables and descriptors contain information about the stream, such as broadcast info, program info, and electronic program guide (EPG).
 
 Compilation requires both autotools and npm
 
