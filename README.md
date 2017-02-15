@@ -11,7 +11,7 @@ Any standard MPEG2TS stream is supported, with additional specific support for b
 
 These tables and descriptors contain information about the stream, such as broadcast info, program info, and electronic program guide (EPG).
 
-Compilation requires both autotools and npm
+Compilation requires both [autotools](https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html) and npm / node-gyp
 
 ## Installation
 [![NPM](https://nodei.co/npm/dvbtee.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/dvbtee)
