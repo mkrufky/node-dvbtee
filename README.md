@@ -1,6 +1,8 @@
 # node-dvbtee
 [![npm version](https://badge.fury.io/js/dvbtee.svg)](https://badge.fury.io/js/dvbtee)
 [![Build Status](https://travis-ci.org/mkrufky/node-dvbtee.svg?branch=master)](https://travis-ci.org/mkrufky/node-dvbtee)
+[![David](https://img.shields.io/david/mkrufky/node-dvbtee.svg)]()
+[![David](https://img.shields.io/david/optional/mkrufky/node-dvbtee.svg)]()
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](#license)
 
 node-dvbtee is an MPEG2 transport stream parser addon for Node.js
