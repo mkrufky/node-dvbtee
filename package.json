@@ -49,13 +49,18 @@
   ],
   "main": "./build/Release/dvbtee",
   "scripts": {
-    "preinstall": "npm install nan; scripts/prepare-build.sh; scripts/configure-build.sh; node-gyp rebuild"
+    "preinstall": "npm install nan; scripts/prepare-build.sh; scripts/configure-build.sh; node-gyp rebuild",
+    "test": "mocha"
   },
   "dependencies": {
     "nan": "^2.0.0"
   },
   "optionalDependencies": {
     "bindings": "~1.2.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "should": "^11.2.0"
   },
   "gypfile": true
 }

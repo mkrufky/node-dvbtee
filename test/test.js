@@ -1,0 +1,145 @@
+var assert = require('assert')
+var should = require('should')
+var dvbtee = require('bindings')('dvbtee.node')
+
+describe('node-dvbtee', function() {
+
+  describe('#libVersion()', function() {
+
+    var version = dvbtee.libVersion()
+
+    it('should return an Array of 3 Numbers to represent libdvbtee library version in the form [ MAJOR, MINOR, PATCH ]', function() {
+      assert.equal(3, version.length)
+
+      version.forEach(function (x) {
+        assert.equal("number", typeof x)
+      })
+    })
+  })
+
+  describe('#logLevel()', function() {
+
+    it('should return the dvbtee object (for method chaining)', function() {
+      assert.equal(dvbtee, dvbtee.logLevel(0,0))
+    })
+  })
+
+  describe('#getTableDecoderIds()', function() {
+
+    var tableIds = dvbtee.getTableDecoderIds()
+
+    it('should return an Array of Numbers that indicate the Table IDs supported by the built-in PSIP table decoders', function() {
+      assert.equal(11, tableIds.length)
+
+      tableIds.forEach(function (x) {
+        assert.equal("number", typeof x)
+      })
+    })
+
+    it('should support decoding PAT tables', function() {
+      tableIds.should.containEql(0x00)
+    })
+
+    it('should support decoding PMT tables', function() {
+      tableIds.should.containEql(0x02)
+    })
+
+    it('should support decoding NIT tables', function() {
+      tableIds.should.containEql(0x40)
+    })
+
+    it('should support decoding SDT tables', function() {
+      tableIds.should.containEql(0x42)
+    })
+
+    it('should support decoding EIT (dvb) tables', function() {
+      tableIds.should.containEql(0x4e)
+    })
+
+    it('should support decoding TDT/TOT tables', function() {
+      tableIds.should.containEql(0x70)
+    })
+
+    it('should support decoding MGT tables', function() {
+      tableIds.should.containEql(0xc7)
+    })
+
+    it('should support decoding VCT tables', function() {
+      tableIds.should.containEql(0xc8)
+    })
+
+    it('should support decoding EIT (atsc) tables', function() {
+      tableIds.should.containEql(0xcb)
+    })
+
+    it('should support decoding ETT tables', function() {
+      tableIds.should.containEql(0xcc)
+    })
+
+    it('should support decoding STT tables', function() {
+      tableIds.should.containEql(0xcd)
+    })
+  })
+
+  describe('#getDescriptorDecoderIds()', function() {
+
+    var descIds = dvbtee.getDescriptorDecoderIds()
+
+    it('should return an Array of Numbers that indicate the Descriptor IDs supported by the built-in PSIP descriptor decoders', function() {
+      assert.equal(9, descIds.length)
+
+      descIds.forEach(function (x) {
+        assert.equal("number", typeof x)
+      })
+    })
+
+    it('should support decoding ISO639 language descriptors', function() {
+      descIds.should.containEql(0x0a)
+    })
+
+    it('should support decoding service descriptors', function() {
+      descIds.should.containEql(0x48)
+    })
+
+    it('should support decoding short event descriptors', function() {
+      descIds.should.containEql(0x4d)
+    })
+
+    it('should support decoding frequency list descriptors', function() {
+      descIds.should.containEql(0x62)
+    })
+
+    it('should support decoding AC-3 audio descriptors', function() {
+      descIds.should.containEql(0x81)
+    })
+
+    it('should support decoding logical channel number descriptors', function() {
+      descIds.should.containEql(0x83)
+    })
+
+    it('should support decoding caption service descriptors', function() {
+      descIds.should.containEql(0x86)
+    })
+
+    it('should support decoding extended channel name descriptors', function() {
+      descIds.should.containEql(0xa0)
+    })
+
+    it('should support decoding service location descriptors', function() {
+      descIds.should.containEql(0xa1)
+    })
+  })
+})
+
+describe('dvbtee-parser', function() {
+
+  describe('#New', function() {
+    it('should return an object when called without operator new', function() {
+      assert.equal("object", typeof dvbtee.Parser())
+    })
+
+    it('should return an object when called with operator new', function() {
+      assert.equal("object", typeof new dvbtee.Parser())
+    })
+  })
+})
