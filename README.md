@@ -14,7 +14,7 @@ These tables and descriptors contain information about the stream, such as broad
 Compilation requires both autotools and npm
 
 ## Installation
-[![](https://nodei.co/npm/dvbtee.png)](https://www.npmjs.com/package/dvbtee)
+[![NPM](https://nodei.co/npm/dvbtee.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/dvbtee)
 ```bash
 $ npm install dvbtee
 ```
