@@ -234,7 +234,7 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     obj->m_parser.cleanup();
     obj->m_parser.reset();
 
-    info.GetReturnValue().Set(Nan::New(0));
+    info.GetReturnValue().Set(info.Holder());
   }
 }
 

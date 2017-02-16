@@ -146,4 +146,13 @@ describe('dvbtee-parser', function() {
       assert.equal("object", typeof new dvbtee.Parser())
     })
   })
+
+  var parser = new dvbtee.Parser()
+
+  describe('#listenTables()', function() {
+
+    it('should return the parser object (for method chaining)', function() {
+      assert.equal(parser, parser.listenTables())
+    })
+  })
 })
