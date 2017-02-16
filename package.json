@@ -51,7 +51,7 @@
   "main": "./lib/dvbtee.js",
   "scripts": {
     "install": "npm install mkdirp && node scripts/configure-build.js && node-gyp rebuild -j 8",
-    "test": "mocha"
+    "test": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- test/ -R spec"
   },
   "dependencies": {
     "nan": "^2.0.0",
@@ -61,6 +61,7 @@
     "bindings": "~1.2.1"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "should": "^11.2.0"
