@@ -15,7 +15,9 @@ Compilation requires both [autotools](https://www.gnu.org/software/automake/manu
 
 [![NPM](https://nodei.co/npm/dvbtee.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/dvbtee)
 [![NPM](https://nodei.co/npm-dl/dvbtee.png?months=1&height=3)](https://nodei.co/npm/dvbtee)
+
 ## Installation
+
 ```bash
 $ npm install dvbtee
 ```
