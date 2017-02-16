@@ -1,5 +1,4 @@
 #include <nan.h>
-#include "node-dvbtee.h"
 #include "dvbtee-parser.h"
 
 TableData::TableData(const uint8_t &tableId, const std::string &decoderName, const std::string &json)
@@ -145,7 +144,6 @@ void dvbteeParser::Init(v8::Local<v8::Object> exports) {
   Nan::SetPrototypeMethod(tpl, "reset", reset);
   Nan::SetPrototypeMethod(tpl, "push", push);
   Nan::SetPrototypeMethod(tpl, "listenTables", listenTables);
-  Nan::SetPrototypeMethod(tpl, "logLevel", logLevel);
 
   constructor.Reset(tpl->GetFunction());
   exports->Set(Nan::New("Parser").ToLocalChecked(), tpl->GetFunction());
