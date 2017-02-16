@@ -29,11 +29,13 @@ describe('node-dvbtee', function() {
     var tableIds = dvbtee.getTableDecoderIds()
 
     it('should return an Array of Numbers that indicate the Table IDs supported by the built-in PSIP table decoders', function() {
-      assert.equal(11, tableIds.length)
-
       tableIds.forEach(function (x) {
         assert.equal("number", typeof x)
       })
+    })
+
+    it('should include 11 PSIP table decoders', function() {
+      assert.equal(11, tableIds.length)
     })
 
     it('should support decoding PAT tables', function() {
@@ -86,11 +88,13 @@ describe('node-dvbtee', function() {
     var descIds = dvbtee.getDescriptorDecoderIds()
 
     it('should return an Array of Numbers that indicate the Descriptor IDs supported by the built-in PSIP descriptor decoders', function() {
-      assert.equal(9, descIds.length)
-
       descIds.forEach(function (x) {
         assert.equal("number", typeof x)
       })
+    })
+
+    it('should include 9 PSIP descriptor decoders', function() {
+      assert.equal(9, descIds.length)
     })
 
     it('should support decoding ISO639 language descriptors', function() {
