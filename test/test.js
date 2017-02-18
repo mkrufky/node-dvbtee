@@ -147,9 +147,9 @@ describe('dvbtee-parser', function() {
     })
   })
 
-  var parser = new dvbtee.Parser()
-
   describe('#listenTables()', function() {
+
+    var parser = new dvbtee.Parser()
 
     it('should return the parser object (for method chaining)', function() {
       assert.equal(parser, parser.listenTables())
@@ -159,10 +159,14 @@ describe('dvbtee-parser', function() {
   describe('#reset()', function() {
 
     it('should return the parser object when called synchronously (without args) (for method chaining)', function() {
+      var parser = new dvbtee.Parser()
+
       assert.equal(parser, parser.reset())
     })
 
     it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {
+      var parser = new dvbtee.Parser()
+
       assert.equal(undefined, parser.reset(function () { }))
     })
   })
@@ -170,10 +174,14 @@ describe('dvbtee-parser', function() {
   describe('#push()', function() {
 
     it('should return an error when called without args', function() {
+      var parser = new dvbtee.Parser()
+
       assert.equal(-1, parser.push())
     })
 
     it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {
+      var parser = new dvbtee.Parser()
+
       assert.equal(undefined, parser.push(function () { }))
     })
   })
