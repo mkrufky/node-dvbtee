@@ -103,7 +103,15 @@
       'conditions': [
         ['OS=="mac"',
           {
+            'link_settings': {
+              'libraries': [
+                '-liconv'
+              ]
+            },
             'xcode_settings': {
+              'OTHER_LDFLAGS': [
+                '-L/opt/local/lib'
+              ],
               'WARNING_CFLAGS': [
                 '-Wno-unused-variable',
                 '-Wno-deprecated-declarations'
