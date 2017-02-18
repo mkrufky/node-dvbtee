@@ -12,6 +12,7 @@ scripts/prepare-build.sh
 
 sed -i s/"scripts\/prepare-build.sh; scripts\/configure-build.sh"/"scripts\/configure-build.sh"/1 package.json
 sed -i s/"^libdvbtee"/""/1 .gitignore
+sed -i s/"^*.ts"/""/1 .gitignore
 
 cd libdvbtee
 sed -i s/"^libdvbpsi\/"/""/1 .gitignore
