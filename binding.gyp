@@ -18,9 +18,9 @@
         "<!(node -e \"require('nan')\")"
       ],
       'cflags': [ '-DDEBUG_CONSOLE=1' ],
-      'cflags_cc': [ '-DDEBUG_CONSOLE=1' ],
+      'cflags_cc': [ '-DDEBUG_CONSOLE=1', '-Wno-deprecated-declarations' ],
       'cflags!': [ '-fno-exceptions' ],
-      'cflags_cc!': [ '-fno-exceptions' ],
+      'cflags_cc!': [ '-fno-exceptions', '-Wdeprecated-declarations' ],
       'conditions': [
         ['OS=="mac"', {
           'xcode_settings': {
