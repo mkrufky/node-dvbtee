@@ -58,7 +58,7 @@
 #       '../libdvbtee/libdvbtee/hdhr_tuner.cpp',
 #       '../libdvbtee/libdvbtee/hlsfeed.cpp',
 #       '../libdvbtee/libdvbtee/linuxtv_tuner.cpp',
-        '../libdvbtee/libdvbtee/listen.cpp',
+#       '../libdvbtee/libdvbtee/listen.cpp',
         '../libdvbtee/libdvbtee/log.cpp',
 #       '../libdvbtee/libdvbtee/output.cpp',
         '../libdvbtee/libdvbtee/parse.cpp',
