@@ -244,6 +244,9 @@ class PushWorker : public Nan::AsyncWorker {
 public:
   PushWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncWorker(callback)
+    , m_buf(NULL)
+    , m_buf_len(0)
+    , m_ret(-1)
     {
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
@@ -266,9 +269,11 @@ public:
   // here, so everything we need for input and output
   // should go on `this`.
   void Execute () {
-    m_ret = m_obj->m_parser.feed(m_buf_len, (uint8_t*)m_buf);
-    free(m_buf);
-    m_buf = NULL;
+    if ((m_buf) && (m_buf_len)) {
+      m_ret = m_obj->m_parser.feed(m_buf_len, (uint8_t*)m_buf);
+      free(m_buf);
+      m_buf = NULL;
+    }
   }
 
   // Executed when the async work is complete
