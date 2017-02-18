@@ -155,4 +155,26 @@ describe('dvbtee-parser', function() {
       assert.equal(parser, parser.listenTables())
     })
   })
+
+  describe('#reset()', function() {
+
+    it('should return the parser object when called synchronously (without args) (for method chaining)', function() {
+      assert.equal(parser, parser.reset())
+    })
+
+    it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {
+      assert.equal(undefined, parser.reset(function () { }))
+    })
+  })
+
+  describe('#push()', function() {
+
+    it('should return an error when called without args', function() {
+      assert.equal(-1, parser.push())
+    })
+
+    it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {
+      assert.equal(undefined, parser.push(function () { }))
+    })
+  })
 })
