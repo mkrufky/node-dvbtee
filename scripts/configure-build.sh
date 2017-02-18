@@ -5,8 +5,8 @@ cd "$(dirname "$0")"/../libdvbtee/libdvbpsi
 if [ -e config.h ]; then
     echo libdvbpsi configured
 else
-    ./bootstrap
-    ./configure --enable-static --with-pic --disable-shared
+    echo "#define HAVE_SYS_TYPES_H" > config.h
+    echo "#define HAVE_STDINT_H"   >> config.h
 fi
 
 cd ..
