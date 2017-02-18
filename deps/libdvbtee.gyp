@@ -60,7 +60,7 @@
 #       '../libdvbtee/libdvbtee/linuxtv_tuner.cpp',
         '../libdvbtee/libdvbtee/listen.cpp',
         '../libdvbtee/libdvbtee/log.cpp',
-        '../libdvbtee/libdvbtee/output.cpp',
+#       '../libdvbtee/libdvbtee/output.cpp',
         '../libdvbtee/libdvbtee/parse.cpp',
         '../libdvbtee/libdvbtee/rbuf.cpp',
         '../libdvbtee/libdvbtee/stats.cpp',
