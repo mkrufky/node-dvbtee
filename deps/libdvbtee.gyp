@@ -104,6 +104,10 @@
         ['OS=="mac"',
           {
             'xcode_settings': {
+              'WARNING_CFLAGS': [
+                '-Wno-unused-variable',
+                '-Wno-deprecated-declarations'
+              ],
               'GCC_ENABLE_CPP_RTTI': '-frtti'
             }
           }

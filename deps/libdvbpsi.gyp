@@ -121,6 +121,17 @@
         '../libdvbtee/libdvbpsi/src/descriptors/dr_a0.c',
         '../libdvbtee/libdvbpsi/src/descriptors/dr_a1.c',
       ],
+      'conditions': [
+        ['OS=="mac"',
+          {
+            'xcode_settings': {
+              'WARNING_CFLAGS': [
+                '-Wno-deprecated-declarations'
+              ]
+            }
+          }
+        ]
+      ],
       'cflags!': ['-Wdeprecated-declarations','-Wimplicit-function-declaration'],
       'cflags+': ['-Wno-deprecated-declarations','-Wno-implicit-function-declaration','-std=c99'],
     },

@@ -24,6 +24,9 @@
       'conditions': [
         ['OS=="mac"', {
           'xcode_settings': {
+            'WARNING_CFLAGS': [
+              '-Wno-deprecated-declarations'
+            ],
             'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
           }
         }]
