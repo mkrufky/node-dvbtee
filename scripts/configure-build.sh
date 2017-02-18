@@ -11,19 +11,6 @@ fi
 
 cd ..
 
-mkdir -p m4
-if [ -e aclocal.m4 ]; then
-    echo configuration installed
-else
-    autoreconf --install
-fi
-
-if [ -e config.h ]; then
-    echo libdvbtee configured
-else
-    ./configure --enable-static --with-pic --disable-shared --enable-dvbpsibuild --disable-examples
-fi
-
 if [ -e usr/include/dvbpsi/dvbpsi.h ]; then
     echo libdvbpsi headers placed
 else
