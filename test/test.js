@@ -164,11 +164,13 @@ describe('dvbtee-parser', function() {
       assert.equal(parser, parser.reset())
     })
 
+/*
     it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {
       var parser = new dvbtee.Parser()
 
       assert.equal(undefined, parser.reset(function () { }))
     })
+*/
   })
 
   describe('#push()', function() {
@@ -179,10 +181,12 @@ describe('dvbtee-parser', function() {
       assert.equal(-1, parser.push())
     })
 
+/*
     it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {
       var parser = new dvbtee.Parser()
 
       assert.equal(undefined, parser.push(function () { }))
     })
+*/
   })
 })
