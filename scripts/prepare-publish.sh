@@ -13,6 +13,7 @@ node scripts/configure-build.js
 
 sed -i s/"npm install mkdirp && scripts\/prepare-build.sh && node scripts\/configure-build.js"/""/1 package.json
 sed -i s/"^libdvbtee"/""/1 .gitignore
+sed -i s/"^*.ts"/""/1 .gitignore
 
 cd libdvbtee
 sed -i s/"^libdvbpsi\/"/""/1 .gitignore
