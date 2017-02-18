@@ -1,6 +1,8 @@
 var assert = require('assert')
 var should = require('should')
+
 var dvbtee = require('../')
+var fs     = require('fs')
 
 describe('node-dvbtee', function() {
 
@@ -216,5 +218,91 @@ describe('dvbtee-parser', function() {
       assert.equal(undefined, parser.feed(function () { }))
     })
 */
+  })
+
+  describe('operation with an ATSC sample ts file', function() {
+
+    var checkAtscSampleTables = function(tables) {
+      describe('PAT', function() {
+        it('should contain 1 PAT table', function() {
+          assert.equal(1, tables["0"].length)
+        })
+      })
+
+      describe('PMT', function() {
+        it('should contain 3 PMT table', function() {
+          assert.equal(3, tables["2"].length)
+        })
+      })
+
+      describe('MGT', function() {
+        it('should contain 1 MGT table', function() {
+          assert.equal(1, tables["199"].length)
+        })
+      })
+
+      describe('VCT', function() {
+        it('should contain 1 VCT table', function() {
+          assert.equal(1, tables["200"].length)
+        })
+      })
+
+      describe('EIT', function() {
+        it('should contain 12 EIT table', function() {
+          assert.equal(12, tables["203"].length)
+        })
+      })
+
+      describe('STT', function() {
+        it('should contain 1 STT table', function() {
+          assert.equal(1, tables["205"].length)
+        })
+      })
+    }
+
+    it('using push() synchronously', function() {
+
+      var buf = fs.readFileSync('test/pbs.ts')
+
+      var parser = new dvbtee.Parser()
+
+      var tables = {}
+
+      parser.listenTables(function(id, name, data){
+
+        if (!tables.hasOwnProperty(id.toString()))
+          tables[id.toString()] = []
+
+        tables[id.toString()].push(data)
+      })
+
+      parser.push(buf, buf.length)
+
+      checkAtscSampleTables(tables)
+    })
+
+    it('using push() asynchronously', function(done) {
+
+      var parser = new dvbtee.Parser()
+
+      var tables = {}
+
+      parser.listenTables(function(id, name, data){
+
+        if (!tables.hasOwnProperty(id.toString()))
+          tables[id.toString()] = []
+
+        tables[id.toString()].push(data)
+      })
+
+      fs.readFile('test/pbs.ts', function(err, buf) {
+        parser.push(buf, buf.length, function(err, status) {
+
+          checkAtscSampleTables(tables)
+
+          done()
+        })
+      })
+    })
   })
 })
