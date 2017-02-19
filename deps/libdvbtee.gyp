@@ -61,7 +61,7 @@
         '../libdvbtee/libdvbtee/log.cpp',
 #       '../libdvbtee/libdvbtee/output.cpp',
         '../libdvbtee/libdvbtee/parse.cpp',
-        '../libdvbtee/libdvbtee/rbuf.cpp',
+#       '../libdvbtee/libdvbtee/rbuf.cpp',
         '../libdvbtee/libdvbtee/stats.cpp',
 #       '../libdvbtee/libdvbtee/tune.cpp',
 
