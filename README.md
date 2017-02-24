@@ -24,20 +24,19 @@ $ npm install dvbtee
 ```javascript
 var dvbtee = require('dvbtee')
 
-var fs = require('fs')
-
 var parser = new dvbtee.Parser
 
-parser.listenTables(function(tableId, tableName, data) {
-
-  console.log('table id: ' + tableId,
-              '\ntable name: ' + tableName,
+parser.on('data', function(data) {
+  console.log('table id: ' + data.tableId,
+              '\ntable name: ' + data.tableName,
               '\ntable data:\n', JSON.stringify(data, null, 2))
 })
 
-fs.readFile('sample.ts', function(err, buf) {
+// on a stream:
+fs.createReadStream('sample.ts').pipe(parser)
 
-    console.log('pushing ' + buf.length + ' bytes')
+// on a buffer:
+fs.readFile('sample.ts', function(err, buf) {
 
     parser.feed(buf, buf.length, function(err, status) {
 

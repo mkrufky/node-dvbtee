@@ -1,6 +1,6 @@
 var assert = require('assert')
 var should = require('should')
-var dvbtee = require('bindings')('dvbtee.node')
+var dvbtee = require('../')
 
 describe('node-dvbtee', function() {
 
@@ -136,17 +136,18 @@ describe('node-dvbtee', function() {
 })
 
 describe('dvbtee-parser', function() {
-
   describe('#New', function() {
+/*
     it('should return an object when called without operator new', function() {
       assert.equal("object", typeof dvbtee.Parser())
     })
-
+*/
     it('should return an object when called with operator new', function() {
       assert.equal("object", typeof new dvbtee.Parser())
     })
   })
 
+/*
   describe('#listenTables()', function() {
 
     var parser = new dvbtee.Parser()
@@ -155,14 +156,17 @@ describe('dvbtee-parser', function() {
       assert.equal(parser, parser.listenTables())
     })
   })
+*/
 
   describe('#reset()', function() {
 
+/*
     it('should return the parser object when called synchronously (without args) (for method chaining)', function() {
       var parser = new dvbtee.Parser()
 
       assert.equal(parser, parser.reset())
     })
+*/
 
 /*
     it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {

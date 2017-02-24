@@ -1,9 +1,9 @@
 var fs = require('fs')
-var dvbtee = require('../')
+var dvbtee = require('../build/Release/dvbtee.node')
 
 var parser = new dvbtee.Parser
 
-parser.on('data', function(data) {
+parser.listenTables(function(a,b,data) {
   console.log('\ntable data:\n', data)
 })
 

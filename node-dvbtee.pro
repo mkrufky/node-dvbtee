@@ -1,4 +1,6 @@
 OTHER_FILES += \
+lib/dvbtee.js \
+lib/parser.js \
 src/node-dvbtee.cc \
 src/dvbtee-parser.h \
 src/dvbtee-parser.cc \
