@@ -27,7 +27,6 @@ public:
 
 private:
   static uv_async_t m_async;
-  uv_mutex_t m_cv_mutex;
   uv_mutex_t m_ev_mutex;
   dvbteeParser *m_dvbteeParser;
   std::queue<TableData*> m_eq;

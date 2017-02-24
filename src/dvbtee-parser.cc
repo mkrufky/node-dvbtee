@@ -14,7 +14,6 @@ uv_async_t TableReceiver::m_async;
 TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
 : m_dvbteeParser(dvbteeParser)
 {
-  uv_mutex_init(&m_cv_mutex);
   uv_mutex_init(&m_ev_mutex);
   uv_async_init(uv_default_loop(), &m_async, completeCb);
   m_async.data = this;
@@ -24,9 +23,7 @@ TableReceiver::~TableReceiver()
 {
   unregisterInterface();
 
-  uv_mutex_lock(&m_cv_mutex);
   m_cb.Reset();
-  uv_mutex_unlock(&m_cv_mutex);
 
   uv_mutex_lock(&m_ev_mutex);
   while (!m_eq.empty())
@@ -37,16 +34,13 @@ TableReceiver::~TableReceiver()
   }
   uv_mutex_unlock(&m_ev_mutex);
 
-  uv_mutex_destroy(&m_cv_mutex);
   uv_mutex_destroy(&m_ev_mutex);
 }
 
 void TableReceiver::subscribe(const v8::Local<v8::Function> &fn)
 {
-  uv_mutex_lock(&m_cv_mutex);
   m_cb.SetFunction(fn);
   registerInterface();
-  uv_mutex_unlock(&m_cv_mutex);
 }
 
 void TableReceiver::registerInterface()
@@ -61,14 +55,6 @@ void TableReceiver::unregisterInterface()
 
 void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 {
-  // dont bother with this event if there are no callbacks registered
-  uv_mutex_lock(&m_cv_mutex);
-  if (m_cb.IsEmpty()) {
-    uv_mutex_unlock(&m_cv_mutex);
-    return;
-  }
-  uv_mutex_unlock(&m_cv_mutex);
-
   uv_mutex_lock(&m_ev_mutex);
   m_eq.push(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
   uv_mutex_unlock(&m_ev_mutex);
@@ -90,10 +76,9 @@ void TableReceiver::notify()
       Nan::New(data->decoderName).ToLocalChecked(),
       v8::JSON::Parse(jsonStr)
     };
-    uv_mutex_lock(&m_cv_mutex);
+
     if (!m_cb.IsEmpty())
       m_cb.Call(3, argv);
-    uv_mutex_unlock(&m_cv_mutex);
 
     delete data;
     m_eq.pop();
