@@ -35,12 +35,12 @@ TableReceiver::~TableReceiver()
   uv_mutex_unlock(&m_cv_mutex);
 
   uv_mutex_lock(&m_ev_mutex);
-  for (std::vector<TableData*>::const_iterator it = ev.begin(); it != ev.end(); ++it)
+  while (!m_eq.empty())
   {
-    TableData *data = *it;
+    TableData *data = m_eq.front();
     delete data;
+    m_eq.pop();
   }
-  ev.clear();
   uv_mutex_unlock(&m_ev_mutex);
 
   uv_mutex_destroy(&m_cv_mutex);
@@ -76,7 +76,7 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
   uv_mutex_unlock(&m_cv_mutex);
 
   uv_mutex_lock(&m_ev_mutex);
-  ev.push_back(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
+  m_eq.push(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
   uv_mutex_unlock(&m_ev_mutex);
 
   uv_async_send(&m_async);
@@ -86,9 +86,9 @@ void TableReceiver::notify()
 {
   Nan::HandleScope scope;
   uv_mutex_lock(&m_ev_mutex);
-  for (std::vector<TableData*>::const_iterator it = ev.begin(); it != ev.end(); ++it)
+  while (!m_eq.empty())
   {
-    TableData *data = *it;
+    TableData *data = m_eq.front();
     v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
 
     v8::Local<v8::Value> argv[] = {
@@ -105,8 +105,8 @@ void TableReceiver::notify()
     uv_mutex_unlock(&m_cv_mutex);
 
     delete data;
+    m_eq.pop();
   }
-  ev.clear();
   uv_mutex_unlock(&m_ev_mutex);
 }
 

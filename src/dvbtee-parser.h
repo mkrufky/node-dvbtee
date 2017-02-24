@@ -2,6 +2,7 @@
 #define _DVBTEE_PARSER_H_
 
 #include <nan.h>
+#include <queue>
 #include <vector>
 #include "parse.h"
 
@@ -29,7 +30,7 @@ private:
   uv_mutex_t m_cv_mutex;
   uv_mutex_t m_ev_mutex;
   dvbteeParser *m_dvbteeParser;
-  std::vector<TableData*> ev;
+  std::queue<TableData*> m_eq;
   std::vector<Nan::Callback*> cv;
 
   void updateTable(uint8_t tId, dvbtee::decode::Table *table);
