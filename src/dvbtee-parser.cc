@@ -118,7 +118,8 @@ void dvbteeParser::Init(v8::Local<v8::Object> exports) {
 
   // Prototype
   Nan::SetPrototypeMethod(tpl, "reset", reset);
-  Nan::SetPrototypeMethod(tpl, "push", push);
+  Nan::SetPrototypeMethod(tpl, "parse", parse);
+  Nan::SetPrototypeMethod(tpl, "push", parse); // deprecated
   Nan::SetPrototypeMethod(tpl, "listenTables", listenTables);
 
   constructor.Reset(tpl->GetFunction());
@@ -274,7 +275,7 @@ private:
 };
 
 
-void dvbteeParser::push(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void dvbteeParser::parse(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
   // If a callback function is supplied, this method will run async
   // otherwise, it will run synchronous

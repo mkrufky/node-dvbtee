@@ -173,19 +173,19 @@ describe('dvbtee-parser', function() {
 */
   })
 
-  describe('#push()', function() {
+  describe('#parse()', function() {
 
     it('should return an error when called without args', function() {
       var parser = new dvbtee.Parser()
 
-      assert.equal(-1, parser.push())
+      assert.equal(-1, parser.parse())
     })
 
 /*
     it('should return undefined when called asynchronously (with a callback function as the last argument)', function() {
       var parser = new dvbtee.Parser()
 
-      assert.equal(undefined, parser.push(function () { }))
+      assert.equal(undefined, parser.parse(function () { }))
     })
 */
   })
