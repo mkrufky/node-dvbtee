@@ -23,7 +23,7 @@ public:
   TableReceiver(dvbteeParser *dvbteeParser);
   virtual ~TableReceiver();
 
-  void subscribe(Nan::Callback *callback);
+  void subscribe(const v8::Local<v8::Function> &fn);
 
 private:
   static uv_async_t m_async;
@@ -31,7 +31,7 @@ private:
   uv_mutex_t m_ev_mutex;
   dvbteeParser *m_dvbteeParser;
   std::queue<TableData*> m_eq;
-  std::vector<Nan::Callback*> cv;
+  Nan::Callback m_cb;
 
   void updateTable(uint8_t tId, dvbtee::decode::Table *table);
   void notify();

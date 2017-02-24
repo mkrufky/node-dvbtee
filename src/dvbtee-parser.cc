@@ -25,13 +25,7 @@ TableReceiver::~TableReceiver()
   unregisterInterface();
 
   uv_mutex_lock(&m_cv_mutex);
-  for (std::vector<Nan::Callback*>::const_iterator it = cv.begin(); it != cv.end(); ++it)
-  {
-    Nan::Callback *cb = *it;
-    cb->Reset();
-    delete cb;
-  }
-  cv.clear();
+  m_cb.Reset();
   uv_mutex_unlock(&m_cv_mutex);
 
   uv_mutex_lock(&m_ev_mutex);
@@ -47,10 +41,10 @@ TableReceiver::~TableReceiver()
   uv_mutex_destroy(&m_ev_mutex);
 }
 
-void TableReceiver::subscribe(Nan::Callback *callback)
+void TableReceiver::subscribe(const v8::Local<v8::Function> &fn)
 {
   uv_mutex_lock(&m_cv_mutex);
-  cv.push_back(callback);
+  m_cb.SetFunction(fn);
   registerInterface();
   uv_mutex_unlock(&m_cv_mutex);
 }
@@ -69,7 +63,7 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 {
   // dont bother with this event if there are no callbacks registered
   uv_mutex_lock(&m_cv_mutex);
-  if (cv.empty()) {
+  if (m_cb.IsEmpty()) {
     uv_mutex_unlock(&m_cv_mutex);
     return;
   }
@@ -97,11 +91,8 @@ void TableReceiver::notify()
       v8::JSON::Parse(jsonStr)
     };
     uv_mutex_lock(&m_cv_mutex);
-    for (std::vector<Nan::Callback*>::const_iterator it = cv.begin(); it != cv.end(); ++it)
-    {
-      Nan::Callback *cb = *it;
-      cb->Call(3, argv);
-    }
+    if (!m_cb.IsEmpty())
+      m_cb.Call(3, argv);
     uv_mutex_unlock(&m_cv_mutex);
 
     delete data;
@@ -170,7 +161,7 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
-    obj->m_tableReceiver.subscribe(new Nan::Callback(info[lastArg].As<v8::Function>()));
+    obj->m_tableReceiver.subscribe(info[lastArg].As<v8::Function>());
   }
 
   info.GetReturnValue().Set(info.Holder());
