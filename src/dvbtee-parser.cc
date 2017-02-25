@@ -69,16 +69,19 @@ void TableReceiver::notify()
   while (!m_eq.empty())
   {
     TableData *data = m_eq.front();
-    v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
 
-    v8::Local<v8::Value> argv[] = {
-      Nan::New(data->tableId),
-      Nan::New(data->decoderName).ToLocalChecked(),
-      v8::JSON::Parse(jsonStr)
-    };
+    if (!m_cb.IsEmpty()) {
 
-    if (!m_cb.IsEmpty())
+      v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
+
+      v8::Local<v8::Value> argv[] = {
+        Nan::New(data->tableId),
+        Nan::New(data->decoderName).ToLocalChecked(),
+        v8::JSON::Parse(jsonStr)
+      };
+
       m_cb.Call(3, argv);
+    }
 
     delete data;
     m_eq.pop();
