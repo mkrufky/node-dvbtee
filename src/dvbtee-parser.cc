@@ -236,8 +236,9 @@ public:
 
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
 
-        SaveToPersistent("buf", info[0]);
-        m_buf = node::Buffer::Data(GetFromPersistent("buf")->ToObject());
+        const char *key = "buf";
+        SaveToPersistent(key, info[0]);
+        m_buf = node::Buffer::Data(GetFromPersistent(key)->ToObject());
         m_buf_len = info[1]->Uint32Value();
       }
     }
