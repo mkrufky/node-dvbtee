@@ -123,9 +123,10 @@ void dvbteeParser::Init(v8::Local<v8::Object> exports) {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   // Prototype
-  Nan::SetPrototypeMethod(tpl, "reset", reset);
-  Nan::SetPrototypeMethod(tpl, "parse", parse);
-  Nan::SetPrototypeMethod(tpl, "push", parse); // deprecated
+  Nan::SetPrototypeMethod(tpl, "reset",        reset);
+  Nan::SetPrototypeMethod(tpl, "feed",         feed);
+  Nan::SetPrototypeMethod(tpl, "push",         feed); // deprecated
+  Nan::SetPrototypeMethod(tpl, "parse",        feed); // deprecated
   Nan::SetPrototypeMethod(tpl, "listenTables", listenTables);
 
   constructor.Reset(tpl->GetFunction());
@@ -281,7 +282,7 @@ private:
 };
 
 
-void dvbteeParser::parse(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
   // If a callback function is supplied, this method will run async
   // otherwise, it will run synchronous

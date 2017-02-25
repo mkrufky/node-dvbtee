@@ -39,7 +39,7 @@ fs.readFile('sample.ts', function(err, buf) {
 
     console.log('pushing ' + buf.length + ' bytes')
 
-    parser.parse(buf, buf.length, function(err, status) {
+    parser.feed(buf, buf.length, function(err, status) {
 
       if (err)
           console.log(err)
