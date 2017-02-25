@@ -69,6 +69,7 @@ void TableReceiver::notify()
   while (!m_eq.empty())
   {
     TableData *data = m_eq.front();
+    uv_mutex_unlock(&m_ev_mutex);
 
     if (!m_cb.IsEmpty()) {
 
@@ -84,6 +85,8 @@ void TableReceiver::notify()
     }
 
     delete data;
+
+    uv_mutex_lock(&m_ev_mutex);
     m_eq.pop();
   }
   uv_mutex_unlock(&m_ev_mutex);
