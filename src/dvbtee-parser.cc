@@ -224,9 +224,9 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
 ////////////////////////////////////////
 
-class PushWorker : public Nan::AsyncWorker {
+class FeedWorker : public Nan::AsyncWorker {
 public:
-  PushWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
+  FeedWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncWorker(callback)
     , m_buf(NULL)
     , m_buf_len(0)
@@ -243,7 +243,7 @@ public:
         memcpy(m_buf, node::Buffer::Data(bufferObj), m_buf_len);
       }
     }
-  ~PushWorker()
+  ~FeedWorker()
     {
       if (m_buf) free(m_buf);
     }
@@ -296,7 +296,7 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
 
     Nan::Callback *callback = new Nan::Callback(info[lastArg].As<v8::Function>());
-    Nan::AsyncQueueWorker(new PushWorker(callback, info));
+    Nan::AsyncQueueWorker(new FeedWorker(callback, info));
 
   } else {
     dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());

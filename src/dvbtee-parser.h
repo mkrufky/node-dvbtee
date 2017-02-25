@@ -63,7 +63,7 @@ class dvbteeParser : public Nan::ObjectWrap {
   TableReceiver m_tableReceiver;
   privateParse m_parser;
 
-  friend class PushWorker;
+  friend class FeedWorker;
   friend class ResetWorker;
   friend class TableReceiver;
 };
