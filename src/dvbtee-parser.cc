@@ -236,16 +236,15 @@ public:
 
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
 
-        v8::Local<v8::Object> bufferObj = info[0]->ToObject();
+        m_buf_obj.Reset(info[0]->ToObject());
         m_buf_len = info[1]->Uint32Value();
-        m_buf = (char*) malloc(m_buf_len);
-
-        memcpy(m_buf, node::Buffer::Data(bufferObj), m_buf_len);
+        m_buf = node::Buffer::Data(Nan::New(m_buf_obj));
       }
     }
   ~FeedWorker()
     {
-      if (m_buf) free(m_buf);
+      if (!m_buf_obj.IsEmpty())
+        m_buf_obj.Reset();
     }
 
   // Executed inside the worker-thread.
@@ -255,8 +254,6 @@ public:
   void Execute () {
     if ((m_buf) && (m_buf_len)) {
       m_ret = m_obj->m_parser.feed(m_buf_len, (uint8_t*)m_buf);
-      free(m_buf);
-      m_buf = NULL;
     }
   }
 
@@ -265,6 +262,8 @@ public:
   // so it is safe to use V8 again
   void HandleOKCallback () {
     Nan::HandleScope scope;
+
+    m_buf_obj.Reset();
 
     v8::Local<v8::Value> argv[] = {
         Nan::Null()
@@ -275,6 +274,7 @@ public:
   }
 
 private:
+  Nan::Persistent<v8::Object> m_buf_obj;
   dvbteeParser* m_obj;
   char* m_buf;
   unsigned int m_buf_len;
