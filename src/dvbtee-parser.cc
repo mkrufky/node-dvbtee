@@ -236,15 +236,13 @@ public:
 
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
 
-        m_buf_obj.Reset(info[0]->ToObject());
+        SaveToPersistent("buf", info[0]);
+        m_buf = node::Buffer::Data(GetFromPersistent("buf")->ToObject());
         m_buf_len = info[1]->Uint32Value();
-        m_buf = node::Buffer::Data(Nan::New(m_buf_obj));
       }
     }
   ~FeedWorker()
     {
-      if (!m_buf_obj.IsEmpty())
-        m_buf_obj.Reset();
     }
 
   // Executed inside the worker-thread.
@@ -263,8 +261,6 @@ public:
   void HandleOKCallback () {
     Nan::HandleScope scope;
 
-    m_buf_obj.Reset();
-
     v8::Local<v8::Value> argv[] = {
         Nan::Null()
       , Nan::New<v8::Number>(m_ret)
@@ -274,7 +270,6 @@ public:
   }
 
 private:
-  Nan::Persistent<v8::Object> m_buf_obj;
   dvbteeParser* m_obj;
   char* m_buf;
   unsigned int m_buf_len;
