@@ -51,7 +51,7 @@ class dvbteeParser : public Nan::ObjectWrap {
 
  private:
   explicit dvbteeParser();
-  ~dvbteeParser();
+  virtual ~dvbteeParser();
 
   static void New(const Nan::FunctionCallbackInfo<v8::Value>& info);
 
