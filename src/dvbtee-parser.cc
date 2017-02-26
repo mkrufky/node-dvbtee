@@ -252,6 +252,9 @@ public:
     if ((m_buf) && (m_buf_len)) {
       m_ret = m_obj->m_parser.feed(m_buf_len, (uint8_t*)m_buf);
     }
+    if (m_ret < 0) {
+      SetErrorMessage("invalid buffer / length");
+    }
   }
 
   // Executed when the async work is complete
