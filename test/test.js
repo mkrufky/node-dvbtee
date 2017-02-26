@@ -136,12 +136,13 @@ describe('node-dvbtee', function() {
 })
 
 describe('dvbtee-parser', function() {
+
   describe('#New', function() {
-/*
+
     it('should return an object when called without operator new', function() {
       assert.equal("object", typeof dvbtee.Parser())
     })
-*/
+
     it('should return an object when called with operator new', function() {
       assert.equal("object", typeof new dvbtee.Parser())
     })

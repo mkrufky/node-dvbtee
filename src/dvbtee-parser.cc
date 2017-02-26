@@ -137,14 +137,12 @@ void dvbteeParser::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     dvbteeParser* obj = new dvbteeParser();
     obj->Wrap(info.This());
     info.GetReturnValue().Set(info.This());
-/*
   } else {
     // Invoked as plain function `dvbteeParser(...)`, turn into construct call.
     const int argc = 0;
     v8::Local<v8::Value> argv[argc] = { };
     v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
     info.GetReturnValue().Set(cons->NewInstance(argc, argv));
-*/
   }
 }
 
