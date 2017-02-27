@@ -33,10 +33,10 @@ parser.on('data', function(data) {
 })
 
 // on a stream:
-fs.createReadStream('sample.ts').pipe(parser)
+fs.createReadStream('sample1.ts').pipe(parser)
 
 // on a buffer:
-fs.readFile('sample.ts', function(err, buf) {
+fs.readFile('sample2.ts', function(err, buf) {
 
     parser.feed(buf, buf.length, function(err, status) {
 
@@ -49,7 +49,24 @@ fs.readFile('sample.ts', function(err, buf) {
 })
 ```
 
-### Sample output from the above script
+## Pass-Thru Mode Example
+
+```javascript
+var dvbtee = require('dvbtee')
+
+var parser = new dvbtee.Parser({ 'passThru': true })
+
+parser.on('psip', function(data) {
+  console.log('table id: ' + data.tableId,
+              '\ntable name: ' + data.tableName,
+              '\ntable data:\n', JSON.stringify(data, null, 2))
+})
+
+// on a stream in pass-thru mode:
+fs.createReadStream('sample3.ts').pipe(parser).pipe(fs.createWriteStream('outfile.ts'))
+```
+
+### Sample output from the above scripts
 ```
 pushing 9029076 bytes
 table id: 0 
