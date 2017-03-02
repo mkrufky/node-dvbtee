@@ -4,6 +4,17 @@ var dvbtee = require('../')
 
 describe('node-dvbtee', function() {
 
+  describe('require(\'dvbtee\')', function() {
+
+    it('should return a function when called without operator new', function() {
+      assert.equal("function", typeof require('../'))
+    })
+
+    it('should return a function when called as a function with operator new', function() {
+      assert.equal("function", typeof new require('../'))
+    })
+  })
+
   describe('#libVersion()', function() {
 
     var version = dvbtee.libVersion()
@@ -145,6 +156,18 @@ describe('dvbtee-parser', function() {
 
     it('should return an object when called with operator new', function() {
       assert.equal("object", typeof new dvbtee.Parser())
+    })
+
+    it('correctly applies constructor option, \'passThru\' when set to true', function() {
+      assert.equal(true, (new dvbtee.Parser({'passThru': true})).options.passThru )
+    })
+
+    it('correctly applies constructor option, \'passThru\' when set to true', function() {
+      assert.equal(false, (new dvbtee.Parser({'passThru': false})).options.passThru )
+    })
+
+    it('correctly applies constructor option, \'passThru\' default setting to false when constructor options are omitted', function() {
+      assert.equal(false, (new dvbtee.Parser).options.passThru )
     })
   })
 
