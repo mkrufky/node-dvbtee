@@ -7,4 +7,4 @@ src/dvbtee-parser.cc \
 test/test.js \
 binding.gyp \
 package.json \
-run.js
+scripts/configure-build.js
