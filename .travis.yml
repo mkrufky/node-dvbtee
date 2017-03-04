@@ -14,11 +14,3 @@ node_js:
 
 before_install:
   - npm install nan
-
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-  packages:
-    - g++-4.8
-    - gcc-4.8
