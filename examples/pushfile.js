@@ -1,13 +1,21 @@
 var fs = require('fs')
 var dvbtee = require('../build/Release/dvbtee.node')
 
+var filename
+
+if (process.argv.length <= 2) {
+  filename = 'sample.ts'
+} else {
+  filename = process.argv[2]
+}
+
 var parser = new dvbtee.Parser
 
 parser.listenTables(function(a,b,data) {
   console.log('\ntable data:\n', data)
 })
 
-fs.readFile('sample.ts', function(err, buf) {
+fs.readFile(filename, function(err, buf) {
 
     console.log('pushing ' + buf.length + ' bytes')
 
