@@ -7,7 +7,13 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install modules
-  - npm install nan
+  - git clone -q https://github.com/mkrufky/libdvbtee.git
+  - cd libdvbtee
+  - rm -rf libdvbpsi
+  - git clone -q https://github.com/mkrufky/libdvbpsi.git
+  - cd libdvbpsi
+  - touch .dont_del
+  - npm install mkdirp nan symlink-or-copy
   - npm install
 
 # Post-install test scripts.
