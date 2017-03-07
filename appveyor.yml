@@ -1,3 +1,5 @@
+os: Visual Studio 2013
+
 # Test against the latest version of this Node.js version
 environment:
   nodejs_version: "6"
@@ -13,8 +15,10 @@ install:
   - git clone -q https://github.com/mkrufky/libdvbpsi.git
   - cd libdvbpsi
   - touch .dont_del
+  - node --version
+  - npm --version
   - npm install mkdirp nan symlink-or-copy
-  - npm install
+  - npm install --msvs_version=2013
 
 # Post-install test scripts.
 test_script:
