@@ -60,6 +60,41 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
   uv_async_send(&m_async);
 }
 
+#if defined(NODE_MAJOR_VERSION) && (NODE_MAJOR_VERSION == 0 && \
+    defined(NODE_MINOR_VERSION) && (NODE_MINOR_VERSION < 12))
+
+// based on http://stackoverflow.com/a/30897476/5535550
+v8::Local<v8::Value> v8_JSON_Parse(v8::Local<v8::Value> jsonString) {
+
+  v8::Local<v8::Context> context = Nan::GetCurrentContext();
+  v8::Local<v8::Object> global = context->Global();
+
+  // find "JSON" object in global scope
+  v8::Local<v8::Value> jsonValue = global->Get(Nan::New("JSON").ToLocalChecked());
+
+  if (!jsonValue->IsObject()) {
+    return Nan::Undefined();
+  }
+
+  v8::Local<v8::Object> json = jsonValue->ToObject();
+
+  // find "parse" attribute
+  v8::Local<v8::Value> parse = json->Get(Nan::New("parse").ToLocalChecked());
+
+  if (parse.IsEmpty() || !parse->IsFunction()) {
+    return Nan::Undefined();
+  }
+
+  // cast into a function
+  v8::Local<v8::Function> parseFunction = v8::Local<v8::Function>::Cast(parse);
+
+  // and call it
+  return parseFunction->Call(json, 1, &jsonString);
+}
+#else
+#define v8_JSON_Parse v8::JSON::Parse
+#endif
+
 void TableReceiver::notify()
 {
   Nan::HandleScope scope;
@@ -72,11 +107,12 @@ void TableReceiver::notify()
     if (!m_cb.IsEmpty()) {
 
       v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
+      v8::Local<v8::Value> jsonObj = v8_JSON_Parse(jsonStr);
 
       v8::Local<v8::Value> argv[] = {
         Nan::New(data->tableId),
         Nan::New(data->decoderName).ToLocalChecked(),
-        v8::JSON::Parse(jsonStr)
+        jsonObj
       };
 
       m_cb.Call(3, argv);
@@ -112,7 +148,7 @@ dvbteeParser::dvbteeParser()
 dvbteeParser::~dvbteeParser() {
 }
 
-void dvbteeParser::Init(v8::Local<v8::Object> exports) {
+void dvbteeParser::Init(v8::Handle<v8::Object> exports) {
   Nan::HandleScope scope;
 
   // Prepare constructor template
