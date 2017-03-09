@@ -315,7 +315,7 @@ describe('dvbtee-parser', function() {
 
       var tables = {}
 
-      parser.on('data', function(data){
+      parser.on('data', function(data) {
 
         var id = data.tableId
 
@@ -325,11 +325,14 @@ describe('dvbtee-parser', function() {
         tables[id].push(data)
       })
 
+      parser.on('end', function() {
+
+        checkAtscSampleTables(tables)
+
+        done()
+      })
+
       fs.createReadStream('test/pbs.ts').pipe(parser)
-
-      checkAtscSampleTables(tables)
-
-      done()
     })
 
     it('using pipe() in passThru mode', function(done) {
@@ -338,7 +341,7 @@ describe('dvbtee-parser', function() {
 
       var tables = {}
 
-      parser.on('psip', function(data){
+      parser.on('psip', function(data) {
 
         var id = data.tableId
 
