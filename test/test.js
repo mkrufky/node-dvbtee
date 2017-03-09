@@ -308,5 +308,51 @@ describe('dvbtee-parser', function() {
         })
       })
     })
+
+    it('using pipe()', function(done) {
+
+      var parser = new dvbtee.Parser()
+
+      var tables = {}
+
+      parser.on('data', function(data){
+
+        var id = data.tableId
+
+        if (!tables.hasOwnProperty(id))
+          tables[id] = []
+
+        tables[id].push(data)
+      })
+
+      fs.createReadStream('test/pbs.ts').pipe(parser)
+
+      checkAtscSampleTables(tables)
+
+      done()
+    })
+
+    it('using pipe() in passThru mode', function(done) {
+
+      var parser = new dvbtee.Parser({ 'passThru': true })
+
+      var tables = {}
+
+      parser.on('psip', function(data){
+
+        var id = data.tableId
+
+        if (!tables.hasOwnProperty(id))
+          tables[id] = []
+
+        tables[id].push(data)
+      })
+
+      fs.createReadStream('test/pbs.ts').pipe(parser)
+
+      checkAtscSampleTables(tables)
+
+      done()
+    })
   })
 })
