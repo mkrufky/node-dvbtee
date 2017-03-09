@@ -260,7 +260,7 @@ describe('dvbtee-parser', function() {
       })
     }
 
-    it('using push() synchronously', function() {
+    it('using feed() synchronously', function() {
 
       var buf = fs.readFileSync('test/pbs.ts')
 
@@ -268,35 +268,39 @@ describe('dvbtee-parser', function() {
 
       var tables = {}
 
-      parser.listenTables(function(id, name, data){
+      parser.on('data', function(data){
 
-        if (!tables.hasOwnProperty(id.toString()))
-          tables[id.toString()] = []
+        var id = data.tableId
 
-        tables[id.toString()].push(data)
+        if (!tables.hasOwnProperty(id))
+          tables[id] = []
+
+        tables[id].push(data)
       })
 
-      parser.push(buf, buf.length)
+      parser.feed(buf, buf.length)
 
       checkAtscSampleTables(tables)
     })
 
-    it('using push() asynchronously', function(done) {
+    it('using feed() asynchronously', function(done) {
 
       var parser = new dvbtee.Parser()
 
       var tables = {}
 
-      parser.listenTables(function(id, name, data){
+      parser.on('data', function(data){
 
-        if (!tables.hasOwnProperty(id.toString()))
-          tables[id.toString()] = []
+        var id = data.tableId
 
-        tables[id.toString()].push(data)
+        if (!tables.hasOwnProperty(id))
+          tables[id] = []
+
+        tables[id].push(data)
       })
 
       fs.readFile('test/pbs.ts', function(err, buf) {
-        parser.push(buf, buf.length, function(err, status) {
+        parser.feed(buf, buf.length, function(err, status) {
 
           checkAtscSampleTables(tables)
 
