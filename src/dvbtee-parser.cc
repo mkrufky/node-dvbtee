@@ -67,11 +67,11 @@ class JSON {
 public:
   static v8::Local<v8::Value> Parse(v8::Local<v8::Value> jsonString)
   {
-    return JSON::instance().call("parse", jsonString);
+    return JSON::instance().parse(jsonString);
   }
 
 private:
-  Nan::Callback m_callback;
+  Nan::Callback m_cb_parse;
 
   static JSON& instance()
   {
@@ -87,19 +87,19 @@ private:
       v8::Local<v8::Value> parseMethod = globalJSON->ToObject()->Get(Nan::New("parse").ToLocalChecked());
 
       if (!parseMethod.IsEmpty() && parseMethod->IsFunction()) {
-        m_callback.Reset(v8::Local<v8::Function>::Cast(parseMethod));
+        m_cb_parse.Reset(v8::Local<v8::Function>::Cast(parseMethod));
       }
     }
   }
 
   ~JSON()
   {
-    m_callback.Reset();
+    m_cb_parse.Reset();
   }
 
-  v8::Local<v8::Value> call(const char *method, v8::Local<v8::Value> arg)
+  v8::Local<v8::Value> parse(v8::Local<v8::Value> arg)
   {
-    return m_callback.Call(1, &arg);
+    return m_cb_parse.Call(1, &arg);
   }
 #if __cplusplus <= 199711L
 private:
