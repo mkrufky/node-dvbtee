@@ -72,6 +72,7 @@ public:
 
 private:
   Nan::Persistent<v8::Object> m_persistent;
+  const char *m_objectName;
 
   static JSON& instance()
   {
@@ -80,11 +81,16 @@ private:
   }
 
   JSON()
+   : m_objectName("JSON")
   {
-    v8::Local<v8::Value> globalJSON = Nan::GetCurrentContext()->Global()->Get(Nan::New("JSON").ToLocalChecked());
+    v8::Local<v8::Object> obj = Nan::New<v8::Object>();
+    m_persistent.Reset(obj);
+
+    v8::Local<v8::Value> objectName = Nan::New(m_objectName).ToLocalChecked();
+    v8::Local<v8::Value> globalJSON = Nan::GetCurrentContext()->Global()->Get(objectName);
 
     if (globalJSON->IsObject()) {
-      m_persistent.Reset(globalJSON->ToObject());
+      obj->Set(objectName, globalJSON);
     }
   }
 
@@ -93,18 +99,31 @@ private:
     m_persistent.Reset();
   }
 
-  v8::Local<v8::Value> call(const char *method,
-                            v8::Local<v8::Value> arg)
+  v8::Local<v8::Value> getMethod(v8::Local<v8::Object> &obj, const char *method)
   {
-    v8::Local<v8::Object> json = Nan::New(m_persistent);
+    v8::Local<v8::Object> persistent = Nan::New(m_persistent);
+    v8::Local<v8::Value> methodName = Nan::New(method).ToLocalChecked();
 
-    v8::Local<v8::Value> thisMethod = json->Get(Nan::New(method).ToLocalChecked());
+    if (!persistent->Has(methodName))
+    {
+      v8::Local<v8::Value> thisMethod = obj->Get(methodName);
 
-    if (thisMethod.IsEmpty() || !thisMethod->IsFunction()) {
-      return Nan::Undefined();
+      if (thisMethod.IsEmpty() || !thisMethod->IsFunction()) {
+        return Nan::Undefined();
+      }
+
+      persistent->Set(methodName, thisMethod);
+
+      return thisMethod;
     }
+    return persistent->Get(methodName);
+  }
 
-    v8::Local<v8::Function> methodFunction = v8::Local<v8::Function>::Cast(thisMethod);
+  v8::Local<v8::Value> call(const char *method, v8::Local<v8::Value> arg)
+  {
+    v8::Local<v8::Object> json = Nan::New(m_persistent)->Get(Nan::New(m_objectName).ToLocalChecked())->ToObject();
+
+    v8::Local<v8::Function> methodFunction = v8::Local<v8::Function>::Cast(getMethod(json, method));
 
     return methodFunction->Call(json, 1, &arg);
   }
