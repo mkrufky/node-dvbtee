@@ -63,36 +63,64 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 #if defined(NODE_MAJOR_VERSION) && (NODE_MAJOR_VERSION == 0 && \
     defined(NODE_MINOR_VERSION) && (NODE_MINOR_VERSION < 12))
 
-// based on http://stackoverflow.com/a/30897476/5535550
-v8::Local<v8::Value> v8_JSON_Parse(v8::Local<v8::Value> jsonString) {
-
-  v8::Local<v8::Context> context = Nan::GetCurrentContext();
-  v8::Local<v8::Object> global = context->Global();
-
-  // find "JSON" object in global scope
-  v8::Local<v8::Value> jsonValue = global->Get(Nan::New("JSON").ToLocalChecked());
-
-  if (!jsonValue->IsObject()) {
-    return Nan::Undefined();
+class JSON {
+public:
+  static v8::Local<v8::Value> Parse(v8::Local<v8::Value> jsonString)
+  {
+    return JSON::instance().call("parse", jsonString);
   }
 
-  v8::Local<v8::Object> json = jsonValue->ToObject();
+private:
+  Nan::Persistent<v8::Object> m_persistent;
 
-  // find "parse" attribute
-  v8::Local<v8::Value> parse = json->Get(Nan::New("parse").ToLocalChecked());
-
-  if (parse.IsEmpty() || !parse->IsFunction()) {
-    return Nan::Undefined();
+  static JSON& instance()
+  {
+    static JSON i;
+    return i;
   }
 
-  // cast into a function
-  v8::Local<v8::Function> parseFunction = v8::Local<v8::Function>::Cast(parse);
+  JSON()
+  {
+    v8::Local<v8::Value> globalJSON = Nan::GetCurrentContext()->Global()->Get(Nan::New("JSON").ToLocalChecked());
 
-  // and call it
-  return parseFunction->Call(json, 1, &jsonString);
-}
+    if (globalJSON->IsObject()) {
+      m_persistent.Reset(globalJSON->ToObject());
+    }
+  }
+
+  ~JSON()
+  {
+    m_persistent.Reset();
+  }
+
+  v8::Local<v8::Value> call(const char *method,
+                            v8::Local<v8::Value> arg)
+  {
+    v8::Local<v8::Object> json = Nan::New(m_persistent);
+
+    v8::Local<v8::Value> thisMethod = json->Get(Nan::New(method).ToLocalChecked());
+
+    if (thisMethod.IsEmpty() || !thisMethod->IsFunction()) {
+      return Nan::Undefined();
+    }
+
+    v8::Local<v8::Function> methodFunction = v8::Local<v8::Function>::Cast(thisMethod);
+
+    return methodFunction->Call(json, 1, &arg);
+  }
+#if __cplusplus <= 199711L
+private:
+  JSON(JSON const&);
+  void operator=(JSON const&);
 #else
-#define v8_JSON_Parse v8::JSON::Parse
+public:
+  JSON(JSON const&)           = delete;
+  void operator=(JSON const&) = delete;
+#endif
+};
+#define v8_JSON JSON
+#else
+#define v8_JSON v8::JSON
 #endif
 
 void TableReceiver::notify()
@@ -107,7 +135,7 @@ void TableReceiver::notify()
     if (!m_cb.IsEmpty()) {
 
       v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
-      v8::Local<v8::Value> jsonObj = v8_JSON_Parse(jsonStr);
+      v8::Local<v8::Value> jsonObj = v8_JSON::Parse(jsonStr);
 
       v8::Local<v8::Value> argv[] = {
         Nan::New(data->tableId),
