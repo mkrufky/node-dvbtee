@@ -102,7 +102,7 @@ private:
   v8::Local<v8::Value> getMethod(v8::Local<v8::Object> &obj, const char *method)
   {
     v8::Local<v8::Object> persistent = Nan::New(m_persistent);
-    v8::Local<v8::Value> methodName = Nan::New(method).ToLocalChecked();
+    v8::Local<v8::String> methodName = Nan::New(method).ToLocalChecked();
 
     if (!persistent->Has(methodName))
     {
