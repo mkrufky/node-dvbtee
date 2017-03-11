@@ -1,4 +1,5 @@
 #include <nan.h>
+#include "native-json.h"
 #include "dvbtee-parser.h"
 
 TableData::TableData(const uint8_t &tableId, const std::string &decoderName, const std::string &json)
@@ -62,56 +63,7 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 
 #if defined(NODE_MAJOR_VERSION) && (NODE_MAJOR_VERSION == 0 && \
     defined(NODE_MINOR_VERSION) && (NODE_MINOR_VERSION < 12))
-
-class JSON {
-public:
-  static v8::Local<v8::Value> Parse(v8::Local<v8::Value> jsonString)
-  {
-    return JSON::instance().parse(jsonString);
-  }
-
-private:
-  Nan::Callback m_cb_parse;
-
-  static JSON& instance()
-  {
-    static JSON i;
-    return i;
-  }
-
-  JSON()
-  {
-    v8::Local<v8::Value> globalJSON = Nan::GetCurrentContext()->Global()->Get(Nan::New("JSON").ToLocalChecked());
-
-    if (globalJSON->IsObject()) {
-      v8::Local<v8::Value> parseMethod = globalJSON->ToObject()->Get(Nan::New("parse").ToLocalChecked());
-
-      if (!parseMethod.IsEmpty() && parseMethod->IsFunction()) {
-        m_cb_parse.Reset(v8::Local<v8::Function>::Cast(parseMethod));
-      }
-    }
-  }
-
-  ~JSON()
-  {
-    m_cb_parse.Reset();
-  }
-
-  v8::Local<v8::Value> parse(v8::Local<v8::Value> arg)
-  {
-    return m_cb_parse.Call(1, &arg);
-  }
-#if __cplusplus <= 199711L
-private:
-  JSON(JSON const&);
-  void operator=(JSON const&);
-#else
-public:
-  JSON(JSON const&)           = delete;
-  void operator=(JSON const&) = delete;
-#endif
-};
-#define v8_JSON JSON
+#define v8_JSON Native::JSON
 #else
 #define v8_JSON v8::JSON
 #endif
