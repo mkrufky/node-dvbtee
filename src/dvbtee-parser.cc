@@ -78,7 +78,6 @@ void TableReceiver::notify()
     uv_mutex_unlock(&m_ev_mutex);
 
     if (!m_cb.IsEmpty()) {
-
       v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
       v8::Local<v8::Value> jsonObj = v8_JSON::Parse(jsonStr);
 
@@ -208,14 +207,12 @@ private:
 };
 
 void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-
   // If a callback function is supplied, this method will run async
   // otherwise, it will run synchronous
 
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
-
     Nan::Callback *callback = new Nan::Callback(info[lastArg].As<v8::Function>());
     Nan::AsyncQueueWorker(new ResetWorker(callback, info));
 
@@ -242,7 +239,6 @@ public:
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
-
         const char *key = "buf";
         SaveToPersistent(key, info[0]);
         m_buf = node::Buffer::Data(GetFromPersistent(key)->ToObject());
@@ -289,7 +285,6 @@ private:
 
 
 void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-
   // If a callback function is supplied, this method will run async
   // otherwise, it will run synchronous
   //
@@ -300,7 +295,6 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
-
     Nan::Callback *callback = new Nan::Callback(info[lastArg].As<v8::Function>());
     Nan::AsyncQueueWorker(new FeedWorker(callback, info));
 
@@ -309,7 +303,6 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     int ret = -1;
 
     if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
-
       v8::Local<v8::Object> bufferObj = info[0]->ToObject();
       unsigned int len = info[1]->Uint32Value();
       const char* buf = node::Buffer::Data(bufferObj);
