@@ -7,7 +7,7 @@
 #include "parse.h"
 
 class TableData {
-public:
+ public:
   TableData(const uint8_t&, const std::string&, const std::string&);
 
   const uint8_t tableId;
@@ -18,13 +18,13 @@ public:
 class dvbteeParser;
 
 class TableReceiver: public dvbtee::decode::TableWatcher {
-public:
+ public:
   TableReceiver(dvbteeParser *dvbteeParser);
   virtual ~TableReceiver();
 
   void subscribe(const v8::Local<v8::Function> &fn);
 
-private:
+ private:
   uv_async_t m_async;
   uv_mutex_t m_ev_mutex;
   dvbteeParser *m_dvbteeParser;

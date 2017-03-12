@@ -164,7 +164,7 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
 ////////////////////////////////////////
 
 class ResetWorker : public Nan::AsyncWorker {
-public:
+ public:
   ResetWorker(Nan::Callback *callback,
               const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncWorker(callback) {
@@ -196,7 +196,7 @@ public:
     callback->Call(2, argv);
   }
 
-private:
+ private:
   dvbteeParser* m_obj;
 };
 
@@ -225,7 +225,7 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 ////////////////////////////////////////
 
 class FeedWorker : public Nan::AsyncWorker {
-public:
+ public:
   FeedWorker(Nan::Callback *callback,
              const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncWorker(callback)
@@ -271,7 +271,7 @@ public:
     callback->Call(2, argv);
   }
 
-private:
+ private:
   dvbteeParser* m_obj;
   char* m_buf;
   unsigned int m_buf_len;
