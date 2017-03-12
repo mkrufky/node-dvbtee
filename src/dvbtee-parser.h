@@ -1,3 +1,13 @@
+/*********************************************************************
+ * node-dvbtee for Node.js
+ *
+ * Copyright (c) 2017 Michael Ira Krufky <https://github.com/mkrufky>
+ *
+ * MIT License <https://github.com/mkrufky/node-dvbtee/blob/master/LICENSE.md>
+ *
+ * See https://github.com/mkrufky/node-dvbtee for more information
+ ********************************************************************/
+
 #ifndef _DVBTEE_PARSER_H_
 #define _DVBTEE_PARSER_H_
 
