@@ -2,7 +2,9 @@
 #include <native-json.h>
 #include "dvbtee-parser.h"
 
-TableData::TableData(const uint8_t &tableId, const std::string &decoderName, const std::string &json)
+TableData::TableData(const uint8_t &tableId,
+                     const std::string &decoderName,
+                     const std::string &json)
 : tableId(tableId)
 , decoderName(decoderName)
 , json(json)
@@ -55,7 +57,11 @@ void TableReceiver::unregisterInterface()
 void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 {
   uv_mutex_lock(&m_ev_mutex);
-  m_eq.push(new TableData(table->getTableid(), table->getDecoderName(), table->toJson()));
+  m_eq.push(
+    new TableData(table->getTableid(),
+    table->getDecoderName(),
+    table->toJson())
+  );
   uv_mutex_unlock(&m_ev_mutex);
 
   uv_async_send(&m_async);
@@ -170,7 +176,8 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
 
 class ResetWorker : public Nan::AsyncWorker {
 public:
-  ResetWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
+  ResetWorker(Nan::Callback *callback,
+              const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncWorker(callback)
     {
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
@@ -213,7 +220,9 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
-    Nan::Callback *callback = new Nan::Callback(info[lastArg].As<v8::Function>());
+    Nan::Callback *callback = new Nan::Callback(
+      info[lastArg].As<v8::Function>()
+    );
     Nan::AsyncQueueWorker(new ResetWorker(callback, info));
 
   } else {
@@ -230,7 +239,8 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
 class FeedWorker : public Nan::AsyncWorker {
 public:
-  FeedWorker(Nan::Callback *callback, const Nan::FunctionCallbackInfo<v8::Value>& info)
+  FeedWorker(Nan::Callback *callback,
+             const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncWorker(callback)
     , m_buf(NULL)
     , m_buf_len(0)
@@ -295,7 +305,9 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
-    Nan::Callback *callback = new Nan::Callback(info[lastArg].As<v8::Function>());
+    Nan::Callback *callback = new Nan::Callback(
+      info[lastArg].As<v8::Function>()
+    );
     Nan::AsyncQueueWorker(new FeedWorker(callback, info));
 
   } else {
