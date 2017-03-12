@@ -314,7 +314,7 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
       v8::Local<v8::Object> bufferObj = info[0]->ToObject();
       unsigned int len = info[1]->Uint32Value();
-      const char* buf = node::Buffer::Data(bufferObj);
+      char* buf = node::Buffer::Data(bufferObj);
 
       ret = obj->m_parser.feed(len, reinterpret_cast<uint8_t*>(buf));
     }
