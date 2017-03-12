@@ -5,9 +5,6 @@
 
 namespace Native {
 
-#if defined(NODE_MAJOR_VERSION) && (NODE_MAJOR_VERSION == 0 && \
-    defined(NODE_MINOR_VERSION) && (NODE_MINOR_VERSION < 12))
-
 class JSON {
 public:
   static v8::Local<v8::Value> Parse(v8::Local<v8::Value> jsonString)
@@ -56,10 +53,6 @@ public:
   void operator=(JSON const&) = delete;
 #endif
 };
-
-#else
-typedef v8::JSON JSON;
-#endif
 
 }
 
