@@ -48,6 +48,7 @@ fs.writeFile(configh, confighContents, function (err) {
     }
 
     cpHeaders(libdvbpsiSrc)
+    cpHeaders(libdvbpsiSrc+'/..')
     cpHeaders(libdvbpsiSrc+'/tables')
     cpHeaders(libdvbpsiSrc+'/descriptors')
   })
