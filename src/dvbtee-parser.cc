@@ -126,8 +126,8 @@ void dvbteeParser::Init(v8::Handle<v8::Object> exports) {
   // Prototype
   Nan::SetPrototypeMethod(tpl, "reset",        reset);
   Nan::SetPrototypeMethod(tpl, "feed",         feed);
-  Nan::SetPrototypeMethod(tpl, "push",         feed); // deprecated
-  Nan::SetPrototypeMethod(tpl, "parse",        feed); // deprecated
+  Nan::SetPrototypeMethod(tpl, "push",         feed);  // deprecated
+  Nan::SetPrototypeMethod(tpl, "parse",        feed);  // deprecated
   Nan::SetPrototypeMethod(tpl, "listenTables", listenTables);
 
   constructor.Reset(tpl->GetFunction());
