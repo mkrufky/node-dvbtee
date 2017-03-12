@@ -96,7 +96,7 @@ void TableReceiver::notify() {
 }
 
 void TableReceiver::completeCb(uv_async_t *handle
-#if NODE_MODULE_VERSION<=11
+#if NODE_MODULE_VERSION <= 11
                               , int status /*UNUSED*/
 #endif
                               ) {
