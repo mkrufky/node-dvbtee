@@ -1,6 +1,5 @@
 var fs = require('fs')
 var mkdirp = require('mkdirp')
-var symlinkOrCopy = require('symlink-or-copy');
 
 var configh = __dirname+'/../libdvbtee/libdvbpsi/config.h'
 
@@ -18,14 +17,6 @@ if (!String.prototype.hasOwnProperty('endsWith')) {
   }
 }
 
-symlinkOrCopy.setOptions({
-  isWindows: process.platform === 'win32',
-  canSymlink: false,
-  fs: fs
-})
-
-var symlinkOrCopySync = symlinkOrCopy.sync;
-
 fs.writeFile(configh, confighContents, function (err) {
   if (err) throw err
 
@@ -37,11 +28,7 @@ fs.writeFile(configh, confighContents, function (err) {
         if (err) throw err;
         files.forEach(function (file) {
           if (file.endsWith('.h')) {
-            try {
-              symlinkOrCopySync(from+'/'+file, libdvbpsiDst+file)
-            } catch (e) {
-              if (e.code !== 'EEXIST') throw e
-            }
+            fs.createReadStream(from+'/'+file).pipe(fs.createWriteStream(libdvbpsiDst+file))
           }
         })
       })
