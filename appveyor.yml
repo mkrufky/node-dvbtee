@@ -17,7 +17,7 @@ install:
   - touch .dont_del
   - node --version
   - npm --version
-  - npm install mkdirp nan symlink-or-copy
+  - npm install mkdirp nan
   - npm install --msvs_version=2013
 
 # Post-install test scripts.

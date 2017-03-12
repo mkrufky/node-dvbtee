@@ -20,7 +20,7 @@ before_install:
   - git clone -q https://github.com/mkrufky/libdvbpsi.git
   - cd libdvbpsi
   - touch .dont_del
-  - npm install mkdirp nan symlink-or-copy
+  - npm install mkdirp nan
 
 install:
   - npm install
