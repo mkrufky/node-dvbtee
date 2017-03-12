@@ -8,8 +8,8 @@
  * See https://github.com/mkrufky/node-dvbtee for more information
  ********************************************************************/
 
-#ifndef _DVBTEE_PARSER_H_
-#define _DVBTEE_PARSER_H_
+#ifndef SRC_DVBTEE_PARSER_H_
+#define SRC_DVBTEE_PARSER_H_
 
 #include <nan.h>
 #include <queue>
@@ -78,4 +78,4 @@ class dvbteeParser : public Nan::ObjectWrap {
   friend class TableReceiver;
 };
 
-#endif  // _DVBTEE_PARSER_H_
+#endif  // SRC_DVBTEE_PARSER_H_
