@@ -50,8 +50,8 @@
   ],
   "main": "./lib/dvbtee.js",
   "scripts": {
-    "preinstall": "scripts/prepare-build.sh",
-    "install": "node scripts/configure-build.js && node-gyp rebuild -j 8",
+    "preinstall": "scripts/prepare-build.sh && node scripts/configure-build.js",
+    "install": "node-gyp rebuild -j 8",
     "test": "mocha"
   },
   "dependencies": {
@@ -59,13 +59,13 @@
     "native-json": "^1.0.0"
   },
   "optionalDependencies": {
-    "bindings": "~1.2.1",
-    "mkdirp": "^0.5.1",
-    "symlink-or-copy": "^1.1.8"
+    "bindings": "~1.2.1"
   },
   "devDependencies": {
+    "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
-    "should": "^11.2.0"
+    "should": "^11.2.0",
+    "symlink-or-copy": "^1.1.8"
   },
   "gypfile": true
 }
