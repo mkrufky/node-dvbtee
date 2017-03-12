@@ -128,12 +128,10 @@ dvbteeParser::~dvbteeParser() {
 void dvbteeParser::Init(v8::Handle<v8::Object> exports) {
   Nan::HandleScope scope;
 
-  // Prepare constructor template
   v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
   tpl->SetClassName(Nan::New("Parser").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-  // Prototype
   Nan::SetPrototypeMethod(tpl, "reset",        reset);
   Nan::SetPrototypeMethod(tpl, "feed",         feed);
   Nan::SetPrototypeMethod(tpl, "push",         feed);  // deprecated
@@ -183,18 +181,11 @@ class ResetWorker : public Nan::AsyncWorker {
   ~ResetWorker() {
     }
 
-  // Executed inside the worker-thread.
-  // It is not safe to access V8, or V8 data structures
-  // here, so everything we need for input and output
-  // should go on `this`.
   void Execute () {
     m_obj->m_parser.cleanup();
     m_obj->m_parser.reset();
   }
 
-  // Executed when the async work is complete
-  // this function will be run inside the main event loop
-  // so it is safe to use V8 again
   void HandleOKCallback () {
     Nan::HandleScope scope;
 
@@ -254,10 +245,6 @@ class FeedWorker : public Nan::AsyncWorker {
   ~FeedWorker() {
     }
 
-  // Executed inside the worker-thread.
-  // It is not safe to access V8, or V8 data structures
-  // here, so everything we need for input and output
-  // should go on `this`.
   void Execute () {
     if ((m_buf) && (m_buf_len)) {
       m_ret = m_obj->m_parser.feed(
@@ -269,9 +256,6 @@ class FeedWorker : public Nan::AsyncWorker {
     }
   }
 
-  // Executed when the async work is complete
-  // this function will be run inside the main event loop
-  // so it is safe to use V8 again
   void HandleOKCallback () {
     Nan::HandleScope scope;
 
