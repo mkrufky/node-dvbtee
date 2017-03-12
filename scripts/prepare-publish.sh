@@ -16,6 +16,7 @@ sed -i s/"^libdvbtee"/""/1 .gitignore
 
 cd libdvbtee
 sed -i s/"^libdvbpsi\/"/""/1 .gitignore
+sed -i s/"^usr\/"/""/1 .gitignore
 sed -i s/"^config.h"/""/1 .gitignore
 cd libdvbpsi
 sed -i s/"^config.h"/""/1 .gitignore
