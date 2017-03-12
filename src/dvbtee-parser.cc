@@ -13,22 +13,19 @@ TableData::TableData(const uint8_t &tableId,
 ////////////////////////////////////////
 
 TableReceiver::TableReceiver(dvbteeParser *dvbteeParser)
-: m_dvbteeParser(dvbteeParser)
-{
+: m_dvbteeParser(dvbteeParser) {
   uv_mutex_init(&m_ev_mutex);
   uv_async_init(uv_default_loop(), &m_async, completeCb);
   m_async.data = this;
 }
 
-TableReceiver::~TableReceiver()
-{
+TableReceiver::~TableReceiver() {
   unregisterInterface();
 
   m_cb.Reset();
 
   uv_mutex_lock(&m_ev_mutex);
-  while (!m_eq.empty())
-  {
+  while (!m_eq.empty()) {
     TableData *data = m_eq.front();
     delete data;
     m_eq.pop();
@@ -38,24 +35,20 @@ TableReceiver::~TableReceiver()
   uv_mutex_destroy(&m_ev_mutex);
 }
 
-void TableReceiver::subscribe(const v8::Local<v8::Function> &fn)
-{
+void TableReceiver::subscribe(const v8::Local<v8::Function> &fn) {
   m_cb.SetFunction(fn);
   registerInterface();
 }
 
-void TableReceiver::registerInterface()
-{
+void TableReceiver::registerInterface() {
   m_dvbteeParser->m_parser.subscribeTables(this);
 }
 
-void TableReceiver::unregisterInterface()
-{
+void TableReceiver::unregisterInterface() {
   m_dvbteeParser->m_parser.subscribeTables(NULL);
 }
 
-void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
-{
+void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table) {
   uv_mutex_lock(&m_ev_mutex);
   m_eq.push(
     new TableData(table->getTableid(),
@@ -74,12 +67,10 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table)
 #define v8_JSON v8::JSON
 #endif
 
-void TableReceiver::notify()
-{
+void TableReceiver::notify() {
   Nan::HandleScope scope;
   uv_mutex_lock(&m_ev_mutex);
-  while (!m_eq.empty())
-  {
+  while (!m_eq.empty()) {
     TableData *data = m_eq.front();
     uv_mutex_unlock(&m_ev_mutex);
 
@@ -108,8 +99,7 @@ void TableReceiver::completeCb(uv_async_t *handle
 #if NODE_MODULE_VERSION<=11
                               , int status /*UNUSED*/
 #endif
-                              )
-{
+                              ) {
   TableReceiver* rcvr = static_cast<TableReceiver*>(handle->data);
   rcvr->notify();
 }
@@ -119,8 +109,7 @@ void TableReceiver::completeCb(uv_async_t *handle
 Nan::Persistent<v8::Function> dvbteeParser::constructor;
 
 dvbteeParser::dvbteeParser()
-: m_tableReceiver(this)
-{
+: m_tableReceiver(this) {
 }
 
 dvbteeParser::~dvbteeParser() {
@@ -178,12 +167,10 @@ class ResetWorker : public Nan::AsyncWorker {
 public:
   ResetWorker(Nan::Callback *callback,
               const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : Nan::AsyncWorker(callback)
-    {
+    : Nan::AsyncWorker(callback) {
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
     }
-  ~ResetWorker()
-    {
+  ~ResetWorker() {
     }
 
   // Executed inside the worker-thread.
@@ -244,8 +231,7 @@ public:
     : Nan::AsyncWorker(callback)
     , m_buf(NULL)
     , m_buf_len(0)
-    , m_ret(-1)
-    {
+    , m_ret(-1) {
       m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
@@ -255,8 +241,7 @@ public:
         m_buf_len = info[1]->Uint32Value();
       }
     }
-  ~FeedWorker()
-    {
+  ~FeedWorker() {
     }
 
   // Executed inside the worker-thread.

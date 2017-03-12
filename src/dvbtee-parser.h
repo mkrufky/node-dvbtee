@@ -17,8 +17,7 @@ public:
 
 class dvbteeParser;
 
-class TableReceiver: public dvbtee::decode::TableWatcher
-{
+class TableReceiver: public dvbtee::decode::TableWatcher {
 public:
   TableReceiver(dvbteeParser *dvbteeParser);
   virtual ~TableReceiver();
