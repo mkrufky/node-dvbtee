@@ -16,6 +16,10 @@ sed -i s/"^libdvbtee"/""/1 .gitignore
 
 cd libdvbtee
 sed -i s/"^libdvbpsi\/"/""/1 .gitignore
+sed -i s/"^config.h"/""/1 .gitignore
+cd libdvbpsi
+sed -i s/"^config.h"/""/1 .gitignore
+cd ..
 cd libdvbtee
 sed -i s/"static bool hello = false"/"static bool hello = true"/1 parse.cpp
 cd ..
