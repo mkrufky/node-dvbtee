@@ -250,7 +250,9 @@ class FeedWorker : public Nan::AsyncWorker {
   // should go on `this`.
   void Execute () {
     if ((m_buf) && (m_buf_len)) {
-      m_ret = m_obj->m_parser.feed(m_buf_len, (uint8_t*)m_buf);
+      m_ret = m_obj->m_parser.feed(
+        m_buf_len, reinterpret_cast<uint8_t*>(m_buf)
+      );
     }
     if (m_ret < 0) {
       SetErrorMessage("invalid buffer / length");
@@ -304,7 +306,7 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
       unsigned int len = info[1]->Uint32Value();
       const char* buf = node::Buffer::Data(bufferObj);
 
-      ret = obj->m_parser.feed(len, (uint8_t*)buf);
+      ret = obj->m_parser.feed(len, reinterpret_cast<uint8_t*>(buf));
     }
 
     info.GetReturnValue().Set(Nan::New(ret));
