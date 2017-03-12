@@ -20,7 +20,7 @@ class dvbteeParser;
 
 class TableReceiver: public dvbtee::decode::TableWatcher {
  public:
-  TableReceiver(dvbteeParser *dvbteeParser);
+  explicit TableReceiver(dvbteeParser *dvbteeParser);
   virtual ~TableReceiver();
 
   void subscribe(const v8::Local<v8::Function> &fn);
