@@ -3,6 +3,7 @@
 
 #include <nan.h>
 #include <queue>
+#include <string>
 #include <vector>
 #include "parse.h"
 
