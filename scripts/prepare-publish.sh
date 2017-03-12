@@ -11,7 +11,7 @@ cd node-dvbtee
 scripts/prepare-build.sh
 node scripts/configure-build.js
 
-sed -i s/"scripts\/prepare-build.sh && node scripts\/configure-build.js"/""/1 package.json
+sed -i s/"npm install mkdirp symlink-or-copy && scripts\/prepare-build.sh && node scripts\/configure-build.js"/""/1 package.json
 sed -i s/"^libdvbtee"/""/1 .gitignore
 
 cd libdvbtee

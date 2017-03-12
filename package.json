@@ -50,7 +50,7 @@
   ],
   "main": "./lib/dvbtee.js",
   "scripts": {
-    "preinstall": "scripts/prepare-build.sh && node scripts/configure-build.js",
+    "preinstall": "npm install mkdirp symlink-or-copy && scripts/prepare-build.sh && node scripts/configure-build.js",
     "install": "node-gyp rebuild -j 8",
     "test": "mocha"
   },
