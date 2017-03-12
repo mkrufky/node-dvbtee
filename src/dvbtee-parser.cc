@@ -1,5 +1,5 @@
 #include <nan.h>
-#include "native-json.h"
+#include <native-json.h>
 #include "dvbtee-parser.h"
 
 TableData::TableData(const uint8_t &tableId, const std::string &decoderName, const std::string &json)
