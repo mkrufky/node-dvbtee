@@ -57,7 +57,7 @@ class TableReceiver: public dvbtee::decode::TableWatcher {
 
 class dvbteeParser : public Nan::ObjectWrap {
  public:
-  static void Init(v8::Handle<v8::Object> exports);
+  static void Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports);
 
  private:
   dvbteeParser();

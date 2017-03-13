@@ -125,7 +125,7 @@ dvbteeParser::dvbteeParser()
 dvbteeParser::~dvbteeParser() {
 }
 
-void dvbteeParser::Init(v8::Handle<v8::Object> exports) {
+void dvbteeParser::Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports) {
   Nan::HandleScope scope;
 
   v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
