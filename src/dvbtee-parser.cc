@@ -70,13 +70,6 @@ void TableReceiver::updateTable(uint8_t tId, dvbtee::decode::Table *table) {
   uv_async_send(&m_async);
 }
 
-#if defined(NODE_MAJOR_VERSION) && (NODE_MAJOR_VERSION == 0 && \
-    defined(NODE_MINOR_VERSION) && (NODE_MINOR_VERSION < 12))
-#define v8_JSON Native::JSON
-#else
-#define v8_JSON v8::JSON
-#endif
-
 void TableReceiver::notify() {
   Nan::HandleScope scope;
   uv_mutex_lock(&m_ev_mutex);
@@ -86,7 +79,7 @@ void TableReceiver::notify() {
 
     if (!m_cb.IsEmpty()) {
       v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
-      v8::Local<v8::Value> jsonObj = v8_JSON::Parse(jsonStr);
+      v8::Local<v8::Value> jsonObj = Native::JSON::Parse(jsonStr);
 
       v8::Local<v8::Value> argv[] = {
         Nan::New(data->tableId),
