@@ -78,8 +78,10 @@ void TableReceiver::notify() {
     uv_mutex_unlock(&m_ev_mutex);
 
     if (!m_cb.IsEmpty()) {
-      v8::Local<v8::String> jsonStr = Nan::New(data->json).ToLocalChecked();
-      v8::Local<v8::Value> jsonObj = Native::JSON::Parse(jsonStr);
+      v8::Local<v8::String> jsonStr =
+        Nan::New(data->json).ToLocalChecked();
+      v8::Local<v8::Value> jsonObj =
+        Native::JSON::Parse(jsonStr).ToLocalChecked();
 
       v8::Local<v8::Value> argv[] = {
         Nan::New(data->tableId),
