@@ -233,7 +233,9 @@ class FeedWorker : public Nan::AsyncWorker {
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
         const char *key = "buf";
         SaveToPersistent(key, info[0]);
-        m_buf = node::Buffer::Data(GetFromPersistent(key)->ToObject());
+        m_buf = node::Buffer::Data(
+          Nan::To<v8::Object>(GetFromPersistent(key)).ToLocalChecked()
+        );
         m_buf_len = info[1]->Uint32Value();
       }
     }
@@ -291,7 +293,8 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     int ret = -1;
 
     if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
-      v8::Local<v8::Object> bufferObj = info[0]->ToObject();
+      v8::Local<v8::Object> bufferObj =
+        Nan::To<v8::Object>(info[0]).ToLocalChecked();
       unsigned int len = info[1]->Uint32Value();
       char* buf = node::Buffer::Data(bufferObj);
 
