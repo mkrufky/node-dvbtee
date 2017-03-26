@@ -78,13 +78,13 @@ void TableReceiver::notify() {
     uv_mutex_unlock(&m_ev_mutex);
 
     if (!m_cb.IsEmpty()) {
-      v8::MaybeLocal<v8::String> jsonStr = Nan::New(data->json);
+      Nan::MaybeLocal<v8::String> jsonStr = Nan::New(data->json);
       if (!jsonStr.IsEmpty()) {
-        v8::MaybeLocal<v8::Value> jsonVal =
+        Nan::MaybeLocal<v8::Value> jsonVal =
           Native::JSON::Parse(jsonStr.ToLocalChecked());
 
         if (!jsonVal.IsEmpty()) {
-          v8::MaybeLocal<v8::String> decoderName = Nan::New(data->decoderName);
+          Nan::MaybeLocal<v8::String> decoderName = Nan::New(data->decoderName);
 
           v8::Local<v8::Value> decoderNameArg;
           if (decoderName.IsEmpty())
