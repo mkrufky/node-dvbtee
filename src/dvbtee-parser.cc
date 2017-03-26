@@ -78,18 +78,29 @@ void TableReceiver::notify() {
     uv_mutex_unlock(&m_ev_mutex);
 
     if (!m_cb.IsEmpty()) {
-      v8::Local<v8::String> jsonStr =
-        Nan::New(data->json).ToLocalChecked();
-      v8::Local<v8::Value> jsonObj =
-        Native::JSON::Parse(jsonStr).ToLocalChecked();
+      v8::MaybeLocal<v8::String> jsonStr = Nan::New(data->json);
+      if (!jsonStr.IsEmpty()) {
+        v8::MaybeLocal<v8::Value> jsonVal =
+          Native::JSON::Parse(jsonStr.ToLocalChecked());
 
-      v8::Local<v8::Value> argv[] = {
-        Nan::New(data->tableId),
-        Nan::New(data->decoderName).ToLocalChecked(),
-        jsonObj
-      };
+        if (!jsonVal.IsEmpty()) {
+          v8::MaybeLocal<v8::String> decoderName = Nan::New(data->decoderName);
 
-      m_cb.Call(3, argv);
+          v8::Local<v8::Value> decoderNameArg;
+          if (decoderName.IsEmpty())
+            decoderNameArg = Nan::Null();
+          else
+            decoderNameArg = decoderName.ToLocalChecked();
+
+          v8::Local<v8::Value> argv[] = {
+            Nan::New(data->tableId),
+            decoderNameArg,
+            jsonVal.ToLocalChecked()
+          };
+
+          m_cb.Call(3, argv);
+        }
+      }
     }
 
     delete data;
