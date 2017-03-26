@@ -233,10 +233,13 @@ class FeedWorker : public Nan::AsyncWorker {
       if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
         const char *key = "buf";
         SaveToPersistent(key, info[0]);
-        m_buf = node::Buffer::Data(
-          Nan::To<v8::Object>(GetFromPersistent(key)).ToLocalChecked()
-        );
-        m_buf_len = info[1]->Uint32Value();
+        Nan::MaybeLocal<v8::Object> mbBuf =
+          Nan::To<v8::Object>(GetFromPersistent(key));
+
+        if (!mbBuf.IsEmpty()) {
+          m_buf = node::Buffer::Data(mbBuf.ToLocalChecked());
+          m_buf_len = info[1]->Uint32Value();
+        }
       }
     }
   ~FeedWorker() {
@@ -293,12 +296,14 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     int ret = -1;
 
     if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
-      v8::Local<v8::Object> bufferObj =
-        Nan::To<v8::Object>(info[0]).ToLocalChecked();
-      unsigned int len = info[1]->Uint32Value();
-      char* buf = node::Buffer::Data(bufferObj);
+      Nan::MaybeLocal<v8::Object> bufferObj = Nan::To<v8::Object>(info[0]);
 
-      ret = obj->m_parser.feed(len, reinterpret_cast<uint8_t*>(buf));
+      if (!bufferObj.IsEmpty()) {
+        unsigned int len = info[1]->Uint32Value();
+        char* buf = node::Buffer::Data(bufferObj.ToLocalChecked());
+
+        ret = obj->m_parser.feed(len, reinterpret_cast<uint8_t*>(buf));
+      }
     }
 
     info.GetReturnValue().Set(Nan::New(ret));
