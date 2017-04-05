@@ -55,7 +55,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "nan": "^2.0.0",
+    "nan": "^2.6.0",
     "native-json": "^2.0.4"
   },
   "optionalDependencies": {

@@ -81,7 +81,7 @@ void TableReceiver::notify() {
       Nan::MaybeLocal<v8::String> jsonStr = Nan::New(data->json);
       if (!jsonStr.IsEmpty()) {
         Nan::MaybeLocal<v8::Value> jsonVal =
-          Native::JSON::Parse(jsonStr.ToLocalChecked());
+          NanJSON.Parse(jsonStr.ToLocalChecked());
 
         if (!jsonVal.IsEmpty()) {
           Nan::MaybeLocal<v8::String> decoderName = Nan::New(data->decoderName);

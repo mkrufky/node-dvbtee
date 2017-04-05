@@ -41,6 +41,7 @@ class TableReceiver: public dvbtee::decode::TableWatcher {
   dvbteeParser *m_dvbteeParser;
   std::queue<TableData*> m_eq;
   Nan::Callback m_cb;
+  Nan::JSON NanJSON;
 
   void updateTable(uint8_t tId, dvbtee::decode::Table *table);
   void notify();
