@@ -15,8 +15,7 @@
         "libdvbtee/libdvbtee/decode",
         "libdvbtee/libdvbtee/decode/table",
         "libdvbtee/libdvbtee/decode/descriptor",
-        "<!(node -e \"require('nan')\")",
-        "<!(node -e \"require('native-json')\")"
+        "<!(node -e \"require('nan')\")"
       ],
       'cflags': [ '-DDEBUG_CONSOLE=1' ],
       'cflags_cc': [ '-DDEBUG_CONSOLE=1', '-Wno-deprecated-declarations' ],
