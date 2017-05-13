@@ -72,7 +72,7 @@ class dvbteeParser : public Nan::ObjectWrap {
 
   static Nan::Persistent<v8::Function> constructor;
   TableReceiver m_tableReceiver;
-  privateParse m_parser;
+  PrivateParse m_parser;
 
   friend class FeedWorker;
   friend class ResetWorker;
