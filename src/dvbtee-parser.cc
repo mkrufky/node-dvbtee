@@ -110,12 +110,8 @@ void TableReceiver::notify() {
   uv_mutex_unlock(&m_ev_mutex);
 }
 
-void TableReceiver::completeCb(uv_async_t *handle
-#if NODE_MODULE_VERSION <= 11
-                              , int status /*UNUSED*/
-#endif
-                              ) {
-  TableReceiver* rcvr = static_cast<TableReceiver*>(handle->data);
+NAUV_WORK_CB(TableReceiver::completeCb) {
+  TableReceiver* rcvr = static_cast<TableReceiver*>(async->data);
   rcvr->notify();
 }
 

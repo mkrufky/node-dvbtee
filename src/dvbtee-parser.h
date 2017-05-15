@@ -48,11 +48,7 @@ class TableReceiver: public dvbtee::decode::TableWatcher {
   void registerInterface();
   void unregisterInterface();
 
-  static void completeCb(uv_async_t *handle
-#if NODE_MODULE_VERSION <= 11
-                                           , int status /*UNUSED*/
-#endif
-                        );
+  static NAUV_WORK_CB(completeCb);
 };
 
 
