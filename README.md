@@ -1,4 +1,6 @@
 # node-dvbtee
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/mkrufky/node-dvbtee.svg)](https://greenkeeper.io/)
 [![npm version](https://badge.fury.io/js/dvbtee.svg)](https://badge.fury.io/js/dvbtee)
 [![Build Status](https://travis-ci.org/mkrufky/node-dvbtee.svg?branch=master)](https://travis-ci.org/mkrufky/node-dvbtee)
 [![David](https://img.shields.io/david/mkrufky/node-dvbtee.svg)]()
