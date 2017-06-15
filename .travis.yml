@@ -16,4 +16,4 @@ node_js:
   - 'stable'
 
 before_install:
-  - npm install nan mocha should
+  - npm install nan bindings mocha should
