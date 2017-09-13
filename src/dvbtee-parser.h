@@ -65,6 +65,7 @@ class dvbteeParser : public Nan::ObjectWrap {
   static void reset(const Nan::FunctionCallbackInfo<v8::Value>& info);
   static void feed(const Nan::FunctionCallbackInfo<v8::Value>& info);
   static void listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info);
+  static void enableEttCollection(const Nan::FunctionCallbackInfo<v8::Value>& info);
 
   static Nan::Persistent<v8::Function> constructor;
   TableReceiver m_tableReceiver;

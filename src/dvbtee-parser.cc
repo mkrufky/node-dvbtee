@@ -138,6 +138,7 @@ void dvbteeParser::Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports) {
   Nan::SetPrototypeMethod(tpl, "push",         feed);  // deprecated
   Nan::SetPrototypeMethod(tpl, "parse",        feed);  // deprecated
   Nan::SetPrototypeMethod(tpl, "listenTables", listenTables);
+  Nan::SetPrototypeMethod(tpl, "enableEttCollection", enableEttCollection);
 
   constructor.Reset(tpl->GetFunction());
   exports->Set(Nan::New("Parser").ToLocalChecked(), tpl->GetFunction());
@@ -166,6 +167,16 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
   if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
     obj->m_tableReceiver.subscribe(info[lastArg].As<v8::Function>());
   }
+
+  info.GetReturnValue().Set(info.Holder());
+}
+
+////////////////////////////////////////
+
+void dvbteeParser::enableEttCollection(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+  dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
+
+  obj->m_parser.enable_ett_collection();
 
   info.GetReturnValue().Set(info.Holder());
 }
