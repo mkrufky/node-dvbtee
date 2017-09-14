@@ -1,5 +1,6 @@
 var fs = require('fs')
 var dvbtee = require('../')
+var util = require('util')
 
 var infilename
 var outfilename
@@ -19,7 +20,7 @@ if (process.argv.length <= 3) {
 var parser = dvbtee.Parser({'passThru': true})
 
 parser.on('psip', function(data) {
-  console.log('\ntable data:', data)
+  console.log('\ntable data:', util.inspect(data, false, null))
 })
 
 fs.createReadStream(infilename).pipe(parser).pipe(fs.createWriteStream(outfilename))

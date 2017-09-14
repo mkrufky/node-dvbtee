@@ -1,5 +1,6 @@
 var fs = require('fs')
 var dvbtee = require('../')
+var util = require('util')
 
 var filename
 
@@ -12,7 +13,7 @@ if (process.argv.length <= 2) {
 var parser = dvbtee.Parser()
 
 parser.on('data', function(data) {
-  console.log('\ntable data:', data)
+  console.log('\ntable data:', util.inspect(data, false, null))
 })
 
 fs.createReadStream(filename).pipe(parser)

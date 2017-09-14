@@ -1,4 +1,5 @@
 var fs = require('fs')
+var util = require('util')
 var dvbtee = require('../build/Release/dvbtee.node')
 
 var filename
@@ -12,7 +13,7 @@ if (process.argv.length <= 2) {
 var parser = new dvbtee.Parser
 
 parser.listenTables(function(a,b,data) {
-  console.log('\ntable data:\n', data)
+  console.log('\ntable data:\n', util.inspect(data, false, null))
 })
 
 fs.readFile(filename, function(err, buf) {
