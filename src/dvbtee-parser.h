@@ -20,10 +20,17 @@
 class TableData {
  public:
   TableData(const uint8_t&, const std::string&, const std::string&);
+  TableData();
+  TableData(const TableData&);
+  TableData& operator= (const TableData&);
+  //TableData(TableData&&);
 
-  const uint8_t tableId;
-  const std::string decoderName;
-  const std::string json;
+  //const 
+  uint8_t tableId;
+  //const 
+  std::string decoderName;
+  //const 
+  std::string json;
 };
 
 class dvbteeParser;
@@ -36,6 +43,7 @@ class TableReceiver: public dvbtee::decode::TableWatcher {
   void subscribe(const v8::Local<v8::Function> &fn);
 
  private:
+  friend class dvbteeParser;
   uv_async_t m_async;
   uv_mutex_t m_ev_mutex;
   dvbteeParser *m_dvbteeParser;
@@ -73,6 +81,7 @@ class dvbteeParser : public Nan::ObjectWrap {
   PrivateParse m_parser;
 
   friend class FeedWorker;
+  friend class FeedProgressWorker;
   friend class ResetWorker;
   friend class TableReceiver;
 };
