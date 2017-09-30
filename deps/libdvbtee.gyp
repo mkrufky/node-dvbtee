@@ -110,6 +110,7 @@
               ]
             },
             'xcode_settings': {
+              'MACOSX_DEPLOYMENT_TARGET': '10.7',
               'OTHER_LDFLAGS': [
                 '-L/opt/local/lib'
               ],
