@@ -88,6 +88,7 @@
         '../libdvbtee/libdvbtee/decode/descriptor/desc_0a.cpp',
         '../libdvbtee/libdvbtee/decode/descriptor/desc_48.cpp',
         '../libdvbtee/libdvbtee/decode/descriptor/desc_4d.cpp',
+        '../libdvbtee/libdvbtee/decode/descriptor/desc_4e.cpp',
 
         '../libdvbtee/libdvbtee/decode/descriptor/desc_62.cpp',
         '../libdvbtee/libdvbtee/decode/descriptor/desc_83.cpp',

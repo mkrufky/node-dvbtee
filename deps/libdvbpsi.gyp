@@ -97,7 +97,7 @@
 #       '../libdvbtee/libdvbpsi/src/descriptors/dr_4b.c',
 #       '../libdvbtee/libdvbpsi/src/descriptors/dr_4c.c',
         '../libdvbtee/libdvbpsi/src/descriptors/dr_4d.c',
-#       '../libdvbtee/libdvbpsi/src/descriptors/dr_4e.c',
+        '../libdvbtee/libdvbpsi/src/descriptors/dr_4e.c',
 #       '../libdvbtee/libdvbpsi/src/descriptors/dr_4f.c',
 #       '../libdvbtee/libdvbpsi/src/descriptors/dr_50.c',
 #       '../libdvbtee/libdvbpsi/src/descriptors/dr_52.c',

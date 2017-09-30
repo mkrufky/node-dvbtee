@@ -104,8 +104,8 @@ describe('node-dvbtee', function() {
       })
     })
 
-    it('should include 9 PSIP descriptor decoders', function() {
-      assert.equal(9, descIds.length)
+    it('should include 10 PSIP descriptor decoders', function() {
+      assert.equal(10, descIds.length)
     })
 
     it('should support decoding ISO639 language descriptors', function() {
@@ -118,6 +118,10 @@ describe('node-dvbtee', function() {
 
     it('should support decoding short event descriptors', function() {
       descIds.should.containEql(0x4d)
+    })
+
+    it('should support decoding extended event descriptors', function() {
+      descIds.should.containEql(0x4e)
     })
 
     it('should support decoding frequency list descriptors', function() {
