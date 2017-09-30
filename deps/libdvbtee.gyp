@@ -111,6 +111,7 @@
             },
             'xcode_settings': {
               'MACOSX_DEPLOYMENT_TARGET': '10.7',
+              'CLANG_CXX_LIBRARY': 'libc++',
               'OTHER_LDFLAGS': [
                 '-L/opt/local/lib'
               ],
