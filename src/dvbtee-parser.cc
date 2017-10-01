@@ -19,27 +19,6 @@ TableData::TableData(const uint8_t &tableId,
 , json(json)
 {}
 
-TableData::TableData()
-  : tableId(0)
-{}
-
-TableData::TableData(const TableData &t)
-  : tableId(t.tableId)
-  , decoderName(t.decoderName)
-  , json(t.json)
-{}
-
-TableData &TableData::operator=(const TableData &cSource) {
-  if (this == &cSource)
-      return *this;
-
-  tableId     = cSource.tableId;
-  decoderName = cSource.decoderName;
-  json        = cSource.json;
-
-  return *this;
-}
-
 ////////////////////////////////////////
 
 Nan::Persistent<v8::Function> dvbteeParser::constructor;

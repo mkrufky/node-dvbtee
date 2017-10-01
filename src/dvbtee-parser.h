@@ -19,18 +19,16 @@
 
 class TableData {
  public:
-  TableData(const uint8_t&, const std::string&, const std::string&);
-  TableData();
-  TableData(const TableData&);
-  TableData& operator= (const TableData&);
-  //TableData(TableData&&);
+  explicit TableData(const uint8_t&, const std::string&, const std::string&);
 
-  //const 
-  uint8_t tableId;
-  //const 
-  std::string decoderName;
-  //const 
-  std::string json;
+  const uint8_t tableId;
+  const std::string decoderName;
+  const std::string json;
+
+ private:
+  TableData() = delete;
+  TableData(const TableData&) = delete;
+  TableData& operator= (const TableData&) = delete;
 };
 
 class dvbteeParser : public Nan::ObjectWrap {
