@@ -248,6 +248,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
      , m_progress(progress) {
       m_obj->m_parser.subscribeTables(this);
     }
+
     ~Watcher() {
       m_obj->m_parser.subscribeTables(NULL);
     }
