@@ -147,7 +147,157 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
 ////////////////////////////////////////
 
-class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
+namespace KrufkyNan {
+
+using namespace Nan;
+
+template<class T>
+/* abstract */ class AsyncBareProgressWorker : public AsyncWorker {
+ public:
+  explicit AsyncBareProgressWorker(Callback *callback_)
+      : AsyncWorker(callback_) {
+    async = new uv_async_t;
+    uv_async_init(
+        uv_default_loop()
+      , async
+      , AsyncProgress_
+    );
+    async->data = this;
+  }
+
+  virtual ~AsyncBareProgressWorker() {
+  }
+
+  virtual void WorkProgress() = 0;
+
+  class ExecutionProgress {
+    friend class AsyncBareProgressWorker;
+   public:
+    void Signal() const {
+        uv_async_send(that_->async);
+    }
+
+    void Send(const T* data, size_t count) const {
+        that_->SendProgress_(data, count);
+    }
+
+   private:
+    explicit ExecutionProgress(AsyncBareProgressWorker *that) : that_(that) {}
+    NAN_DISALLOW_ASSIGN_COPY_MOVE(ExecutionProgress)
+    AsyncBareProgressWorker* const that_;
+  };
+
+  virtual void Execute(const ExecutionProgress& progress) = 0;
+  virtual void HandleProgressCallback(const T *data, size_t size) = 0;
+
+  virtual void Destroy() {
+      uv_close(reinterpret_cast<uv_handle_t*>(async), AsyncClose_);
+  }
+
+ private:
+  void Execute() /*final override*/ {
+      ExecutionProgress progress(this);
+      Execute(progress);
+  }
+
+  virtual void SendProgress_(const T *data, size_t count) = 0;
+
+  inline static NAUV_WORK_CB(AsyncProgress_) {
+    AsyncBareProgressWorker *worker =
+            static_cast<AsyncBareProgressWorker*>(async->data);
+    worker->WorkProgress();
+  }
+
+  inline static void AsyncClose_(uv_handle_t* handle) {
+    AsyncBareProgressWorker *worker =
+            static_cast<AsyncBareProgressWorker*>(handle->data);
+    delete reinterpret_cast<uv_async_t*>(handle);
+    delete worker;
+  }
+
+ protected:
+  uv_async_t *async;
+};
+
+template<class T>
+/* abstract */
+class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T> {
+ public:
+  explicit AsyncProgressQueueWorker(Callback *callback_)
+      : AsyncBareProgressWorker<T>(callback_) {
+    uv_mutex_init(&async_lock);
+  }
+
+  virtual ~AsyncProgressQueueWorker() {
+    uv_mutex_lock(&async_lock);
+
+    while (!asyncdata_.empty()) {
+      std::pair<T*, size_t> *datapair = asyncdata_.front();
+      T *data = datapair->first;
+
+      asyncdata_.pop();
+
+      delete[] data;
+      delete datapair;
+    }
+
+    uv_mutex_unlock(&async_lock);
+    uv_mutex_destroy(&async_lock);
+  }
+
+  void WorkComplete() {
+    WorkProgress();
+    AsyncWorker::WorkComplete();
+  }
+
+  void WorkProgress() {
+    uv_mutex_lock(&async_lock);
+
+    while (!asyncdata_.empty()) {
+      std::pair<T*, size_t> *datapair = asyncdata_.front();
+      T *data = datapair->first;
+      size_t size = datapair->second;
+      asyncdata_.pop();
+      uv_mutex_unlock(&async_lock);
+
+      // Don't send progress events after we've already completed.
+      if (this->callback) {
+          this->HandleProgressCallback(data, size);
+      }
+
+      delete[] data;
+      delete datapair;
+
+      uv_mutex_lock(&async_lock);
+    }
+
+    uv_mutex_unlock(&async_lock);
+  }
+
+ private:
+  void SendProgress_(const T *data, size_t count) {
+    T *new_data = new T[count];
+    {
+      T *it = new_data;
+      std::copy(data, data + count, it);
+    }
+
+    uv_mutex_lock(&async_lock);
+    asyncdata_.push(new std::pair<T*, size_t>(new_data, count));
+    uv_mutex_unlock(&async_lock);
+
+    uv_async_send(this->async);
+  }
+
+  uv_mutex_t async_lock;
+  std::queue<std::pair<T*, size_t>*> asyncdata_;
+};
+
+} // KrufkyNan
+
+////////////////////////////////////////
+
+class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData> {
  public:
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
