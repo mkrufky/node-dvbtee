@@ -176,7 +176,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
 
   void Execute(const AsyncProgressQueueWorker::ExecutionProgress& progress) {
     if ((m_buf) && (m_buf_len)) {
-      Watcher watch(this, progress);
+      Watcher watch(this->m_obj, progress);
 
       m_ret = m_obj->m_parser.feed(
         m_buf_len, reinterpret_cast<uint8_t*>(m_buf)
@@ -244,14 +244,14 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
 
   class Watcher: public dvbtee::decode::TableWatcher {
    public:
-    explicit Watcher(FeedWorker* w,
+    explicit Watcher(dvbteeParser* obj,
       const AsyncProgressQueueWorker::ExecutionProgress& progress)
-     : m_worker(w)
+     : m_obj(obj)
      , m_progress(progress) {
-      m_worker->m_obj->m_parser.subscribeTables(this);
+      m_obj->m_parser.subscribeTables(this);
     }
     ~Watcher() {
-      m_worker->m_obj->m_parser.subscribeTables(NULL);
+      m_obj->m_parser.subscribeTables(NULL);
     }
 
     void updateTable(uint8_t tId, dvbtee::decode::Table *table) {
@@ -263,7 +263,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
     }
 
    private:
-    FeedWorker* m_worker;
+    dvbteeParser* m_obj;
     const AsyncProgressQueueWorker::ExecutionProgress& m_progress;
   };
 };
