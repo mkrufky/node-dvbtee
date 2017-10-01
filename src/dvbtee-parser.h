@@ -15,7 +15,7 @@
 #include <queue>
 #include <string>
 #include <vector>
-#include "parse.h"
+#include "parse.h"  // NOLINT(build/include)
 
 class TableData {
  public:

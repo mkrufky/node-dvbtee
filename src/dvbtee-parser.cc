@@ -9,7 +9,7 @@
  ********************************************************************/
 
 #include <nan.h>
-#include "dvbtee-parser.h"
+#include "dvbtee-parser.h"  // NOLINT(build/include)
 
 TableData::TableData(const uint8_t &tableId,
                      const std::string &decoderName,

@@ -9,7 +9,7 @@
  ********************************************************************/
 
 #include <nan.h>
-#include "dvbtee-parser.h"
+#include "dvbtee-parser.h"  // NOLINT(build/include)
 
 
 void libVersion(const Nan::FunctionCallbackInfo<v8::Value>& info) {
