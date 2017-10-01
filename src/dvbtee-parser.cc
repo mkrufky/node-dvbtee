@@ -197,7 +197,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
         Nan::MaybeLocal<v8::String> jsonStr = Nan::New(data->json);
         if (!jsonStr.IsEmpty()) {
           Nan::MaybeLocal<v8::Value> jsonVal =
-            NanJSON.Parse(jsonStr.ToLocalChecked());
+            m_obj->NanJSON.Parse(jsonStr.ToLocalChecked());
 
           if (!jsonVal.IsEmpty()) {
             Nan::MaybeLocal<v8::String> decoderName =
@@ -235,7 +235,6 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
 
  private:
   Nan::Callback *m_progress;
-  Nan::JSON NanJSON;
   dvbteeParser* m_obj;
   char* m_buf;
   unsigned int m_buf_len;

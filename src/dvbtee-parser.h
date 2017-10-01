@@ -49,6 +49,7 @@ class dvbteeParser : public Nan::ObjectWrap {
   void enableEttCollection(const Nan::FunctionCallbackInfo<v8::Value>& info);
 
   static Nan::Persistent<v8::Function> constructor;
+  Nan::JSON NanJSON;
   PrivateParse m_parser;
 
   friend class FeedWorker;
