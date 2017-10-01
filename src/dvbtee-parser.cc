@@ -147,67 +147,11 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
 ////////////////////////////////////////
 
-class FeedWorker : public Nan::AsyncWorker {
- public:
-  FeedWorker(Nan::Callback *callback,
-             const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : Nan::AsyncWorker(callback)
-    , m_buf(NULL)
-    , m_buf_len(0)
-    , m_ret(-1) {
-      m_obj = Nan::ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
-
-      if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
-        const char *key = "buf";
-        SaveToPersistent(key, info[0]);
-        Nan::MaybeLocal<v8::Object> mbBuf =
-          Nan::To<v8::Object>(GetFromPersistent(key));
-
-        if (!mbBuf.IsEmpty()) {
-          m_buf = node::Buffer::Data(mbBuf.ToLocalChecked());
-          m_buf_len = info[1]->Uint32Value();
-        }
-      }
-    }
-  ~FeedWorker() {
-    }
-
-  void Execute () {
-    if ((m_buf) && (m_buf_len)) {
-      m_ret = m_obj->m_parser.feed(
-        m_buf_len, reinterpret_cast<uint8_t*>(m_buf)
-      );
-    }
-    if (m_ret < 0) {
-      SetErrorMessage("invalid buffer / length");
-    }
-  }
-
-  void HandleOKCallback () {
-    Nan::HandleScope scope;
-
-    v8::Local<v8::Value> argv[] = {
-        Nan::Null()
-      , Nan::New<v8::Number>(m_ret)
-    };
-
-    callback->Call(2, argv);
-  }
-
- private:
-  dvbteeParser* m_obj;
-  char* m_buf;
-  unsigned int m_buf_len;
-  int m_ret;
-};
-
-////////////////////////////////////////
-
-class FeedProgressWorker:
+class FeedWorker:
 public dvbtee::decode::TableWatcher,
 public Nan::AsyncProgressQueueWorker<TableData> {
  public:
-  FeedProgressWorker(Nan::Callback *callback,
+  FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
              const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncProgressQueueWorker<TableData>(callback)
@@ -229,7 +173,7 @@ public Nan::AsyncProgressQueueWorker<TableData> {
         }
       }
     }
-  ~FeedProgressWorker() {
+  ~FeedWorker() {
     }
 
   void Execute (const AsyncProgressQueueWorker::ExecutionProgress& progress) {
@@ -311,14 +255,6 @@ public Nan::AsyncProgressQueueWorker<TableData> {
 };
 
 void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-  // If a callback function is supplied, this method will run async
-  // otherwise, it will run synchronous
-  //
-  // Note: when packets are pushed to the parser, the parser will start
-  // generating async events containing PSIP table data regardless of
-  // whether this function was called synchronously or not
-
-  dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
   int lastArg = info.Length() - 1;
 
@@ -330,28 +266,9 @@ void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     Nan::Callback *callback = new Nan::Callback(
       info[lastArg].As<v8::Function>()
     );
-    Nan::AsyncQueueWorker(new FeedProgressWorker(callback, progress, info));
-
-  } else if ((lastArg >= 0) && (info[lastArg]->IsFunction())) {
-    Nan::Callback *callback = new Nan::Callback(
-      info[lastArg].As<v8::Function>()
-    );
-    Nan::AsyncQueueWorker(new FeedWorker(callback, info));
+    Nan::AsyncQueueWorker(new FeedWorker(callback, progress, info));
 
   } else {
-    int ret = -1;
-
-    if ((info[0]->IsObject()) && (info[1]->IsNumber())) {
-      Nan::MaybeLocal<v8::Object> bufferObj = Nan::To<v8::Object>(info[0]);
-
-      if (!bufferObj.IsEmpty()) {
-        unsigned int len = info[1]->Uint32Value();
-        char* buf = node::Buffer::Data(bufferObj.ToLocalChecked());
-
-        ret = obj->m_parser.feed(len, reinterpret_cast<uint8_t*>(buf));
-      }
-    }
-
-    info.GetReturnValue().Set(Nan::New(ret));
+    info.GetReturnValue().Set(Nan::New(-1));
   }
 }

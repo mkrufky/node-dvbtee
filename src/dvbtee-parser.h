@@ -52,7 +52,6 @@ class dvbteeParser : public Nan::ObjectWrap {
   PrivateParse m_parser;
 
   friend class FeedWorker;
-  friend class FeedProgressWorker;
   friend class ResetWorker;
 };
 
