@@ -176,7 +176,7 @@ public Nan::AsyncProgressQueueWorker<TableData> {
   ~FeedWorker() {
     }
 
-  void Execute (const AsyncProgressQueueWorker::ExecutionProgress& progress) {
+  void Execute(const AsyncProgressQueueWorker::ExecutionProgress& progress) {
     if ((m_buf) && (m_buf_len)) {
       m_progress = &progress;                 // XXX
       m_obj->m_parser.subscribeTables(this);  // XXX
@@ -233,7 +233,7 @@ public Nan::AsyncProgressQueueWorker<TableData> {
     }
   }
 
-  void HandleOKCallback () {
+  void HandleOKCallback() {
     Nan::HandleScope scope;
 
     v8::Local<v8::Value> argv[] = {
