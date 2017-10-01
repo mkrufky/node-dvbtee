@@ -147,9 +147,7 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
 ////////////////////////////////////////
 
-class FeedWorker:
-public dvbtee::decode::TableWatcher,
-public Nan::AsyncProgressQueueWorker<TableData> {
+class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
  public:
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
@@ -178,26 +176,16 @@ public Nan::AsyncProgressQueueWorker<TableData> {
 
   void Execute(const AsyncProgressQueueWorker::ExecutionProgress& progress) {
     if ((m_buf) && (m_buf_len)) {
-      m_progress = &progress;                 // XXX
-      m_obj->m_parser.subscribeTables(this);  // XXX
+
+      Watcher watch(m_obj->m_parser, progress);
 
       m_ret = m_obj->m_parser.feed(
         m_buf_len, reinterpret_cast<uint8_t*>(m_buf)
       );
-
-      m_obj->m_parser.subscribeTables(NULL);  // XXX
     }
     if (m_ret < 0) {
       SetErrorMessage("invalid buffer / length");
     }
-  }
-
-  void updateTable(uint8_t tId, dvbtee::decode::Table *table) {
-    m_progress->Send(
-      new TableData(table->getTableid(),
-      table->getDecoderName(),
-      table->toJson()), 1
-    );
   }
 
   void HandleProgressCallback(const TableData *async_data, size_t count) {
@@ -254,6 +242,30 @@ public Nan::AsyncProgressQueueWorker<TableData> {
   char* m_buf;
   unsigned int m_buf_len;
   int m_ret;
+
+  class Watcher: public dvbtee::decode::TableWatcher {
+   public:
+    explicit Watcher(parse& p, const AsyncProgressQueueWorker::ExecutionProgress& progress)
+     : m_parser(p)
+     , m_progress(progress) {
+      m_parser.subscribeTables(this);
+    }
+    ~Watcher() {
+      m_parser.subscribeTables(NULL);
+    }
+
+    void updateTable(uint8_t tId, dvbtee::decode::Table *table) {
+      m_progress.Send(
+        new TableData(table->getTableid(),
+        table->getDecoderName(),
+        table->toJson()), 1
+      );
+    }
+
+   private:
+    parse& m_parser;
+    const AsyncProgressQueueWorker::ExecutionProgress& m_progress;
+  };
 };
 
 void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
