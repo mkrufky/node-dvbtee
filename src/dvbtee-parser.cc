@@ -184,6 +184,8 @@ public Nan::AsyncProgressQueueWorker<TableData> {
       m_ret = m_obj->m_parser.feed(
         m_buf_len, reinterpret_cast<uint8_t*>(m_buf)
       );
+
+      m_obj->m_parser.subscribeTables(NULL);  // XXX
     }
     if (m_ret < 0) {
       SetErrorMessage("invalid buffer / length");
