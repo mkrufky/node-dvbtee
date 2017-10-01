@@ -33,33 +33,6 @@ class TableData {
   std::string json;
 };
 
-class dvbteeParser;
-
-class TableReceiver: public dvbtee::decode::TableWatcher {
- public:
-  explicit TableReceiver(dvbteeParser *dvbteeParser);
-  virtual ~TableReceiver();
-
-  void subscribe(const v8::Local<v8::Function> &fn);
-
- private:
-  friend class dvbteeParser;
-  uv_async_t m_async;
-  uv_mutex_t m_ev_mutex;
-  dvbteeParser *m_dvbteeParser;
-  std::queue<TableData*> m_eq;
-  Nan::Callback m_cb;
-  Nan::JSON NanJSON;
-
-  void updateTable(uint8_t tId, dvbtee::decode::Table *table);
-  void notify();
-  void registerInterface();
-  void unregisterInterface();
-
-  static NAUV_WORK_CB(completeCb);
-};
-
-
 class dvbteeParser : public Nan::ObjectWrap {
  public:
   static void Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports);
@@ -72,18 +45,15 @@ class dvbteeParser : public Nan::ObjectWrap {
 
   static void reset(const Nan::FunctionCallbackInfo<v8::Value>& info);
   static void feed(const Nan::FunctionCallbackInfo<v8::Value>& info);
-  static void listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info);
   static
   void enableEttCollection(const Nan::FunctionCallbackInfo<v8::Value>& info);
 
   static Nan::Persistent<v8::Function> constructor;
-  TableReceiver m_tableReceiver;
   PrivateParse m_parser;
 
   friend class FeedWorker;
   friend class FeedProgressWorker;
   friend class ResetWorker;
-  friend class TableReceiver;
 };
 
 #endif  // SRC_DVBTEE_PARSER_H_
