@@ -151,7 +151,7 @@ namespace KrufkyNan {
 
 using namespace Nan;
 
-template<class T>
+template<class T, typename... Targs>
 /* abstract */ class AsyncBareProgressWorker : public AsyncWorker {
  public:
   explicit AsyncBareProgressWorker(Callback *callback_)
@@ -177,8 +177,8 @@ template<class T>
         uv_async_send(that_->async);
     }
 
-    void Send(const T* data, size_t count) const {
-        that_->SendProgress_(data, count);
+    void Construct(Targs... Fargs) const {
+        that_->ConstructProgress_(Fargs...);
     }
 
    private:
@@ -200,7 +200,7 @@ template<class T>
       Execute(progress);
   }
 
-  virtual void SendProgress_(const T *data, size_t count) = 0;
+  virtual void ConstructProgress_(Targs... Fargs) = 0;
 
   inline static NAUV_WORK_CB(AsyncProgress_) {
     AsyncBareProgressWorker *worker =
@@ -219,12 +219,12 @@ template<class T>
   uv_async_t *async;
 };
 
-template<class T>
+template<class T, typename... Targs>
 /* abstract */
-class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T> {
+class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
  public:
   explicit AsyncProgressQueueWorker(Callback *callback_)
-      : AsyncBareProgressWorker<T>(callback_) {
+      : AsyncBareProgressWorker<T, Targs...>(callback_) {
     uv_mutex_init(&async_lock);
   }
 
@@ -265,7 +265,7 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T> {
           this->HandleProgressCallback(data, size);
       }
 
-      delete[] data;
+      delete data;
       delete datapair;
 
       uv_mutex_lock(&async_lock);
@@ -275,15 +275,11 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T> {
   }
 
  private:
-  void SendProgress_(const T *data, size_t count) {
-    T *new_data = new T[count];
-    {
-      T *it = new_data;
-      std::copy(data, data + count, it);
-    }
+  void ConstructProgress_(Targs... Fargs) {
+    T *new_data = new T(Fargs...);
 
     uv_mutex_lock(&async_lock);
-    asyncdata_.push(new std::pair<T*, size_t>(new_data, count));
+    asyncdata_.push(new std::pair<T*, size_t>(new_data, 1));
     uv_mutex_unlock(&async_lock);
 
     uv_async_send(this->async);
@@ -297,12 +293,12 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T> {
 
 ////////////////////////////////////////
 
-class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData> {
+class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
  public:
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
              const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : AsyncProgressQueueWorker<TableData>(callback)
+    : AsyncProgressQueueWorker<TableData, const uint8_t&, const std::string&, const std::string&>(callback)
     , m_progress(progress)
     , m_buf(NULL)
     , m_buf_len(0)
@@ -404,12 +400,11 @@ class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData> {
     }
 
     void updateTable(uint8_t tId, dvbtee::decode::Table *table) {
-      TableData tableData(
+      m_progress.Construct(
         table->getTableid(),
         table->getDecoderName(),
         table->toJson()
       );
-      m_progress.Send(&tableData, 1);
     }
 
    private:
