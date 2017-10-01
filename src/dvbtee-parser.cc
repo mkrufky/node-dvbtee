@@ -159,7 +159,8 @@ void dvbteeParser::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   }
 }
 
-void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void dvbteeParser::listenTables(
+  const Nan::FunctionCallbackInfo<v8::Value>& info) {
   dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
   int lastArg = info.Length() - 1;
@@ -173,7 +174,8 @@ void dvbteeParser::listenTables(const Nan::FunctionCallbackInfo<v8::Value>& info
 
 ////////////////////////////////////////
 
-void dvbteeParser::enableEttCollection(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void dvbteeParser::enableEttCollection(
+  const Nan::FunctionCallbackInfo<v8::Value>& info) {
   dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
   obj->m_parser.enable_ett_collection();
