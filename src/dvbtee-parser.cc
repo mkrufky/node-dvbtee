@@ -254,11 +254,12 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
     }
 
     void updateTable(uint8_t tId, dvbtee::decode::Table *table) {
-      m_progress.Send(
-        new TableData(table->getTableid(),
+      TableData tableData(
+        table->getTableid(),
         table->getDecoderName(),
-        table->toJson()), 1
+        table->toJson()
       );
+      m_progress.Send(&tableData, 1);
     }
 
    private:
