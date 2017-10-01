@@ -176,8 +176,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
 
   void Execute(const AsyncProgressQueueWorker::ExecutionProgress& progress) {
     if ((m_buf) && (m_buf_len)) {
-
-      Watcher watch(m_obj->m_parser, progress);
+      Watcher watch(this, progress);
 
       m_ret = m_obj->m_parser.feed(
         m_buf_len, reinterpret_cast<uint8_t*>(m_buf)
@@ -245,13 +244,14 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
 
   class Watcher: public dvbtee::decode::TableWatcher {
    public:
-    explicit Watcher(parse& p, const AsyncProgressQueueWorker::ExecutionProgress& progress)
-     : m_parser(p)
+    explicit Watcher(FeedWorker* w,
+      const AsyncProgressQueueWorker::ExecutionProgress& progress)
+     : m_worker(w)
      , m_progress(progress) {
-      m_parser.subscribeTables(this);
+      m_worker->m_obj->m_parser.subscribeTables(this);
     }
     ~Watcher() {
-      m_parser.subscribeTables(NULL);
+      m_worker->m_obj->m_parser.subscribeTables(NULL);
     }
 
     void updateTable(uint8_t tId, dvbtee::decode::Table *table) {
@@ -263,13 +263,12 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
     }
 
    private:
-    parse& m_parser;
+    FeedWorker* m_worker;
     const AsyncProgressQueueWorker::ExecutionProgress& m_progress;
   };
 };
 
 void dvbteeParser::feed(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-
   int lastArg = info.Length() - 1;
 
   if ((lastArg >= 1) && (info[lastArg]->IsFunction()) &&
