@@ -59,8 +59,6 @@ void dvbteeParser::Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports) {
 
   Nan::SetPrototypeMethod(tpl, "reset",        reset);
   Nan::SetPrototypeMethod(tpl, "feed",         feed);
-  Nan::SetPrototypeMethod(tpl, "push",         feed);  // deprecated
-  Nan::SetPrototypeMethod(tpl, "parse",        feed);  // deprecated
   Nan::SetPrototypeMethod(tpl, "enableEttCollection", enableEttCollection);
 
   constructor.Reset(tpl->GetFunction());
