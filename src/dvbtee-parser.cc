@@ -152,7 +152,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
              const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : Nan::AsyncProgressQueueWorker<TableData>(callback)
+    : AsyncProgressQueueWorker<TableData>(callback)
     , m_progress(progress)
     , m_buf(NULL)
     , m_buf_len(0)
