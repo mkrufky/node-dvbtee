@@ -153,7 +153,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
              Nan::Callback *progress,
              const Nan::FunctionCallbackInfo<v8::Value>& info)
     : Nan::AsyncProgressQueueWorker<TableData>(callback)
-    , m_cb_progress(progress)
+    , m_progress(progress)
     , m_buf(NULL)
     , m_buf_len(0)
     , m_ret(-1) {
@@ -190,7 +190,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
   void HandleProgressCallback(const TableData *async_data, size_t count) {
     Nan::HandleScope scope;
 
-    if (!m_cb_progress->IsEmpty()) {
+    if (!m_progress->IsEmpty()) {
       for (unsigned int i = 0; i < count; i++) {
         const TableData *data = &async_data[i];
 
@@ -215,7 +215,7 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
               jsonVal.ToLocalChecked()
             };
 
-            m_cb_progress->Call(3, argv);
+            m_progress->Call(3, argv);
           }
         }
       }
@@ -234,9 +234,8 @@ class FeedWorker: public Nan::AsyncProgressQueueWorker<TableData> {
   }
 
  private:
-  Nan::Callback *m_cb_progress;
+  Nan::Callback *m_progress;
   Nan::JSON NanJSON;
-  const AsyncProgressQueueWorker::ExecutionProgress *m_progress;
   dvbteeParser* m_obj;
   char* m_buf;
   unsigned int m_buf_len;
