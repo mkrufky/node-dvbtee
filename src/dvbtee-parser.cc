@@ -258,8 +258,11 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
   void ConstructProgress_(Targs... Fargs) {
     T *new_data = new T(Fargs...);
 
+    std::pair<T*, size_t> *datapair =
+      new std::pair<T*, size_t>(new_data, 1);
+
     uv_mutex_lock(&async_lock);
-    asyncdata_.push(new std::pair<T*, size_t>(new_data, 1));
+    asyncdata_.push(datapair);
     uv_mutex_unlock(&async_lock);
 
     uv_async_send(this->async);
