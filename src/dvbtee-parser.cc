@@ -234,10 +234,11 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
 
     while (!asyncdata_.empty()) {
       std::pair<T*, size_t> *datapair = asyncdata_.front();
-      T *data = datapair->first;
-      size_t size = datapair->second;
       asyncdata_.pop();
       uv_mutex_unlock(&async_lock);
+
+      T *data = datapair->first;
+      size_t size = datapair->second;
 
       // Don't send progress events after we've already completed.
       if (this->callback) {
