@@ -268,7 +268,7 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
   std::queue<std::pair<T*, size_t>*> asyncdata_;
 };
 
-} // KrufkyNan
+}  // namespace KrufkyNan
 
 ////////////////////////////////////////
 
