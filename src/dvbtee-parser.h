@@ -17,20 +17,6 @@
 #include <vector>
 #include "parse.h"  // NOLINT(build/include)
 
-class TableData {
- public:
-  explicit TableData(const uint8_t&, const std::string&, const std::string&);
-
-  const uint8_t tableId;
-  const std::string decoderName;
-  const std::string json;
-
- private:
-  TableData() = delete;
-  TableData(const TableData&) = delete;
-  TableData& operator= (const TableData&) = delete;
-};
-
 class dvbteeParser : public Nan::ObjectWrap {
  public:
   static void Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports);

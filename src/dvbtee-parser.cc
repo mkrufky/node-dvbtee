@@ -11,16 +11,6 @@
 #include <nan.h>
 #include "dvbtee-parser.h"  // NOLINT(build/include)
 
-TableData::TableData(const uint8_t &tableId,
-                     const std::string &decoderName,
-                     const std::string &json)
-: tableId(tableId)
-, decoderName(decoderName)
-, json(json)
-{}
-
-////////////////////////////////////////
-
 Nan::Persistent<v8::Function> dvbteeParser::constructor;
 
 dvbteeParser::dvbteeParser() {
@@ -266,6 +256,27 @@ class AsyncFactoryWorker : public AsyncBareFactoryWorker<T, Targs...> {
 }  // namespace KrufkyNan
 
 ////////////////////////////////////////
+
+class TableData {
+ public:
+  explicit TableData(
+  const uint8_t& tableId,
+  const std::string& decoderName,
+  const std::string& json)
+  : tableId(tableId)
+  , decoderName(decoderName)
+  , json(json) {
+  }
+
+  const uint8_t tableId;
+  const std::string decoderName;
+  const std::string json;
+
+ private:
+  TableData() = delete;
+  TableData(const TableData&) = delete;
+  TableData& operator= (const TableData&) = delete;
+};
 
 class FeedWorker: public KrufkyNan::AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
  public:
