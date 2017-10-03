@@ -131,9 +131,9 @@ namespace KrufkyNan {
 using namespace Nan;
 
 template<class T, typename... Targs>
-/* abstract */ class AsyncBareProgressWorker : public AsyncWorker {
+/* abstract */ class AsyncBareFactoryWorker : public AsyncWorker {
  public:
-  explicit AsyncBareProgressWorker(Callback *callback_)
+  explicit AsyncBareFactoryWorker(Callback *callback_)
       : AsyncWorker(callback_) {
     async = new uv_async_t;
     uv_async_init(
@@ -144,13 +144,13 @@ template<class T, typename... Targs>
     async->data = this;
   }
 
-  virtual ~AsyncBareProgressWorker() {
+  virtual ~AsyncBareFactoryWorker() {
   }
 
   virtual void WorkProgress() = 0;
 
   class ExecutionProgress {
-    friend class AsyncBareProgressWorker;
+    friend class AsyncBareFactoryWorker;
    public:
     void Signal() const {
         uv_async_send(that_->async);
@@ -161,9 +161,9 @@ template<class T, typename... Targs>
     }
 
    private:
-    explicit ExecutionProgress(AsyncBareProgressWorker *that) : that_(that) {}
+    explicit ExecutionProgress(AsyncBareFactoryWorker *that) : that_(that) {}
     NAN_DISALLOW_ASSIGN_COPY_MOVE(ExecutionProgress)
-    AsyncBareProgressWorker* const that_;
+    AsyncBareFactoryWorker* const that_;
   };
 
   virtual void Execute(const ExecutionProgress& progress) = 0;
@@ -182,14 +182,14 @@ template<class T, typename... Targs>
   virtual void ConstructProgress_(Targs... Fargs) = 0;
 
   inline static NAUV_WORK_CB(AsyncProgress_) {
-    AsyncBareProgressWorker *worker =
-            static_cast<AsyncBareProgressWorker*>(async->data);
+    AsyncBareFactoryWorker *worker =
+            static_cast<AsyncBareFactoryWorker*>(async->data);
     worker->WorkProgress();
   }
 
   inline static void AsyncClose_(uv_handle_t* handle) {
-    AsyncBareProgressWorker *worker =
-            static_cast<AsyncBareProgressWorker*>(handle->data);
+    AsyncBareFactoryWorker *worker =
+            static_cast<AsyncBareFactoryWorker*>(handle->data);
     delete reinterpret_cast<uv_async_t*>(handle);
     delete worker;
   }
@@ -200,14 +200,14 @@ template<class T, typename... Targs>
 
 template<class T, typename... Targs>
 /* abstract */
-class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
+class AsyncFactoryWorker : public AsyncBareFactoryWorker<T, Targs...> {
  public:
-  explicit AsyncProgressQueueWorker(Callback *callback_)
-      : AsyncBareProgressWorker<T, Targs...>(callback_) {
+  explicit AsyncFactoryWorker(Callback *callback_)
+      : AsyncBareFactoryWorker<T, Targs...>(callback_) {
     uv_mutex_init(&async_lock);
   }
 
-  virtual ~AsyncProgressQueueWorker() {
+  virtual ~AsyncFactoryWorker() {
     uv_mutex_lock(&async_lock);
 
     while (!asyncdata_.empty()) {
@@ -267,12 +267,12 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
 
 ////////////////////////////////////////
 
-class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
+class FeedWorker: public KrufkyNan::AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
  public:
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
              const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : AsyncProgressQueueWorker<TableData, const uint8_t&, const std::string&, const std::string&>(callback)
+    : AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&>(callback)
     , m_progress(progress)
     , m_buf(NULL)
     , m_buf_len(0)
@@ -294,7 +294,7 @@ class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData, const ui
   ~FeedWorker() {
     }
 
-  void Execute(const AsyncProgressQueueWorker::ExecutionProgress& progress) {
+  void Execute(const AsyncFactoryWorker::ExecutionProgress& progress) {
     if ((m_buf) && (m_buf_len)) {
       Watcher watch(this->m_obj, progress);
 
@@ -363,7 +363,7 @@ class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData, const ui
   class Watcher: public dvbtee::decode::TableWatcher {
    public:
     explicit Watcher(dvbteeParser* obj,
-      const AsyncProgressQueueWorker::ExecutionProgress& progress)
+      const AsyncFactoryWorker::ExecutionProgress& progress)
      : m_obj(obj)
      , m_progress(progress) {
       m_obj->m_parser.subscribeTables(this);
@@ -383,7 +383,7 @@ class FeedWorker: public KrufkyNan::AsyncProgressQueueWorker<TableData, const ui
 
    private:
     dvbteeParser* m_obj;
-    const AsyncProgressQueueWorker::ExecutionProgress& m_progress;
+    const AsyncFactoryWorker::ExecutionProgress& m_progress;
   };
 };
 
