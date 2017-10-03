@@ -211,13 +211,11 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
     uv_mutex_lock(&async_lock);
 
     while (!asyncdata_.empty()) {
-      std::pair<T*, size_t> *datapair = asyncdata_.front();
-      T *data = datapair->first;
+      T *data = asyncdata_.front();
 
       asyncdata_.pop();
 
       delete data;
-      delete datapair;
     }
 
     uv_mutex_unlock(&async_lock);
@@ -233,20 +231,16 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
     uv_mutex_lock(&async_lock);
 
     while (!asyncdata_.empty()) {
-      std::pair<T*, size_t> *datapair = asyncdata_.front();
+      T *data = asyncdata_.front();
       asyncdata_.pop();
       uv_mutex_unlock(&async_lock);
 
-      T *data = datapair->first;
-      size_t size = datapair->second;
-
       // Don't send progress events after we've already completed.
       if (this->callback) {
-          this->HandleProgressCallback(data, size);
+          this->HandleProgressCallback(data, 1);
       }
 
       delete data;
-      delete datapair;
 
       uv_mutex_lock(&async_lock);
     }
@@ -256,20 +250,17 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
 
  private:
   void ConstructProgress_(Targs... Fargs) {
-    T *new_data = new T(Fargs...);
-
-    std::pair<T*, size_t> *datapair =
-      new std::pair<T*, size_t>(new_data, 1);
+    T *data = new T(Fargs...);
 
     uv_mutex_lock(&async_lock);
-    asyncdata_.push(datapair);
+    asyncdata_.push(data);
     uv_mutex_unlock(&async_lock);
 
     uv_async_send(this->async);
   }
 
   uv_mutex_t async_lock;
-  std::queue<std::pair<T*, size_t>*> asyncdata_;
+  std::queue<T*> asyncdata_;
 };
 
 }  // namespace KrufkyNan
