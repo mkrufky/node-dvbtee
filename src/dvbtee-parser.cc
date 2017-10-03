@@ -216,7 +216,7 @@ class AsyncProgressQueueWorker : public AsyncBareProgressWorker<T, Targs...> {
 
       asyncdata_.pop();
 
-      delete[] data;
+      delete data;
       delete datapair;
     }
 
