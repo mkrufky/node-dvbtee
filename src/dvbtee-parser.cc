@@ -116,9 +116,11 @@ void dvbteeParser::reset(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
 ////////////////////////////////////////
 
-namespace KrufkyNan {
+namespace Krufky {
 
-using namespace Nan;
+namespace Nan {
+
+using namespace ::Nan;
 
 template<class T, typename... Targs>
 /* abstract */ class AsyncBareFactoryWorker : public AsyncWorker {
@@ -253,7 +255,9 @@ class AsyncFactoryWorker : public AsyncBareFactoryWorker<T, Targs...> {
   std::queue<T*> asyncdata_;
 };
 
-}  // namespace KrufkyNan
+}  // namespace Nan
+
+}  // namespace Krufky
 
 ////////////////////////////////////////
 
@@ -278,7 +282,7 @@ class TableData {
   TableData& operator= (const TableData&) = delete;
 };
 
-class FeedWorker: public KrufkyNan::AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
+class FeedWorker: public Krufky::Nan::AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
  public:
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
