@@ -133,9 +133,15 @@ class TableData {
   const std::string json;
 
  private:
+#if NAN_HAS_CPLUSPLUS_11
   TableData() = delete;
   TableData(const TableData&) = delete;
   TableData& operator= (const TableData&) = delete;
+#else
+  TableData();
+  TableData(const TableData&);
+  TableData& operator= (const TableData&);
+#endif  // NAN_HAS_CPLUSPLUS_11
 };
 
 class FeedWorker: public Krufky::Nan::AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
