@@ -148,12 +148,16 @@ class TableData {
 #endif  // NAN_HAS_CPLUSPLUS_11
 };
 
-class FeedWorker: public Krufky::Nan::AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&> {
+class FeedWorker: public Krufky::Nan::AsyncFactoryWorker<TableData,
+  const uint8_t&, const std::string&, const std::string&> {
  public:
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
              const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : AsyncFactoryWorker<TableData, const uint8_t&, const std::string&, const std::string&>(callback)
+    : AsyncFactoryWorker<TableData,
+        const uint8_t&,
+        const std::string&,
+        const std::string&>(callback)
     , m_progress(progress)
     , m_buf(NULL)
     , m_buf_len(0)
