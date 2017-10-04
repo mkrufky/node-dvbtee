@@ -1,6 +1,6 @@
 {
   "name": "dvbtee",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "MPEG2 transport stream parser for Node.js with support for television broadcast PSIP tables",
   "author": "Michael Ira Krufky <mkrufky@gmail.com>",
   "license": "MIT",
