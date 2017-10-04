@@ -173,8 +173,10 @@ class FeedWorker: public Krufky::Nan::AsyncFactoryWorker<TableData,
         }
       }
     }
+
   ~FeedWorker() {
-    }
+    delete m_progress;
+  }
 
   void Execute(const AsyncFactoryWorker::ExecutionProgress& progress) {
     if ((m_buf) && (m_buf_len)) {
