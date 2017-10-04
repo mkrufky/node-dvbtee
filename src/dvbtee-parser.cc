@@ -137,14 +137,11 @@ class TableData {
   const std::string json;
 
  private:
+  NAN_DISALLOW_ASSIGN_COPY(TableData)
 #if NAN_HAS_CPLUSPLUS_11
   TableData() = delete;
-  TableData(const TableData&) = delete;
-  TableData& operator= (const TableData&) = delete;
 #else
   TableData();
-  TableData(const TableData&);
-  TableData& operator= (const TableData&);
 #endif  // NAN_HAS_CPLUSPLUS_11
 };
 
