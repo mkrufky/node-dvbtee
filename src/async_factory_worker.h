@@ -35,10 +35,6 @@ template<class T, typename... Targs>
   class ExecutionProgress {
     friend class AsyncBareFactoryWorker;
    public:
-    void Signal() const {
-        uv_async_send(&that_->async);
-    }
-
     void Construct(Targs... Fargs) const {
         that_->ConstructProgress_(Fargs...);
     }

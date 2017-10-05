@@ -36,10 +36,6 @@ class AsyncBareFactoryWorker : public AsyncBareProgressWorkerBase {
   class ExecutionProgress {
     friend class AsyncBareFactoryWorker;
    public:
-    void Signal() const {
-        uv_async_send(&that_->async);
-    }
-
     void Construct(A a, B b, C c) const {
         that_->ConstructProgress_(a, b, c);
     }
