@@ -14,6 +14,8 @@
 #include <nan.h>
 #include <queue>
 
+#include "async_bare_progress_worker_base.h"  // NOLINT(build/include)
+
 namespace Krufky {
 
 namespace Nan {
@@ -21,22 +23,14 @@ namespace Nan {
 using namespace ::Nan;
 
 template<class T, typename... Targs>
-/* abstract */ class AsyncBareFactoryWorker : public AsyncWorker {
+/* abstract */ class AsyncBareFactoryWorker : public AsyncBareProgressWorkerBase {
  public:
   explicit AsyncBareFactoryWorker(Callback *callback_)
-      : AsyncWorker(callback_) {
-    uv_async_init(
-        uv_default_loop()
-      , &async
-      , AsyncProgress_
-    );
-    async.data = this;
+      : AsyncBareProgressWorkerBase(callback_) {
   }
 
   virtual ~AsyncBareFactoryWorker() {
   }
-
-  virtual void WorkProgress() = 0;
 
   class ExecutionProgress {
     friend class AsyncBareFactoryWorker;
@@ -58,10 +52,6 @@ template<class T, typename... Targs>
   virtual void Execute(const ExecutionProgress& progress) = 0;
   virtual void HandleProgressCallback(const T *data, size_t size) = 0;
 
-  virtual void Destroy() {
-      uv_close(reinterpret_cast<uv_handle_t*>(&async), AsyncClose_);
-  }
-
  private:
   void Execute() /*final override*/ {
       ExecutionProgress progress(this);
@@ -69,21 +59,6 @@ template<class T, typename... Targs>
   }
 
   virtual void ConstructProgress_(Targs... Fargs) = 0;
-
-  inline static NAUV_WORK_CB(AsyncProgress_) {
-    AsyncBareFactoryWorker *worker =
-            static_cast<AsyncBareFactoryWorker*>(async->data);
-    worker->WorkProgress();
-  }
-
-  inline static void AsyncClose_(uv_handle_t* handle) {
-    AsyncBareFactoryWorker *worker =
-            static_cast<AsyncBareFactoryWorker*>(handle->data);
-    delete worker;
-  }
-
- protected:
-  uv_async_t async;
 };
 
 template<class T, typename... Targs>
