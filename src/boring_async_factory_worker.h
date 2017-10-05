@@ -25,13 +25,12 @@ template<class T, typename A, typename B, typename C>
  public:
   explicit AsyncBareFactoryWorker(Callback *callback_)
       : AsyncWorker(callback_) {
-    async = new uv_async_t;
     uv_async_init(
         uv_default_loop()
-      , async
+      , &async
       , AsyncProgress_
     );
-    async->data = this;
+    async.data = this;
   }
 
   virtual ~AsyncBareFactoryWorker() {
@@ -43,7 +42,7 @@ template<class T, typename A, typename B, typename C>
     friend class AsyncBareFactoryWorker;
    public:
     void Signal() const {
-        uv_async_send(that_->async);
+        uv_async_send(&that_->async);
     }
 
     void Construct(A a, B b, C c) const {
@@ -60,7 +59,7 @@ template<class T, typename A, typename B, typename C>
   virtual void HandleProgressCallback(const T *data, size_t size) = 0;
 
   virtual void Destroy() {
-      uv_close(reinterpret_cast<uv_handle_t*>(async), AsyncClose_);
+      uv_close(reinterpret_cast<uv_handle_t*>(&async), AsyncClose_);
   }
 
  private:
@@ -80,12 +79,11 @@ template<class T, typename A, typename B, typename C>
   inline static void AsyncClose_(uv_handle_t* handle) {
     AsyncBareFactoryWorker *worker =
             static_cast<AsyncBareFactoryWorker*>(handle->data);
-    delete reinterpret_cast<uv_async_t*>(handle);
     delete worker;
   }
 
  protected:
-  uv_async_t *async;
+  uv_async_t async;
 };
 
 template<class T, typename A, typename B, typename C>
@@ -146,7 +144,7 @@ class AsyncFactoryWorker : public AsyncBareFactoryWorker<T, A, B, C> {
     asyncdata_.push(data);
     uv_mutex_unlock(&async_lock);
 
-    uv_async_send(this->async);
+    uv_async_send(&this->async);
   }
 
   uv_mutex_t async_lock;
