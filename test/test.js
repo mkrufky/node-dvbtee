@@ -166,7 +166,7 @@ describe('dvbtee-parser', function() {
       assert.equal(true, (new dvbtee.Parser({'passThru': true})).options.passThru )
     })
 
-    it('correctly applies constructor option, \'passThru\' when set to true', function() {
+    it('correctly applies constructor option, \'passThru\' when set to false', function() {
       assert.equal(false, (new dvbtee.Parser({'passThru': false})).options.passThru )
     })
 
