@@ -67,6 +67,20 @@ void dvbteeParser::enableEttCollection(
 
 ////////////////////////////////////////
 
+void dvbteeParser::enableParseISO6937(
+  const Nan::FunctionCallbackInfo<v8::Value>& info) {
+  dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
+
+  Nan::Maybe<bool> maybeEnable = Nan::To<bool>(info[0]);
+  bool enable = maybeEnable.FromMaybe(true);
+
+  obj->m_parser.enable_iso6937_translation(enable);
+
+  info.GetReturnValue().Set(info.Holder());
+}
+
+////////////////////////////////////////
+
 class ResetWorker : public Nan::AsyncWorker {
  public:
   ResetWorker(Nan::Callback *callback,
