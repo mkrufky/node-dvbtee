@@ -31,9 +31,10 @@ void dvbteeParser::Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports) {
   tpl->SetClassName(Nan::New("Parser").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-  Nan::SetPrototypeMethod(tpl, "reset",        reset);
-  Nan::SetPrototypeMethod(tpl, "feed",         feed);
+  Nan::SetPrototypeMethod(tpl, "reset"              , reset);
+  Nan::SetPrototypeMethod(tpl, "feed"               , feed);
   Nan::SetPrototypeMethod(tpl, "enableEttCollection", enableEttCollection);
+  Nan::SetPrototypeMethod(tpl, "enableParseISO6937" , enableParseISO6937);
 
   constructor.Reset(tpl->GetFunction());
   exports->Set(Nan::New("Parser").ToLocalChecked(), tpl->GetFunction());
