@@ -10,7 +10,7 @@ if (process.argv.length <= 2) {
   filename = process.argv[2]
 }
 
-var parser = dvbtee.Parser()
+var parser = new dvbtee.Parser()
 
 parser.on('data', function(data) {
   console.log('\ntable data:', util.inspect(data, false, null))
