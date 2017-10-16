@@ -72,8 +72,7 @@ void dvbteeParser::enableParseISO6937(
   const Nan::FunctionCallbackInfo<v8::Value>& info) {
   dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
-  Nan::Maybe<bool> maybeEnable = Nan::To<bool>(info[0]);
-  bool enable = maybeEnable.FromMaybe(true);
+  bool enable = Nan::To<bool>(info[0]).FromMaybe(true);
 
   obj->m_parser.enable_iso6937_translation(enable);
 
