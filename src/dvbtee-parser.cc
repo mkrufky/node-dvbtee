@@ -61,7 +61,9 @@ void dvbteeParser::enableEttCollection(
   const Nan::FunctionCallbackInfo<v8::Value>& info) {
   dvbteeParser* obj = ObjectWrap::Unwrap<dvbteeParser>(info.Holder());
 
-  obj->m_parser.enable_ett_collection();
+  bool enable = Nan::To<bool>(info[0]).FromMaybe(true);
+
+  obj->m_parser.enable_ett_collection(enable);
 
   info.GetReturnValue().Set(info.Holder());
 }
