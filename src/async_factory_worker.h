@@ -14,8 +14,6 @@
 #include <nan.h>
 #include <queue>
 
-#include "async_bare_progress_worker_base.h"  // NOLINT(build/include)
-
 namespace Krufky {
 
 namespace Nan {
