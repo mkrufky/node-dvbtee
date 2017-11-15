@@ -64,7 +64,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.0",
     "should": "^13.0.0",
-    "supports-color": "=3.1.2"
+    "supports-color": "=3.2.3"
   },
   "gypfile": true
 }
