@@ -17,3 +17,4 @@ node_js:
 
 before_install:
   - npm install supports-color@3.2.3 nan bindings mocha should
+  - rm -rf node_modules/mocha/node_modules/supports-color
