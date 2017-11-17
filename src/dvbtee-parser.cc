@@ -13,7 +13,7 @@
 #if NAN_HAS_CPLUSPLUS_11
 #include "async_factory_worker.h"  // NOLINT(build/include)
 #else
-#include "boring_async_factory_worker.h"  // NOLINT(build/include)
+#include "async_factory_worker_cpp03.h"  // NOLINT(build/include)
 #endif
 
 Nan::Persistent<v8::Function> dvbteeParser::constructor;
