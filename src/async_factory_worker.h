@@ -21,7 +21,8 @@ namespace Nan {
 using namespace ::Nan;
 
 template<class T, typename... Targs>
-/* abstract */ class AsyncBareFactoryWorker : public AsyncBareProgressWorkerBase {
+/* abstract */
+class AsyncBareFactoryWorker : public AsyncBareProgressWorkerBase {
  public:
   explicit AsyncBareFactoryWorker(Callback *callback_)
       : AsyncBareProgressWorkerBase(callback_) {
