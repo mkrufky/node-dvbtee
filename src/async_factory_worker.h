@@ -14,11 +14,9 @@
 #include <nan.h>
 #include <queue>
 
-namespace Krufky {
-
 namespace Nan {
 
-using namespace ::Nan;
+namespace Krufky {
 
 template<class T, typename... Targs>
 /* abstract */
@@ -121,8 +119,8 @@ class AsyncFactoryWorker : public AsyncBareFactoryWorker<T, Targs...> {
   std::queue<T*> asyncdata_;
 };
 
-}  // namespace Nan
-
 }  // namespace Krufky
+
+}  // namespace Nan
 
 #endif  // SRC_ASYNC_FACTORY_WORKER_H_
