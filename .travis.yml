@@ -4,6 +4,8 @@ os:
   - linux
   - osx
 
+osx_image: xcode9.1
+
 language: node_js
 node_js:
   - '0.10'
