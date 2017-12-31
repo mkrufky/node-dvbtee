@@ -18,8 +18,12 @@ node_js:
 
 env:
 matrix:
+  exclude:
+    - node_js: '0.12'
+      os: osx
   include:
     - node_js: '0.12'
+      os: osx
       osx_image: xcode7.3
   allow_failures:
     - node_js: '0.10'
