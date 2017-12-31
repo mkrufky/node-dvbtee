@@ -18,6 +18,9 @@ node_js:
   - '9'
   - 'stable'
 
+allow_failures:
+  - node_js: '0.10'
+  - node_js: '0.12'
+
 before_install:
-  - npm install supports-color@3.2.3 nan bindings mocha should
-  - rm -rf node_modules/mocha/node_modules/supports-color
+  - npm install nan bindings mocha should
