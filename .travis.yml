@@ -18,9 +18,11 @@ node_js:
   - '9'
   - 'stable'
 
-allow_failures:
-  - node_js: '0.10'
-  - node_js: '0.12'
+env:
+matrix:
+  allow_failures:
+    - node_js: '0.10'
+    - node_js: '0.12'
 
 before_install:
   - npm install nan bindings mocha should
