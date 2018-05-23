@@ -1,7 +1,7 @@
 /*********************************************************************
  * node-dvbtee for Node.js
  *
- * Copyright (c) 2017 Michael Ira Krufky <https://github.com/mkrufky>
+ * Copyright (c) 2018 Michael Ira Krufky <https://github.com/mkrufky>
  *
  * MIT License <https://github.com/mkrufky/node-dvbtee/blob/master/LICENSE>
  *
