@@ -50,7 +50,7 @@
   ],
   "main": "./lib/dvbtee.js",
   "scripts": {
-    "preinstall": "npm install mkdirp && scripts/prepare-build.sh && node scripts/configure-build.js",
+    "preinstall": "npm install git-clone mkdirp rimraf && node scripts/prepare-build.js && node scripts/configure-build.js",
     "install": "node-gyp rebuild -j 8",
     "test": "mocha"
   },
@@ -61,8 +61,10 @@
     "bindings": "^1.2.1"
   },
   "devDependencies": {
+    "git-clone": "^0.1.0",
     "mkdirp": "^0.5.1",
     "mocha": "^5.0.1",
+    "rimraf": "^2.6.2",
     "should": "^13.0.0"
   },
   "gypfile": true

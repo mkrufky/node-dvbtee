@@ -8,10 +8,10 @@ cd _stage
 git clone .. node-dvbtee
 cd node-dvbtee
 
-scripts/prepare-build.sh
+node scripts/prepare-build.js
 node scripts/configure-build.js
 
-sed -i s/"npm install mkdirp && scripts\/prepare-build.sh && node scripts\/configure-build.js"/""/1 package.json
+sed -i s/"npm install git-clone mkdirp rimraf && node scripts\/prepare-build.js && node scripts\/configure-build.js"/""/1 package.json
 sed -i s/"^libdvbtee"/""/1 .gitignore
 
 cd libdvbtee
