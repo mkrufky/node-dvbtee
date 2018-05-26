@@ -15,6 +15,7 @@
         "libdvbtee/libdvbtee/decode",
         "libdvbtee/libdvbtee/decode/table",
         "libdvbtee/libdvbtee/decode/descriptor",
+        "<!(node -e \"require('async-factory-worker')\")",
         "<!(node -e \"require('nan')\")"
       ],
       'cflags': [ '-DDEBUG_CONSOLE=1' ],

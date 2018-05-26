@@ -55,6 +55,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "async-factory-worker": "git://github.com/mkrufky/node-async-factory-worker",
     "nan": "^2.10.0"
   },
   "optionalDependencies": {

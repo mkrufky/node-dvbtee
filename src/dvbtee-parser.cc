@@ -11,7 +11,7 @@
 #include <nan.h>
 #include "dvbtee-parser.h"               // NOLINT(build/include)
 #if NAN_HAS_CPLUSPLUS_11
-#include "async_factory_worker.h"        // NOLINT(build/include)
+#include <async_factory_worker.h>        // NOLINT(build/include)
 #else
 #include "async_factory_worker_cpp03.h"  // NOLINT(build/include)
 #endif
