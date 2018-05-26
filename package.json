@@ -51,7 +51,7 @@
   "main": "./lib/dvbtee.js",
   "scripts": {
     "preinstall": "npm install git-clone mkdirp rimraf && node scripts/prepare-build.js && node scripts/configure-build.js",
-    "install": "node-gyp rebuild -j 8",
+    "install": "node-gyp rebuild --msvs_version=2015 -j 8",
     "test": "mocha"
   },
   "dependencies": {
