@@ -161,7 +161,7 @@ class TableData {
 #endif  // NAN_HAS_CPLUSPLUS_11
 };
 
-class FeedWorker: public Nan::Krufky::AsyncFactoryWorker<TableData,
+class FeedWorker: public Nan::Mkrufky::AsyncFactoryWorker<TableData,
   const uint8_t&, const std::string&, const std::string&> {
  public:
   FeedWorker(Nan::Callback *callback,

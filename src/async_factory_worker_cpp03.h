@@ -16,7 +16,7 @@
 
 namespace Nan {
 
-namespace Krufky {
+namespace Mkrufky {
 
 template<class T, typename A, typename B, typename C>
 /* abstract */
@@ -119,7 +119,7 @@ class AsyncFactoryWorker : public AsyncBareFactoryWorker<T, A, B, C> {
   std::queue<T*> asyncdata_;
 };
 
-}  // namespace Krufky
+}  // namespace Mkrufky
 
 }  // namespace Nan
 
