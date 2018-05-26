@@ -55,7 +55,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "nan": "^2.8.0"
+    "nan": "^2.10.0"
   },
   "optionalDependencies": {
     "bindings": "^1.2.1"
