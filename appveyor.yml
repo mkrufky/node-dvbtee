@@ -37,7 +37,8 @@ install:
   - cd libdvbtee
   - cd libdvbpsi
   - ps: .\bootstrap
-  - ps: .\configure
+  - ps: dir
+  - ps: .\configure.bat --enable-static --with-pic
   - cd ..
   - cd ..
   - npm install
