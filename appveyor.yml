@@ -36,10 +36,8 @@ install:
   - node scripts/configure-build.js
   - cd libdvbtee
   - cd libdvbpsi
-  - ps: |
-    .\bootstrap
-  - ps: |
-    .\configure
+  - ps: .\bootstrap
+  - ps: .\configure
   - cd ..
   - cd ..
   - npm install
