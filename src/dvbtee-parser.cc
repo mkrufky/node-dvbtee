@@ -166,8 +166,9 @@ class FeedWorker: public Nan::Mkrufky::AsyncFactoryWorker<TableData,
  public:
   FeedWorker(Nan::Callback *callback,
              Nan::Callback *progress,
-             const Nan::FunctionCallbackInfo<v8::Value>& info)
-    : AsyncFactoryWorker(callback)
+             const Nan::FunctionCallbackInfo<v8::Value>& info,
+             const char* resource_name = "dvbtee:FeedWorker")
+    : AsyncFactoryWorker(callback, resource_name)
     , m_progress(progress)
     , m_buf(NULL)
     , m_buf_len(0)

@@ -22,8 +22,10 @@ template<class T, typename A, typename B, typename C>
 /* abstract */
 class AsyncBareFactoryWorker : public AsyncBareProgressWorkerBase {
  public:
-  explicit AsyncBareFactoryWorker(Callback *callback_)
-      : AsyncBareProgressWorkerBase(callback_) {
+  explicit AsyncBareFactoryWorker(
+      Callback *callback_,
+      const char* resource_name = "nan:mkrufky:dvbtee:AsyncBareFactoryWorker")
+      : AsyncBareProgressWorkerBase(callback_, resource_name) {
   }
 
   virtual ~AsyncBareFactoryWorker() {
@@ -58,8 +60,10 @@ template<class T, typename A, typename B, typename C>
 /* abstract */
 class AsyncFactoryWorker : public AsyncBareFactoryWorker<T, A, B, C> {
  public:
-  explicit AsyncFactoryWorker(Callback *callback_)
-      : AsyncBareFactoryWorker<T, A, B, C>(callback_) {
+  explicit AsyncFactoryWorker(
+      Callback *callback_,
+      const char* resource_name = "nan:mkrufky:dvbtee:AsyncFactoryWorker")
+      : AsyncBareFactoryWorker<T, A, B, C>(callback_, resource_name) {
     uv_mutex_init(&async_lock);
   }
 
