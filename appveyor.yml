@@ -64,7 +64,8 @@ install:
   - ps: .\bootstrap
   - ps: dir
 #  - ps: .\configure.bat --enable-static --with-pic # C:\projects\node-dvbtee
-  - '%APPVEYOR_BUILD_FOLDER%\appveyor.bat'
+  - cp '%APPVEYOR_BUILD_FOLDER%\appveyor.bat' .
+  - '%APPVEYOR_BUILD_FOLDER%\libdvbtee\libdvbpsi\appveyor.bat'
   - cd ..
   - cd ..
   - npm install
