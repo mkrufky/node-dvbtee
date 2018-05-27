@@ -1,26 +1,44 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
 # Test against these versions of Io.js and Node.js.
-environment:
-  matrix:
-    - MSYS2_ARCH: x86_64
-      MSYSTEM: MINGW64
-    - MSYS2_ARCH: i686
-      MSYSTEM: MINGW32
+#environment:
+#  matrix:
+#    - MSYS2_ARCH: i686
+#      MSYSTEM: MINGW32
 
 environment:
   matrix:
   # node.js
     - nodejs_version: "0.8"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "0.10"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "0.12"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "4"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "5"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "6"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "7"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "8"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "9"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
     - nodejs_version: "10"
+      MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
 
 matrix:
   allow_failures:
