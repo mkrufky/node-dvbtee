@@ -34,8 +34,12 @@ install:
   - npm install git-clone mkdirp rimraf
   - node scripts/prepare-build.js
   - node scripts/configure-build.js
-  - libdvbtee/libdvbpsi/bootstrap
-  - libdvbtee/libdvbpsi/configure
+  - cd libdvbtee
+  - cd libdvbpsi
+  - bootstrap
+  - configure
+  - cd ..
+  - cd ..
   - npm install
 
 # Post-install test scripts.
