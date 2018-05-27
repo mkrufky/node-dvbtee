@@ -60,11 +60,12 @@ install:
   - node scripts/prepare-build.js
   - node scripts/configure-build.js
   - cd libdvbtee
+  - cp '%APPVEYOR_BUILD_FOLDER%\appveyor.bat' .
   - cd libdvbpsi
+  - cp '%APPVEYOR_BUILD_FOLDER%\appveyor.bat' .
   - ps: .\bootstrap
   - ps: dir
 #  - ps: .\configure.bat --enable-static --with-pic # C:\projects\node-dvbtee
-  - cp '%APPVEYOR_BUILD_FOLDER%\appveyor.bat' .
   - '%APPVEYOR_BUILD_FOLDER%\libdvbtee\libdvbpsi\appveyor.bat'
   - cd ..
   - cd ..
