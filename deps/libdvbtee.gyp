@@ -116,6 +116,7 @@
                 '-L/opt/local/lib'
               ],
               'WARNING_CFLAGS': [
+                '-Wno-format-overflow',
                 '-Wno-unused-variable',
                 '-Wno-deprecated-declarations'
               ],
@@ -124,8 +125,18 @@
           }
         ]
       ],
-      'cflags_cc!': ['-fno-rtti','-Wunused-variable','-Wdeprecated-declarations'],
-      'cflags_cc+': ['-frtti','-Wno-unused-variable','-Wno-deprecated-declarations'],
+      'cflags_cc!': [
+        '-fno-rtti',
+        '-Wformat-overflow',
+        '-Wunused-variable',
+        '-Wdeprecated-declarations'
+      ],
+      'cflags_cc+': [
+        '-frtti',
+        '-Wno-format-overflow',
+        '-Wno-unused-variable',
+        '-Wno-deprecated-declarations'
+      ],
     },
 
     # dvbtee command line application
