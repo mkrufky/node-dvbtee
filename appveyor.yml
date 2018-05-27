@@ -3,6 +3,13 @@
 # Test against these versions of Io.js and Node.js.
 environment:
   matrix:
+    - MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
+    - MSYS2_ARCH: i686
+      MSYSTEM: MINGW32
+
+environment:
+  matrix:
   # node.js
     - nodejs_version: "0.8"
     - nodejs_version: "0.10"
@@ -53,7 +60,9 @@ test_script:
   - npm test
 
 # Don't actually build.
-build: off
+# build: off
+build_script:
+  - '%APPVEYOR_BUILD_FOLDER%\appveyor.bat'
 
 # Set build version format here instead of in the admin panel.
 version: "{build}"
