@@ -30,3 +30,4 @@ bash -xlc "env"
 
 bash -xlc "./autogen.sh"
 bash -xlc "./configure"
+bash -xlc "make distcheck"
