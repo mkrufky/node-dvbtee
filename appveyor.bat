@@ -22,13 +22,14 @@ bash -xlc "pacman --noconfirm -S --needed mingw-w64-%MSYS2_ARCH%-gobject-introsp
 
 rem Invoke subsequent bash in the build tree
 cd %APPVEYOR_BUILD_FOLDER%
-cd libdvbtee
-cd libdvbpsi
 set CHERE_INVOKING=yes
 
 rem Build/test scripting
 bash -xlc "set pwd"
 bash -xlc "env"
+
+bash -xlc "cd libdvbtee"
+bash -xlc "cd libdvbpsi"
 
 bash -xlc "./autogen.sh"
 bash -xlc "./configure"
