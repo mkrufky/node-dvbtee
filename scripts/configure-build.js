@@ -17,26 +17,31 @@ if (!String.prototype.hasOwnProperty('endsWith')) {
   }
 }
 
-fs.writeFile(configh, confighContents, function (err) {
-  if (err) throw err
+fs.stat(configh, function(err, stats) {
+  if (!err) {
+    return
+  }
+  return fs.writeFile(configh, confighContents, function (err) {
+    if (err) throw err
 
-  mkdirp(libdvbpsiDst, function (err) {
-    if (err) throw err;
+    return mkdirp(libdvbpsiDst, function (err) {
+      if (err) throw err;
 
-    var cpHeaders = function (from) {
-      fs.readdir(from, function (err, files) {
-        if (err) throw err;
-        files.forEach(function (file) {
-          if (file.endsWith('.h')) {
-            fs.createReadStream(from+'/'+file).pipe(fs.createWriteStream(libdvbpsiDst+file))
-          }
+      var cpHeaders = function (from) {
+        return fs.readdir(from, function (err, files) {
+          if (err) throw err;
+          return files.forEach(function (file) {
+            if (file.endsWith('.h')) {
+              return fs.createReadStream(from+'/'+file).pipe(fs.createWriteStream(libdvbpsiDst+file))
+            }
+          })
         })
-      })
-    }
+      }
 
-    cpHeaders(libdvbpsiSrc)
-    cpHeaders(libdvbpsiSrc+'/..')
-    cpHeaders(libdvbpsiSrc+'/tables')
-    cpHeaders(libdvbpsiSrc+'/descriptors')
+      cpHeaders(libdvbpsiSrc)
+      cpHeaders(libdvbpsiSrc+'/..')
+      cpHeaders(libdvbpsiSrc+'/tables')
+      cpHeaders(libdvbpsiSrc+'/descriptors')
+    })
   })
 })

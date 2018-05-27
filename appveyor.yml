@@ -31,6 +31,11 @@ install:
   - set PATH=%APPDATA%\npm;%PATH%
   # Typical npm stuff.
   - npm install nan bindings mocha should
+  - npm install git-clone mkdirp rimraf
+  - node scripts/prepare-build.js
+  - node scripts/configure-build.js
+  - libdvbtee/libdvbpsi/bootstrap
+  - libdvbtee/libdvbpsi/configure
   - npm install
 
 # Post-install test scripts.
