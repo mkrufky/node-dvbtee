@@ -28,9 +28,5 @@ rem Build/test scripting
 bash -xlc "set pwd"
 bash -xlc "env"
 
-bash -xlc "cd libdvbtee"
-bash -xlc "cd libdvbpsi"
-
-bash -xlc "./autogen.sh"
-bash -xlc "./configure"
-bash -xlc "make distcheck"
+bash -xlc "./libdvbtee/libdvbpsi/autogen.sh"
+bash -xlc "./libdvbpsi/libdvbpsi/configure"
