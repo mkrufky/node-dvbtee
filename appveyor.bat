@@ -21,7 +21,7 @@ bash -xlc "pacman --noconfirm -S --needed mingw-w64-%MSYS2_ARCH%-glib2"
 bash -xlc "pacman --noconfirm -S --needed mingw-w64-%MSYS2_ARCH%-gobject-introspection"
 
 rem Invoke subsequent bash in the build tree
-rem cd %APPVEYOR_BUILD_FOLDER%
+cd %APPVEYOR_BUILD_FOLDER%
 set CHERE_INVOKING=yes
 
 rem Build/test scripting
