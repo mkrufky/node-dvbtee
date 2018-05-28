@@ -68,6 +68,7 @@
         '../libdvbtee/libdvbtee/value/value.cpp',
         '../libdvbtee/libdvbtee/value/object.cpp',
         '../libdvbtee/libdvbtee/value/array.cpp',
+        '../libdvbtee/libdvbtee/value/utf8strip.cpp',
 
         '../libdvbtee/libdvbtee/decode/decoder.cpp',
         '../libdvbtee/libdvbtee/decode/table/table.cpp',
