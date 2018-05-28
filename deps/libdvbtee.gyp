@@ -116,7 +116,6 @@
                 '-L/opt/local/lib'
               ],
               'WARNING_CFLAGS': [
-                '-Wno-format-overflow',
                 '-Wno-unused-variable',
                 '-Wno-deprecated-declarations'
               ],
