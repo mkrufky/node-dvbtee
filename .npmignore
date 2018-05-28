@@ -6,4 +6,3 @@ Makefile
 cpplint.py
 doc/.build.sh
 node-dvbtee.pro
-scripts/
