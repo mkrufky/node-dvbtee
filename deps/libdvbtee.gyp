@@ -105,6 +105,9 @@
       'conditions': [
         ['OS=="mac"',
           {
+            'defines': [
+              'USE_WSTRING_CONVERT'
+            ],
             'link_settings': {
               'libraries': [
                 '-liconv'
