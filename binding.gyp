@@ -7,14 +7,14 @@
         "src/dvbtee-parser.cc"
       ],
       "dependencies": [
-        'deps/libdvbtee.gyp:dvbtee_parser'
+        'node_modules/libdvbtee_parser/binding.gyp:dvbtee_parser'
       ],
       "include_dirs": [
-        "libdvbtee/usr/include",
-        "libdvbtee/libdvbtee",
-        "libdvbtee/libdvbtee/decode",
-        "libdvbtee/libdvbtee/decode/table",
-        "libdvbtee/libdvbtee/decode/descriptor",
+        "node_modules/libdvbtee_parser/usr/include",
+        "node_modules/libdvbtee_parser/libdvbtee",
+        "node_modules/libdvbtee_parser/libdvbtee/decode",
+        "node_modules/libdvbtee_parser/libdvbtee/decode/table",
+        "node_modules/libdvbtee_parser/libdvbtee/decode/descriptor",
         "<!(node -e \"require('async-factory-worker')\")",
         "<!(node -e \"require('nan')\")"
       ],
