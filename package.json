@@ -50,11 +50,11 @@
   ],
   "main": "./lib/dvbtee.js",
   "scripts": {
-    "preinstall": "npm install git-clone mkdirp rimraf && node scripts/prepare-build.js && node scripts/configure-build.js",
     "install": "node-gyp rebuild -j 8",
     "test": "mocha"
   },
   "dependencies": {
+    "libdvbtee_parser": "mkrufky/libdvbtee.git#gyp",
     "async-factory-worker": "^0.0.1",
     "nan": "^2.10.0"
   },
