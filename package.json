@@ -1,6 +1,6 @@
 {
   "name": "dvbtee",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "MPEG2 transport stream parser for Node.js with support for television broadcast PSIP tables",
   "author": "Michael Ira Krufky <mkrufky@gmail.com>",
   "license": "MIT",
@@ -50,11 +50,11 @@
   ],
   "main": "./lib/dvbtee.js",
   "scripts": {
-    "preinstall": "npm install git-clone mkdirp rimraf && node scripts/prepare-build.js && node scripts/configure-build.js",
     "install": "node-gyp rebuild --msvs_version=2015 -j 8",
     "test": "mocha"
   },
   "dependencies": {
+    "libdvbtee_parser": "mkrufky/libdvbtee",
     "async-factory-worker": "^0.0.1",
     "nan": "^2.10.0"
   },
