@@ -54,7 +54,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "libdvbtee_parser": "^0.6.4",
+    "libdvbtee_parser": "mkrufky/libdvbtee",
     "async-factory-worker": "^0.0.1",
     "nan": "^2.10.0"
   },
