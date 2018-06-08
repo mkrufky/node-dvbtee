@@ -7,7 +7,7 @@
         "src/dvbtee-parser.cc"
       ],
       "dependencies": [
-        'node_modules/libdvbtee_parser/binding.gyp:dvbtee_parser'
+        "<!(node -e \"require('libdvbtee_parser')\")/binding.gyp:dvbtee_parser"
       ],
       "include_dirs": [
         "<!(node -e \"require('libdvbtee_parser')\")/usr/include",
