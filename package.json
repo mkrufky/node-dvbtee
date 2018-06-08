@@ -51,7 +51,6 @@
   "main": "./lib/dvbtee.js",
   "scripts": {
     "install": "node-gyp rebuild -j 8",
-    "preinstall": "npm install libdvbtee_parser",
     "test": "mocha"
   },
   "dependencies": {
