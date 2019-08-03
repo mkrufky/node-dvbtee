@@ -39,8 +39,9 @@ void dvbteeParser::Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports)
   Nan::SetPrototypeMethod(tpl, "enableEttCollection", enableEttCollection);
   Nan::SetPrototypeMethod(tpl, "enableParseISO6937", enableParseISO6937);
 
-  constructor.Reset(tpl->GetFunction());
-  exports->Set(Nan::New("Parser").ToLocalChecked(), tpl->GetFunction());
+  v8::Local<v8::Function> function = Nan::GetFunction(tpl).ToLocalChecked();
+  constructor.Reset(function);
+  exports->Set(Nan::New("Parser").ToLocalChecked(), function);
 }
 
 void dvbteeParser::New(const Nan::FunctionCallbackInfo<v8::Value> &info)
