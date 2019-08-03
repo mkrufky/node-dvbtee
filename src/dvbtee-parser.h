@@ -15,24 +15,23 @@
 #include <queue>
 #include <string>
 #include <vector>
-#include "parse.h"  // NOLINT(build/include)
+#include "parse.h" // NOLINT(build/include)
 
-class dvbteeParser : public Nan::ObjectWrap {
- public:
+class dvbteeParser : public Nan::ObjectWrap
+{
+public:
   static void Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports);
 
- private:
+private:
   dvbteeParser();
   virtual ~dvbteeParser();
 
-  static void New(const Nan::FunctionCallbackInfo<v8::Value>& info);
+  static void New(const Nan::FunctionCallbackInfo<v8::Value> &info);
 
-  static void reset(const Nan::FunctionCallbackInfo<v8::Value>& info);
-  static void feed(const Nan::FunctionCallbackInfo<v8::Value>& info);
-  static
-  void enableEttCollection(const Nan::FunctionCallbackInfo<v8::Value>& info);
-  static
-  void enableParseISO6937(const Nan::FunctionCallbackInfo<v8::Value>& info);
+  static void reset(const Nan::FunctionCallbackInfo<v8::Value> &info);
+  static void feed(const Nan::FunctionCallbackInfo<v8::Value> &info);
+  static void enableEttCollection(const Nan::FunctionCallbackInfo<v8::Value> &info);
+  static void enableParseISO6937(const Nan::FunctionCallbackInfo<v8::Value> &info);
 
   static Nan::Persistent<v8::Function> constructor;
   Nan::JSON NanJSON;
@@ -42,4 +41,4 @@ class dvbteeParser : public Nan::ObjectWrap {
   friend class ResetWorker;
 };
 
-#endif  // SRC_DVBTEE_PARSER_H_
+#endif // SRC_DVBTEE_PARSER_H_

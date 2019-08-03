@@ -9,76 +9,79 @@
  ********************************************************************/
 
 #include <nan.h>
-#include "dvbtee-parser.h"  // NOLINT(build/include)
+#include "dvbtee-parser.h" // NOLINT(build/include)
 
-
-void libVersion(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void libVersion(const Nan::FunctionCallbackInfo<v8::Value> &info)
+{
   v8::Local<v8::Array> version = Nan::New<v8::Array>();
 
-  version->Set(0, Nan::New<v8::Number>(LIBDVBTEE_VERSION_A) );
-  version->Set(1, Nan::New<v8::Number>(LIBDVBTEE_VERSION_B) );
-  version->Set(2, Nan::New<v8::Number>(LIBDVBTEE_VERSION_C) );
+  version->Set(0, Nan::New<v8::Number>(LIBDVBTEE_VERSION_A));
+  version->Set(1, Nan::New<v8::Number>(LIBDVBTEE_VERSION_B));
+  version->Set(2, Nan::New<v8::Number>(LIBDVBTEE_VERSION_C));
 
   info.GetReturnValue().Set(version);
 }
 
-void logLevel(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void logLevel(const Nan::FunctionCallbackInfo<v8::Value> &info)
+{
   libdvbtee_set_debug_level(
-    (info[0]->IsNumber()) ? info[0]->Uint32Value() : 255,
-    (info[1]->IsNumber()) ? info[1]->Uint32Value() : 0
-  );
+      (info[0]->IsNumber()) ? info[0]->Uint32Value() : 255,
+      (info[1]->IsNumber()) ? info[1]->Uint32Value() : 0);
 
   info.GetReturnValue().Set(info.Holder());
 }
 
-template<typename T> v8::Local<v8::Array> vectorToV8Array(std::vector<T> v) {
+template <typename T>
+v8::Local<v8::Array> vectorToV8Array(std::vector<T> v)
+{
   v8::Local<v8::Array> a = Nan::New<v8::Array>();
   unsigned int pos = 0;
 
   for (typename std::vector<T>::const_iterator it = v.begin();
        it != v.end(); ++it)
 
-    a->Set(pos++, Nan::New(*it) );
+    a->Set(pos++, Nan::New(*it));
 
   return a;
 }
 
-void getTableDecoderIds(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void getTableDecoderIds(const Nan::FunctionCallbackInfo<v8::Value> &info)
+{
   info.GetReturnValue().Set(
-    vectorToV8Array(dvbtee::decode::TableRegistry::instance().list())
-  );
+      vectorToV8Array(dvbtee::decode::TableRegistry::instance().list()));
 }
 
-void getDescriptorDecoderIds(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void getDescriptorDecoderIds(const Nan::FunctionCallbackInfo<v8::Value> &info)
+{
   info.GetReturnValue().Set(
-    vectorToV8Array(dvbtee::decode::DescriptorRegistry::instance().list())
-  );
+      vectorToV8Array(dvbtee::decode::DescriptorRegistry::instance().list()));
 }
 
-NAN_MODULE_INIT(InitAll) {
+NAN_MODULE_INIT(InitAll)
+{
   Nan::Set(target,
-    Nan::New<v8::String>("logLevel").ToLocalChecked(),
-    Nan::GetFunction(
-      Nan::New<v8::FunctionTemplate>(logLevel)).ToLocalChecked()
-    );
+           Nan::New<v8::String>("logLevel").ToLocalChecked(),
+           Nan::GetFunction(
+               Nan::New<v8::FunctionTemplate>(logLevel))
+               .ToLocalChecked());
 
   Nan::Set(target,
-    Nan::New<v8::String>("libVersion").ToLocalChecked(),
-    Nan::GetFunction(
-      Nan::New<v8::FunctionTemplate>(libVersion)).ToLocalChecked()
-    );
+           Nan::New<v8::String>("libVersion").ToLocalChecked(),
+           Nan::GetFunction(
+               Nan::New<v8::FunctionTemplate>(libVersion))
+               .ToLocalChecked());
 
   Nan::Set(target,
-    Nan::New<v8::String>("getTableDecoderIds").ToLocalChecked(),
-    Nan::GetFunction(
-      Nan::New<v8::FunctionTemplate>(getTableDecoderIds)).ToLocalChecked()
-    );
+           Nan::New<v8::String>("getTableDecoderIds").ToLocalChecked(),
+           Nan::GetFunction(
+               Nan::New<v8::FunctionTemplate>(getTableDecoderIds))
+               .ToLocalChecked());
 
   Nan::Set(target,
-    Nan::New<v8::String>("getDescriptorDecoderIds").ToLocalChecked(),
-    Nan::GetFunction(
-      Nan::New<v8::FunctionTemplate>(getDescriptorDecoderIds)).ToLocalChecked()
-    );
+           Nan::New<v8::String>("getDescriptorDecoderIds").ToLocalChecked(),
+           Nan::GetFunction(
+               Nan::New<v8::FunctionTemplate>(getDescriptorDecoderIds))
+               .ToLocalChecked());
 
   dvbteeParser::Init(target);
 }
