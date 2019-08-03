@@ -198,7 +198,7 @@ public:
       if (!mbBuf.IsEmpty())
       {
         m_buf = node::Buffer::Data(mbBuf.ToLocalChecked());
-        m_buf_len = info[1]->Uint32Value();
+        m_buf_len = Nan::To<uint32_t>(info[1]).FromJust();
       }
     }
   }

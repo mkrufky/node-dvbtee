@@ -25,8 +25,8 @@ void libVersion(const Nan::FunctionCallbackInfo<v8::Value> &info)
 void logLevel(const Nan::FunctionCallbackInfo<v8::Value> &info)
 {
   libdvbtee_set_debug_level(
-      (info[0]->IsNumber()) ? info[0]->Uint32Value() : 255,
-      (info[1]->IsNumber()) ? info[1]->Uint32Value() : 0);
+      (info[0]->IsNumber()) ? Nan::To<uint32_t>(info[0]).FromJust() : 255,
+      (info[1]->IsNumber()) ? Nan::To<uint32_t>(info[1]).FromJust() : 0);
 
   info.GetReturnValue().Set(info.Holder());
 }
