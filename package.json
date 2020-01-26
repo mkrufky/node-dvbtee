@@ -62,7 +62,7 @@
     "bindings": "^1.2.1"
   },
   "devDependencies": {
-    "mocha": "^6.2.0",
+    "mocha": "^7.0.1",
     "should": "^13.0.0"
   },
   "gypfile": true
