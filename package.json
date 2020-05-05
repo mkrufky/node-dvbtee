@@ -56,14 +56,14 @@
   "dependencies": {
     "async-factory-worker": "^0.0.1",
     "libdvbtee_parser": "^0.6.7",
-    "nan": "^2.14.0"
+    "nan": "^2.14.1"
   },
   "optionalDependencies": {
-    "bindings": "^1.2.1"
+    "bindings": "^1.5.0"
   },
   "devDependencies": {
-    "mocha": "^6.2.0",
-    "should": "^13.0.0"
+    "mocha": "^7.1.2",
+    "should": "^13.2.3"
   },
   "gypfile": true
 }
