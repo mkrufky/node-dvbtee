@@ -41,7 +41,7 @@ void dvbteeParser::Init(Nan::ADDON_REGISTER_FUNCTION_ARGS_TYPE exports)
 
   v8::Local<v8::Function> function = Nan::GetFunction(tpl).ToLocalChecked();
   constructor.Reset(function);
-  exports->Set(Nan::New("Parser").ToLocalChecked(), function);
+  Nan::Set(exports, Nan::New("Parser").ToLocalChecked(), function);
 }
 
 void dvbteeParser::New(const Nan::FunctionCallbackInfo<v8::Value> &info)

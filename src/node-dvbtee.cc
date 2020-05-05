@@ -15,9 +15,9 @@ void libVersion(const Nan::FunctionCallbackInfo<v8::Value> &info)
 {
   v8::Local<v8::Array> version = Nan::New<v8::Array>();
 
-  version->Set(0, Nan::New<v8::Number>(LIBDVBTEE_VERSION_A));
-  version->Set(1, Nan::New<v8::Number>(LIBDVBTEE_VERSION_B));
-  version->Set(2, Nan::New<v8::Number>(LIBDVBTEE_VERSION_C));
+  Nan::Set(version, 0, Nan::New<v8::Number>(LIBDVBTEE_VERSION_A));
+  Nan::Set(version, 1, Nan::New<v8::Number>(LIBDVBTEE_VERSION_B));
+  Nan::Set(version, 2, Nan::New<v8::Number>(LIBDVBTEE_VERSION_C));
 
   info.GetReturnValue().Set(version);
 }
@@ -40,7 +40,7 @@ v8::Local<v8::Array> vectorToV8Array(std::vector<T> v)
   for (typename std::vector<T>::const_iterator it = v.begin();
        it != v.end(); ++it)
 
-    a->Set(pos++, Nan::New(*it));
+    Nan::Set(a, pos++, Nan::New(*it));
 
   return a;
 }
