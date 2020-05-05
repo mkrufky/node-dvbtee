@@ -6,6 +6,7 @@ os:
 
 language: node_js
 node_js:
+  - 'stable'
   - '0.10'
   - '0.12'
   - '4'
@@ -19,7 +20,6 @@ node_js:
   - '12'
   - '13'
   - '14'
-  - 'stable'
 
 env:
 matrix:
